@@ -2,4 +2,7 @@
 
 ## Index
 
-* [1: Introduction & Motivation.](1_introduction_and_motivation.md)    
+* [1: Introduction & Motivation.](1_introduction_and_motivation.md)
+* [2: The Pair Contract.](2_the_pair_contract.md)   
+* [3: The Factory Contract.](1_the_factory_contract.md)   
+* [4: Setup your environment.](4_setup.md)       
