@@ -36,12 +36,39 @@ bash initialize_pair.sh
 ```
 
 ### 1.- First, set your enviromental variables
-Follow step 1) from the previous chapter.
+Here, as we are using the `soroban-network` docker network, containers can call each other just using their name. In the case of the stellar quickstart container, it's name is `stellar`:
+
+```bash
+NETWORK="standalone"
+SOROBAN_RPC_HOST="http://stellar:8000"
+SOROBAN_RPC_URL="$SOROBAN_RPC_HOST/soroban/rpc"
+SOROBAN_NETWORK_PASSPHRASE="Standalone Network ; February 2017"
+FRIENDBOT_URL="$SOROBAN_RPC_HOST/friendbot"
+
+echo Add the $NETWORK network to cli client
+  soroban config network add "$NETWORK" \
+    --rpc-url "$SOROBAN_RPC_URL" \
+    --network-passphrase "$SOROBAN_NETWORK_PASSPHRASE"
+
+echo Create the token-admin identity
+  soroban config identity generate token-admin
+
+TOKEN_ADMIN_SECRET="$(soroban config identity show token-admin)"
+TOKEN_ADMIN_ADDRESS="$(soroban config identity address token-admin)"
+
+echo "We are using the following TOKEN_ADMIN_ADDRESS: $TOKEN_ADMIN_ADDRESS"
+echo "$TOKEN_ADMIN_SECRET" > .soroban/token_admin_secret
+echo "$TOKEN_ADMIN_ADDRESS" > .soroban/token_admin_address
+
+echo Fund token-admin account from friendbot
+  echo This will fail if the account already exists, but it\' still be fine.
+  curl  -X POST "$FRIENDBOT_URL?addr=$TOKEN_ADMIN_ADDRESS"
+
+ARGS="--network $NETWORK --source token-admin"
+echo "Using ARGS: $ARGS"
+```
 
 ### 2.- Let's create two dummy tokens:
-Follow step 2) from the previous chapter.
-
-
 
 We need to create 2 tokens in order to interact with the Pair contract
 ```bash
@@ -366,7 +393,7 @@ soroban contract invoke \
   --id "$PAIR_CONTRACT_ADDRESS"
 ```
 
-### 6.- The final part: Withdraw
+### 7.- The final part: Withdraw
 The final test is when the user want's to exit the liquidity pool and withdraw its tokens by giving back the pair_tokens that it has:
 
 The function here will be
@@ -419,11 +446,14 @@ echo TOKEN_B_ID = $TOKEN_B_ID
 echo "--"
 echo "--"
 ```
-
-
-
 ___
 
+You can go through all this steps just by doing:
+```bash
+bash initialize_pair.sh
+```
+
+___
 In the next, we will experiment the creation of Pair contracts through the SoroswapFactory contract!
 
 
