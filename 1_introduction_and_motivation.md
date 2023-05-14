@@ -3,7 +3,7 @@ The Soroswap Protocol is inspired in [UniswapV2](https://github.com/Uniswap/v2-c
 
 The Soroswap.Finance protocol consists in:
 
-1.- A **Liquidity Pool** contract (The **SoroswapPair** contract): They serve as automated market makers (AMM) and keep track of pool token balances. In Soroban, these contracts implements the Stellar token interface
+1.- A **Pair** contract (liquidity pool) (The **SoroswapPair** contract): They serve as automated market makers (AMM) and keep track of pool token balances. In Soroban, these contracts implements the Stellar token interface
 
 2.- A **Factory** contract (The **SoroswapFactory** contract):  Creates one Liquidity Pool Token smart contract per unique token pair.
 
