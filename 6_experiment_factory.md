@@ -142,6 +142,31 @@ In order to do this, please follow steps 5-7 from the previous chapter:
 
 ___
 
+If you want to continue experimenting directly with the CLI, here aresome env variable setting that might be useful <3
+
+```bash
+ARGS="--network $NETWORK --source token-admin"
+PAIR_WASM="pair/target/wasm32-unknown-unknown/release/soroswap_pair_contract.wasm"
+PAIR_ID=$(cat .soroban/pair_wasm_hash)
+TOKEN_ADMIN_ADDRESS=$(cat .soroban/token_admin_address)
+USER_ADDRESS=$(cat .soroban/user_address)
+TOKEN_A_ID=$(cat .soroban/token_a_id)
+TOKEN_B_ID=$(cat .soroban/token_b_id)
+ARGS_USER="--network $NETWORK --source user"
+
+
+echo In the next we will use:
+echo ARGS = $ARGS
+echo ARGS_USER = $ARGS_USER
+echo PAIR_WASM = $PAIR_WASM
+echo PAIR_ID = $PAIR_ID
+echo TOKEN_ADMIN_ADDRESS = $TOKEN_ADMIN_ADDRESS
+echo USER_ADDRESS = $USER_ADDRESS
+echo TOKEN_A_ID = $TOKEN_A_ID
+echo TOKEN_B_ID = $TOKEN_B_ID
+echo "--"
+echo "--"
+```
 ___
 
 You can go through all this steps just by doing:

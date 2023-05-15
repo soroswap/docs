@@ -1,6 +1,9 @@
 # The SoroswapFactory contract
 Creates one Liquidity Pool Token smart contract per unique token pair.
 
+In the next chapter we will see, step-by-step how to experiment with this contract using the soroban CLI.
+
+Here is the contract interface:
 ```rust
 
 pub trait SoroswapFactoryTrait{

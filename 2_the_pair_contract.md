@@ -1,7 +1,9 @@
 # The Pair Contract:
 The SoroswapPair Contract implements the token interface (hence, it  has the same functions that any Stellar Asset Contract) and it also has the specific functions for a liquidity pool to exist:
 
-Here is the contract interfact:
+In the next chapter we will see, step-by-step how to experiment with this contract using the soroban CLI.
+
+Here is the contract interface:
 ```rust
 pub trait SoroswapPairTrait{
     // Sets the token contract addresses for this pool

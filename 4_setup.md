@@ -22,8 +22,6 @@ This last container is important for developers that might be developing differe
 - `stellar/quickstart:soroban-dev@sha256:a057ec6f06c6702c005693f8265ed1261e901b153a754e97cf18b0962257e872`
 - `esteblock/soroban-preview:8`
 
-If you run `docker ps` you should see something like:
-
 3.- Enter to the `soroban-preview-8` docker container in order to run scripts inside:
 ```bash
 docker exec -it soroban-preview-8 bash
