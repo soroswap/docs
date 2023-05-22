@@ -19,6 +19,11 @@ In the following we analize every function/ line that can or cannot be included 
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
+Included
+```
+// emit PairCreated(token0, token1, pair, allPairs.length);
+        event::pair_created(&e, token_0, token_1, pair.clone(), get_all_pairs(&e).len());
+```
 
 - SafeMath
 - `using UQ112x112 for uint224;`
