@@ -15,15 +15,22 @@ In the following we analize every function/ line that can or cannot be included 
      uint amount1In,
      uint amount0Out,
      uint amount1Out,
-     address indexed to
+     address indexed to 
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
-Included
-```
-// emit PairCreated(token0, token1, pair, allPairs.length);
-        event::pair_created(&e, token_0, token_1, pair.clone(), get_all_pairs(&e).len());
-```
+As `Mint` already exist as an event in the SAC token interface, we will choose something else.
+Context: In Ethereum, the ERC20 does emit an `Transfer` event when minting a token:
+https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
+
+Also, `Mint` it's not the best name for this event, as the arguments are `amount0` and  `amount1`.
+A best name for this event is `Deposit`. Also because the user deposits amount0 units of token0 token, and amount1 units of token1 tokens.
+Also, we don't need to track again the minted tokens, as the `Mint` (LP units of LP tokens) it is already being emited.
+
+Conclusion: We will use `deposit` as a event.
+
+Current status: Being included in the code...
+
 
 - SafeMath
 - `using UQ112x112 for uint224;`
