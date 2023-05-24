@@ -5,7 +5,7 @@ However, from the first (0.0.1) version, there are a lot of functions, variables
 
 In the following we analize every function/ line that can or cannot be included in the Pair contract:
 
-- Events:
+## Events:
 ```javascript
  event Mint(address indexed sender, uint amount0, uint amount1);
  event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
@@ -19,7 +19,7 @@ In the following we analize every function/ line that can or cannot be included 
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
-As `Mint` already exist as an event in the SAC token interface, we will choose something else.
+a.- As `Mint` already exist as an event in the SAC token interface, we will choose something else.
 Context: In Ethereum, the ERC20 does emit an `Transfer` event when minting a token:
 https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
 
@@ -29,18 +29,47 @@ Also, we don't need to track again the minted tokens, as the `Mint` (LP units of
 
 Conclusion: We will use `deposit` as a event.
 
+b.- The same thing with `Burn`. We will use `withdraw`
+Also, in soroban there is no use of msg.sender, so the event implementation will be:
+events::withdraw(&e, to, out_a, out_b, to)
+why? To easily implement / transform Uniswap SDK's
+
+
 Current status: Being included in the code...
 
 
-- SafeMath
-- `using UQ112x112 for uint224;`
--  `uint public constant MINIMUM_LIQUIDITY = 10**3;`
-- `bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));`
--  `uint32  private blockTimestampLast; // uses single storage slot, accessible via getReserves`
-- `uint public price0CumulativeLast;`
-- `uint public price1CumulativeLast;`
-- `uint public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event`
-- Reentrancy Guard:
+## SafeMath
+In Solidity: The SafeMath library validates if an arithmetic operation would result in an integer overflow/underflow. If it would, the library throws an exception, effectively reverting the transaction.
+
+In Rust this should be OK with
+```
+[profile.release]
+overflow-checks = true
+```
+Also we have checked_add, and checked_mul.
+
+Hence, we will implement `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
+Check this test repo: https://github.com/esteblock/overflow-soroban
+
+However, as we are using i128, underflow won't happen... we will have negative numbers.
+We need to take further checks for this. Like this one:
+
+```rust
+fn put_reserve_a(e: &Env, amount: i128) {
+    if amount < 0 {
+        panic!("put_reserve_a: amount cannot be negative")
+    }
+    e.storage().set(&DataKey::Reserve0, &amount)
+}
+
+fn put_reserve_b(e: &Env, amount: i128) {
+    if amount < 0 {
+        panic!("put_reserve_a: amount cannot be negative")
+    }
+    e.storage().set(&DataKey::Reserve1, &amount)
+}
+```
+## Reentrancy Guards:   
 ```javascript
     uint private unlocked = 1;
     modifier lock() {
@@ -50,40 +79,20 @@ Current status: Being included in the code...
         unlocked = 1;
     }
 ```
-- Reserves Function:
-```javascript
- function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
-     _reserve0 = reserve0;
-     _reserve1 = reserve1;
-     _blockTimestampLast = blockTimestampLast;
- }
- ```
- - Safe Transfer:
- ```javascript
-   Safe transfer: Solidity Specific
- function _safeTransfer(address token, address to, uint value) private {
-     (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
-     require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
- }
- ```
- - Constructor:
- ```javascript
-    // initialize
-      Constructor. Can be constructed my any contract
-     constructor() public {
-         factory = msg.sender;
-     }
-     // called once by the factory at time of deployment
-     function initialize(address _token0, address _token1) external {
-         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
-         token0 = _token0;
-         token1 = _token1; 
-     }
 
- ```
 
-- Name of Pairs: This goes into Factory
+## Oracles:
+
+Are we going to use UniswapV2 or UniswapV3 Oracle function?
+
+- `uint public price0CumulativeLast;`
+- `uint public price1CumulativeLast;`
+- `using UQ112x112 for uint224;`
+-  `uint32  private blockTimestampLast; // uses single storage slot, accessible via getReserves`
+Implementing
+
 - Update Reserves:
+- `using UQ112x112 for uint224;`
 ```javascript
    // update reserves and, on the first call per block, price accumulators
     function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1) private {
@@ -102,6 +111,63 @@ Current status: Being included in the code...
     }
 
 ```
+## Reserves Function:
+```javascript
+ function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
+     _reserve0 = reserve0;
+     _reserve1 = reserve1;
+     _blockTimestampLast = blockTimestampLast;
+ }
+ ```
+ In Soroswap: Currently, this is implemented in `get_rsrvs`.
+ Will change the name to `get_reserves` and also return blockTimestampLast:
+ 
+ https://github.com/soroswap/core/commit/40cb8e59e5a9c06da055deed231d9703d57e950b
+
+
+
+
+ ## Name of Pairs
+
+```
+string public constant name = 'Uniswap V2';
+string public constant symbol = 'UNI-V2';
+```
+
+
+-  `uint public constant MINIMUM_LIQUIDITY = 10**3;`
+- ``
+
+- `uint public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event`
+
+ ## Safe Transfer
+ The `_safeTransfer` function is Solidity specific. No need to implement in Soroban
+ ```javascript
+ bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
+
+ function _safeTransfer(address token, address to, uint value) private {
+     (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
+     require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
+ }
+ ```
+
+ ## Constructor:
+ In Soroban the `constructor()` and `initialize()` functions are the same.
+ So no need to separate them.
+
+ ```javascript
+     constructor() public {
+         factory = msg.sender;
+     }
+     // called once by the factory at time of deployment
+     function initialize(address _token0, address _token1) external {
+         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
+         token0 = _token0;
+         token1 = _token1; 
+     }
+ ```
+
+
 - Mint Feee
 ```javascript
  // if fee is on, mint liquidity equivalent to 1/6th of the growth in sqrt(k)
@@ -217,9 +283,31 @@ Current status: Being included in the code...
     }
 
 ```
-- Skim
+## Skim
+From UniswapV2 Whitepaper:
+
+To protect against bespoke token implementations that can update the pair contract’s
+balance, and to more gracefully handle tokens whose total supply can be greater than 2**2112,
+Uniswap v2 has two bail-out functions: sync()and skim().
+
+sync() functions as a recovery mechanism in the case that a token asynchronously
+deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
+liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
+the reserves of the contract to the current balances, providing a somewhat graceful recovery
+from this situation.
+
+skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
+overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
+fail. skim() allows a user to withdraw the difference between the current balance of the
+pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
+
+
 ```javascript
-     // force balances to match reserves
+function sync() external lock {
+         _update(IERC20(token0).balanceOf(address(this)), IERC20(token1).balanceOf(address(this)), reserve0, reserve1);
+     }
+
+// force balances to match reserves
     function skim(address to) external lock {
          address _token0 = token0; // gas savings
          address _token1 = token1; // gas savings
@@ -228,10 +316,5 @@ Current status: Being included in the code...
     }
 
 ``` 
-- Sync
-```javascript
- function sync() external lock {
-         _update(IERC20(token0).balanceOf(address(this)), IERC20(token1).balanceOf(address(this)), reserve0, reserve1);
-     }
 
-```
+Implementation in Soroban: 
