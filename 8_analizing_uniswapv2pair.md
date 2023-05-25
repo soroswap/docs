@@ -35,7 +35,7 @@ events::withdraw(&e, to, out_a, out_b, to)
 why? To easily implement / transform Uniswap SDK's
 
 
-Current status: Being included in the code...
+Included in the code!
 
 
 ## SafeMath
@@ -69,6 +69,7 @@ fn put_reserve_b(e: &Env, amount: i128) {
     e.storage().set(&DataKey::Reserve1, &amount)
 }
 ```
+
 ## Reentrancy Guards:   
 ```javascript
     uint private unlocked = 1;
@@ -124,7 +125,7 @@ Implementing
  
  https://github.com/soroswap/core/commit/40cb8e59e5a9c06da055deed231d9703d57e950b
 
-
+Included in the code!
 
 
  ## Name of Pairs
@@ -133,43 +134,26 @@ Implementing
 string public constant name = 'Uniswap V2';
 string public constant symbol = 'UNI-V2';
 ```
+Implemented:
+```
+Bytes::from_slice(&e, b"Soroswap Pair Token"),
+Bytes::from_slice(&e, b"SOROSWAP-LP"),
+```
 
+Included in the code!
 
--  `uint public constant MINIMUM_LIQUIDITY = 10**3;`
-- ``
+## Protocol fee: Mint Fee
+Uniswap v2 includes a 0.05% protocol fee that can be turned on and off. If turned on,
+this fee would be sent to a feeTo address specified in the factory contract.
+Initially, feeTo is not set, and no fee is collected. A pre-specified address—feeToSetter—can
+call the setFeeTo function on the Uniswap v2 factory contract, setting feeTo to a different
+value. feeToSetter can also call the setFeeToSetter to change the feeToSetter address
+itself.
 
-- `uint public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event`
-
- ## Safe Transfer
- The `_safeTransfer` function is Solidity specific. No need to implement in Soroban
- ```javascript
- bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
-
- function _safeTransfer(address token, address to, uint value) private {
-     (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
-     require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
- }
- ```
-
- ## Constructor:
- In Soroban the `constructor()` and `initialize()` functions are the same.
- So no need to separate them.
-
- ```javascript
-     constructor() public {
-         factory = msg.sender;
-     }
-     // called once by the factory at time of deployment
-     function initialize(address _token0, address _token1) external {
-         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
-         token0 = _token0;
-         token1 = _token1; 
-     }
- ```
-
-
-- Mint Feee
 ```javascript
+uint public constant MINIMUM_LIQUIDITY = 10**3;
+uint public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event
+
  // if fee is on, mint liquidity equivalent to 1/6th of the growth in sqrt(k)
     function _mintFee(uint112 _reserve0, uint112 _reserve1) private returns (bool feeOn) {
         address feeTo = IUniswapV2Factory(factory).feeTo();
@@ -191,7 +175,7 @@ string public constant symbol = 'UNI-V2';
         }
     }
 ```
-- Mint (Deposit)
+## Mint (Deposit)
 ```javascript
 
  // this low-level function should be called from a contract which performs important safety checks
@@ -219,7 +203,7 @@ string public constant symbol = 'UNI-V2';
 }
 
 ```
-- Swap
+## Swap
 ```javascript
 
     // this low-level function should be called from a contract which performs important safety checks
@@ -254,7 +238,7 @@ string public constant symbol = 'UNI-V2';
     }
 
 ```
-- Burn (Withdraw)
+## Burn (Withdraw)
 ```javascript
 
     // this low-level function should be called from a contract which performs important safety checks
@@ -318,3 +302,33 @@ function sync() external lock {
 ``` 
 
 Implementation in Soroban: 
+
+
+
+ ## Safe Transfer
+ The `_safeTransfer` function is Solidity specific. No need to implement in Soroban
+ ```javascript
+ bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
+
+ function _safeTransfer(address token, address to, uint value) private {
+     (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
+     require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
+ }
+ ```
+
+ ## Constructor:
+ In Soroban the `constructor()` and `initialize()` functions are the same.
+ So no need to separate them.
+
+ ```javascript
+     constructor() public {
+         factory = msg.sender;
+     }
+     // called once by the factory at time of deployment
+     function initialize(address _token0, address _token1) external {
+         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
+         token0 = _token0;
+         token1 = _token1; 
+     }
+ ```
+
