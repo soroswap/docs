@@ -8,4 +8,5 @@
 * [4: Setup your environment.](4_setup.md)       
 * [5: Experiment the Pair Contract.](5_experiment_pair.md)
 * [6: Experiment the Factory Contract.](6_experiment_factory.md)
-* [7: Contracts in Futurenet.](7_contracts_in_futurenet.md)_
+* [7: Contracts in Futurenet.](7_contracts_in_futurenet.md)
+* [8: Analizing UniswapV2Pair.](8_analizing_uniswapv2pair.md)
