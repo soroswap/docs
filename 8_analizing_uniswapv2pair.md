@@ -5,7 +5,7 @@ However, from the first (0.0.1) version, there are a lot of functions, variables
 
 In the following we analize every function/ line that can or cannot be included in the Pair contract:
 
-## Events:
+## Events: Included!
 ```javascript
  event Mint(address indexed sender, uint amount0, uint amount1);
  event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
@@ -35,10 +35,10 @@ events::withdraw(&e, to, out_a, out_b, to)
 why? To easily implement / transform Uniswap SDK's
 
 
-Included in the code!
+**Included in the code!**
 
 
-## SafeMath
+## SafeMath: Included!
 In Solidity: The SafeMath library validates if an arithmetic operation would result in an integer overflow/underflow. If it would, the library throws an exception, effectively reverting the transaction.
 
 In Rust this should be OK with
@@ -46,27 +46,21 @@ In Rust this should be OK with
 [profile.release]
 overflow-checks = true
 ```
-Also we have checked_add, and checked_mul.
+Also we have `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
 
-Hence, we will implement `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
-Check this test repo: https://github.com/esteblock/overflow-soroban
+You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
 
+Conclusion: Soroswap will implement all of the tecniques above
+
+___
 However, as we are using i128, underflow won't happen... we will have negative numbers.
-We need to take further checks for this. Like this one:
-
+Hence, this kind of checks there put in place when needed:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
     if amount < 0 {
         panic!("put_reserve_a: amount cannot be negative")
     }
     e.storage().set(&DataKey::Reserve0, &amount)
-}
-
-fn put_reserve_b(e: &Env, amount: i128) {
-    if amount < 0 {
-        panic!("put_reserve_a: amount cannot be negative")
-    }
-    e.storage().set(&DataKey::Reserve1, &amount)
 }
 ```
 
@@ -80,7 +74,6 @@ fn put_reserve_b(e: &Env, amount: i128) {
         unlocked = 1;
     }
 ```
-
 
 ## Oracles:
 
