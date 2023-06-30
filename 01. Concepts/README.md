@@ -1,2 +1,0 @@
-# Concepts
-This is concepts

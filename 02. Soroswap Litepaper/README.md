@@ -1,2 +1,0 @@
-# SSW
-This is SSW
