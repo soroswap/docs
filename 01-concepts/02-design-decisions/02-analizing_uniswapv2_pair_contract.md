@@ -1,8 +1,8 @@
 # Comparison of Soroswap and UniswapV2 Pair Contracts: Part 1
+The sources for the following 2 chapters are:
 
-### Sources for following 2 chapters:
-https://blog.uniswap.org/uniswap-v2  
-https://rskswap.com/audit.html
+- <https://blog.uniswap.org/uniswap-v2>  
+- <https://rskswap.com/audit.html>
 
 The Pair contract written in rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidity.
 However, from the first (0.0.1) version, there are a lot of functions, variables, events and others, that are not currently implemented in SoroswapPairV0.0.1.
