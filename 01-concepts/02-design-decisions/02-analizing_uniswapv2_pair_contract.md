@@ -7,11 +7,11 @@ In this section we are going to compare the Soroswap pair contract with the Unis
 why the Soroswap pair does implement or does not implement certain features.
 
 
-## Events
-
-The UniswapV2 pair contract has 4 events: Mint, Burn, Swap and Sync.
 
 ## Events: Included!
+The UniswapV2 pair contract has 4 events: Mint, Burn, Swap and Sync.
+The corresponding events in the Soroswap pair contract are: deposit, withdraw, swap and sync.
+
 ```javascript
  event Mint(address indexed sender, uint amount0, uint amount1);
  event Burn(address indexed sender, uint amount0, uint amount1, address indexed to);
@@ -44,4 +44,37 @@ why? To easily implement / transform Uniswap SDK's
 c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.
 d.- Sync: Is used to update the reserves after each change, we call it sync in Rust.
 
+**Included in the code!**
+
+___
+___
+
+
+## SafeMath: Included!
+In Solidity: The SafeMath library validates if an arithmetic operation would result in an integer overflow/underflow. If it would, the library throws an exception, effectively reverting the transaction.
+
+In Rust we can throw a panic by activating the [overflow check](https://doc.rust-lang.org/rustc/codegen-options/index.html#overflow-checks) flag with
+```
+[profile.release]
+overflow-checks = true
+```
+when compilling the code.
+
+Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
+
+You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
+
+Conclusion: Soroswap will implement all of the tecniques above
+
+___
+However, as we are using i128, that is signed integers, underflow won't happen... instead we will have negative numbers.
+Hence, this kind of checks there put in place when needed:
+```rust
+fn put_reserve_a(e: &Env, amount: i128) {
+    if amount < 0 {
+        panic!("put_reserve_a: amount cannot be negative")
+    }
+    e.storage().set(&DataKey::Reserve0, &amount)
+}
+```
 **Included in the code!**
