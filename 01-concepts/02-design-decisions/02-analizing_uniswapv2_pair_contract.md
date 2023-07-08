@@ -243,5 +243,72 @@ fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
     fee_on
 }
 ```
-where we can see that we used the checked_add, checked_sub, checked_mult and checked_div functions to avoid overflow.
+where we can see that we used the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to avoid overflow.
 
+Included in the code!
+
+___
+___
+
+## Mint (Deposit)
+
+In Uniswapv2: The mint function is called when a user adds liquidity to the pool. This function creates pool tokens. 
+
+In Uniswap v2, the seller sends the asset to the core contract before calling the swap
+function. Then, the contract measures how much of the asset it has received, by comparing
+the last recorded balance to its current balance.
+This means the core contract is agnostic to the way in which the trader transfers the asset. Instead of transferFrom, it could be a
+meta transaction, or any other future mechanism for authorizing the transfer of ERC-20s.
+
+```javascript
+
+ // this low-level function should be called from a contract which performs important safety checks
+ function mint(address to) external lock returns (uint liquidity) {
+    (uint112 _reserve0, uint112 _reserve1,) = getReserves(); // gas savings
+    uint balance0 = IERC20(token0).balanceOf(address(this));
+    uint balance1 = IERC20(token1).balanceOf(address(this));
+    uint amount0 = balance0.sub(_reserve0);
+    uint amount1 = balance1.sub(_reserve1);
+
+    bool feeOn = _mintFee(_reserve0, _reserve1);
+    uint _totalSupply = totalSupply; // gas savings, must be defined here since totalSupply can update in _mintFee
+    if (_totalSupply == 0) {
+        liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
+       _mint(address(0), MINIMUM_LIQUIDITY); // permanently lock the first MINIMUM_LIQUIDITY tokens
+    } else {
+        liquidity = Math.min(amount0.mul(_totalSupply) / _reserve0, amount1.mul(_totalSupply) / _reserve1);
+    }
+    require(liquidity > 0, 'UniswapV2: INSUFFICIENT_LIQUIDITY_MINTED');
+    _mint(to, liquidity);
+
+    _update(balance0, balance1, _reserve0, _reserve1);
+    if (feeOn) kLast = uint(reserve0).mul(reserve1); // reserve0 and reserve1 are up-to-date
+    emit Mint(msg.sender, amount0, amount1);
+}
+
+```
+**Comments for Soroswap:**
+
+In Soroswap this function is called `deposit`. In order not to make confusions with the `mint` function of the token token interface we will continue using `deposit` as the function name. 
+
+
+ - This function (in Uniswapv2) uses reentrancy guard. Currently in Soroban it is not possible to do reentrancy (for now)... So for now, reentrancy guard it is not implemented.
+
+- On UniswapV2 this function asumes that the tokens where already sent by the user... which in fact it is done by the Router contract... and it is with the Router contract that the user needs to approve its tokens to be spent. In UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing the `mint` function... This design it's not necesary in Soroban (read <https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum>) because the tokens can be sent with `from.require_auth();;`... which it is checked in the token contract itself...... 
+
+
+The problem here is... what happens if there is a token that does not implements `require_auth`??..
+In that case we need can follow the Uniswap design and implement a `Router` with a `addLiquidity_with_transfer_from` and a normal `addLiquidity` with `require_auth` ... in order to bypass those cases where tokens did not implement `require_auth`.
+
+As for now, the objective is just to implement UniswapV2 Pair and Factory contracts, we will leave as it is now :
+```rust
+ fn deposit(e: Env, to: Address, desired_a: i128, min_a: i128, desired_b: i128, min_b: i128) {
+        to.require_auth();
+        ...
+        let amounts = get_deposit_amounts(desired_a, min_a, desired_b, min_b, reserve_0, reserve_1);
+        ...
+        token_a_client.transfer(&to, &e.current_contract_address(), &amounts.0);
+        token_b_client.transfer(&to, &e.current_contract_address(), &amounts.1);
+```
+
+In the next iteration, when Periphery contracts will be implemented (see <https://github.com/Uniswap/v2-periphery>) this function will change and will require the tokens to be sent before executing the  `deposit` function.
