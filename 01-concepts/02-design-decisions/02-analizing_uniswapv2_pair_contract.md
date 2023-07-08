@@ -40,7 +40,7 @@ Also, in soroban there is no use of msg.sender, so the event implementation will
 events::withdraw(&e, to, out_a, out_b, to)
 why? To easily implement / transform Uniswap SDK's
 
-TODO!
+[]: # (TODO: review c and d)
 c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.
 d.- Sync: Is used to update the reserves after each change, we call it sync in Rust.
 
