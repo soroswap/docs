@@ -147,3 +147,101 @@ fn get_block_timestamp_last(e: &Env) -> u64 {
 
 Included in the code!
 
+ ## Name of Pairs: included!
+
+In UniswapV2:
+``` javascript
+string public constant name = 'Uniswap V2';
+string public constant symbol = 'UNI-V2';
+```
+
+Implemented in Soroswap:
+
+``` rust
+Bytes::from_slice(&e, b"Soroswap Pair Token"),
+Bytes::from_slice(&e, b"SOROSWAP-LP"),
+```
+
+Included in the code!
+
+___
+___
+
+## Protocol fee: Mint Fee: included!
+Uniswap v2 includes a 0.05% protocol fee that can be turned on and off. If turned on,
+this fee would be sent to a feeTo address specified in the factory contract.
+Initially, feeTo is not set, and no fee is collected. A pre-specified address—feeToSetter—can
+call the setFeeTo function on the Uniswap v2 factory contract, setting feeTo to a different
+value. feeToSetter can also call the setFeeToSetter to change the feeToSetter address
+itself.
+
+```javascript
+uint public constant MINIMUM_LIQUIDITY = 10**3;
+uint public kLast; // reserve0 * reserve1, as of immediately after the most recent liquidity event
+
+ // if fee is on, mint liquidity equivalent to 1/6th of the growth in sqrt(k)
+    function _mintFee(uint112 _reserve0, uint112 _reserve1) private returns (bool feeOn) {
+        address feeTo = IUniswapV2Factory(factory).feeTo();
+        feeOn = feeTo != address(0);
+        uint _kLast = kLast; // gas savings
+        if (feeOn) {
+            if (_kLast != 0) {
+                uint rootK = Math.sqrt(uint(_reserve0).mul(_reserve1));
+                uint rootKLast = Math.sqrt(_kLast);
+                if (rootK > rootKLast) {
+                    uint numerator = totalSupply.mul(rootK.sub(rootKLast));
+                    uint denominator = rootK.mul(5).add(rootKLast);
+                    uint liquidity = numerator / denominator;
+                    if (liquidity > 0) _mint(feeTo, liquidity);
+                }
+            }
+        } else if (_kLast != 0) {
+            kLast = 0;
+        }
+    }
+```
+
+The equivalent code in Soroswap is:
+
+
+```rust
+fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
+    let factory = get_factory(&e);
+    let factory_client = FactoryClient::new(&e, &factory);
+    //  address feeTo = IUniswapV2Factory(factory).feeTo();
+    //  feeOn = feeTo != address(0);
+    let fee_on = factory_client.fees_enabled();
+    let klast = get_klast(&e);
+     
+    if fee_on{
+        let fee_to: Address = factory_client.fee_to();
+
+        if klast != 0 {
+            let root_k = (reserve_0.checked_mul(reserve_1).unwrap()).sqrt();
+            let root_klast = (klast).sqrt();
+            if root_k > root_klast{
+                // uint numerator = totalSupply.mul(rootK.sub(rootKLast));
+                let total_shares = get_total_shares(&e);
+                let numerator = total_shares.checked_mul(root_k.checked_sub(root_klast).unwrap()).unwrap();
+        
+                // uint denominator = rootK.mul(5).add(rootKLast);
+                let denominator = root_k.checked_mul(5_i128).unwrap().checked_add(root_klast).unwrap();
+                // uint liquidity = numerator / denominator;
+
+                let liquidity_pool_shares_fees = numerator.checked_div(denominator).unwrap();
+
+                // if (liquidity > 0) _mint(feeTo, liquidity);
+                if liquidity_pool_shares_fees > 0 {
+                    mint_shares(&e, fee_to,    liquidity_pool_shares_fees);
+                }
+            }
+        }
+    } else if klast != 0{
+        put_klast(&e, 0);
+    }
+
+    fee_on
+}
+```
+where we can see that we used the checked_add, checked_sub, checked_mult and checked_div functions to avoid overflow.
+
