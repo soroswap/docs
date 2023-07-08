@@ -27,7 +27,7 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
 ```
 a.- As `Mint` already exist as an event in the SAC token interface, we will choose something else.
 Context: In Ethereum, the ERC20 does emit an `Transfer` event when minting a token:
-https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol
+<https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>
 
 Also, `Mint` it's not the best name for this event, as the arguments are `amount0` and  `amount1`.
 A best name for this event is `Deposit`. Also because the user deposits amount0 units of token0 token, and amount1 units of token1 tokens.
@@ -40,8 +40,9 @@ Also, in soroban there is no use of msg.sender, so the event implementation will
 events::withdraw(&e, to, out_a, out_b, to)
 why? To easily implement / transform Uniswap SDK's
 
-[]: # (TODO: review c and d)
-c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.
+[]: # (TODO: review c and d)  
+
+c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.  
 d.- Sync: Is used to update the reserves after each change, we call it sync in Rust.
 
 **Included in the code!**
@@ -67,7 +68,7 @@ You can check and test these tecniques in the following repo: https://github.com
 Conclusion: Soroswap will implement all of the tecniques above
 
 ___
-However, as we are using i128, that is signed integers, underflow won't happen... instead we will have negative numbers.
+However, as we are using i128, that is a signed integer type, underflow won't happen... instead we will have negative numbers.
 Hence, this kind of checks there put in place when needed:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
@@ -78,3 +79,71 @@ fn put_reserve_a(e: &Env, amount: i128) {
 }
 ```
 **Included in the code!**
+
+___
+___
+
+## Reentrancy Guards: Not implemented for the moment
+```javascript
+    uint private unlocked = 1;
+    modifier lock() {
+        require(unlocked == 1, 'UniswapV2: LOCKED');
+        unlocked = 0;
+        _;
+        unlocked = 1;
+    }
+```
+
+Currently, reentrancy it's not allowed:
+Check here: <https://github.com/esteblock/reentrancy-soroban>  
+And here: <https://discord.com/channels/897514728459468821/993874836336152576>  
+
+We will need to come back to this later if reentrancy will be allowed
+
+**status: Not implemented for the moment**
+
+## Oracles  
+
+To be written
+
+## Reserves Function: included!
+In UniswapV2: The reserves function returns the reserves of token0 and token1, and the last block timestamp.
+```javascript
+ function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
+     _reserve0 = reserve0;
+     _reserve1 = reserve1;
+     _blockTimestampLast = blockTimestampLast;
+ }
+ ```
+
+In Soroswap:  this is implemented in `get_reserves`.
+
+
+ ```rust
+   fn get_reserves(e: Env) -> (i128, i128, i128) {
+        (get_reserve_a(&e), get_reserve_b(&e), get_block_timestamp_last(&e))
+    }
+
+fn get_reserve_0(e: &Env) -> i128 {
+    e.storage().get_unchecked(&DataKey::Reserve0).unwrap()
+}
+
+fn get_reserve_1(e: &Env) -> i128 {
+    e.storage().get_unchecked(&DataKey::Reserve1).unwrap()
+}
+ ```
+The `get_block_timestamp_last` function returns the last block timestamp, or 0 if does not exist.
+ ```rust
+fn get_block_timestamp_last(e: &Env) -> u64 {
+ 
+    if let Some(block_timestamp_last) = e.storage().get(&DataKey::BlockTimestampLast) {
+        block_timestamp_last.unwrap()
+    } else {
+        0
+    }
+}
+ ```
+ 
+
+Included in the code!
+
