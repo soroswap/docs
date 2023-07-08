@@ -1,5 +1,5 @@
 # Comparison of Soroswap and UniswapV2 Pair Contracts: Part 1
-The sources for the following 2 chapters are:
+The sources for the following 2 sections are:
 
 - <https://blog.uniswap.org/uniswap-v2>  
 - <https://rskswap.com/audit.html>
