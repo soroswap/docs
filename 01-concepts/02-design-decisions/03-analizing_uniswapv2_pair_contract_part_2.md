@@ -27,7 +27,11 @@ ___
 
 ## Protocol Fee Mechanism: Mint Fee Implemented!
 
-Uniswap V2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the Uniswap V2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its own address via the `setFeeToSetter` function.
+Uniswap V2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
+an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. 
+There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the Uniswap V2 
+factory contract, altering the `feeTo` value. `feeToSetter` can also change its own address via the `setFeeToSetter` 
+function.
 
 
 ```javascript
@@ -97,7 +101,8 @@ fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
     fee_on
 }
 ```
-In this code, we have utilized the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to prevent potential overflows.
+In this code, we have utilized the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to prevent 
+potential overflows.
 
 **This functionality has been successfully integrated into the code!**
 ___
@@ -152,7 +157,8 @@ ___
 ___
 
  ## Safe Transfer: not needed
- The `_safeTransfer` function is Solidity specific. No need to implement in Soroban
+ The `_safeTransfer` function is specific to Solidity and isn't necessary to be implemented in Soroban.
+
  ```javascript
  bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
 
@@ -165,8 +171,9 @@ ___
  ___
 
  ## Constructor: not needed
- In Soroban the `constructor()` and `initialize()` functions are the same.
- So no need to separate them.
+
+In Soroban, the ``constructor()` and `initialize()` functions are the same, thus there's no need to separate them.
+
 
  ```javascript
      constructor() public {
