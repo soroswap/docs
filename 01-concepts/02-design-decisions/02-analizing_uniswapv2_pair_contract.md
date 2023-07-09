@@ -154,21 +154,21 @@ ___
 
  ## Name of Pairs: included!
 
-In UniswapV2:
+In UniswapV2, the name and symbol of the token pairs are designated as follows:
+
 ``` javascript
 string public constant name = 'Uniswap V2';
 string public constant symbol = 'UNI-V2';
 ```
 
-Implemented in Soroswap:
+Soroswap has similarly implemented the assignment of names and symbols for token pairs:
 
 ``` rust
 Bytes::from_slice(&e, b"Soroswap Pair Token"),
 Bytes::from_slice(&e, b"SOROSWAP-LP"),
 ```
 
-Included in the code!
-
+**This feature has been seamlessly integrated into the Soroswap codebase!**
 ___
 ___
 
