@@ -107,12 +107,86 @@ potential overflows.
 **This functionality has been successfully integrated into the code!**
 ___
 ___
-## Oracles  
+## Oracles:  
 <!---
 TODO: see how is implement in our codebase
+THIS SECTION HAS NOT BEEN REVIEWED YET
 --->
-To be written
 
+Are we going to use UniswapV2 or UniswapV3 Oracle function?
+
+- `using UQ112x112 for uint224;`
+This is done for storing floating points.
+In Soroban we can use a Custom Type https://soroban.stellar.org/docs/how-to-guides/custom-types
+
+In Soroswap we have created the `UQ64X64`: https://github.com/esteblock/fractions-soroban
+
+
+- Update Reserves:
+```javascript
+using UQ112x112 for uint224;
+...
+uint112 private reserve0;           // uses single storage slot, accessible via getReserves
+uint112 private reserve1;           // uses single storage slot, accessible via getReserves
+uint public price0CumulativeLast;
+uint public price1CumulativeLast;
+uint32  private blockTimestampLast; // uses single storage slot, accessible via getReserves
+...
+// update reserves and, on the first call per block, price accumulators
+function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reserve1) private {
+    require(balance0 <= uint112(-1) && balance1 <= uint112(-1), 'UniswapV2: OVERFLOW');
+    uint32 blockTimestamp = uint32(block.timestamp % 2**32);
+    uint32 timeElapsed = blockTimestamp - blockTimestampLast; // overflow is desired
+    if (timeElapsed > 0 && _reserve0 != 0 && _reserve1 != 0) {
+        // * never overflows, and + overflow is desired
+        price0CumulativeLast += uint(UQ112x112.encode(_reserve1).uqdiv(_reserve0)) * timeElapsed;
+        price1CumulativeLast += uint(UQ112x112.encode(_reserve0).uqdiv(_reserve1)) * timeElapsed;
+    }
+    reserve0 = uint112(balance0);
+    reserve1 = uint112(balance1);
+    blockTimestampLast = blockTimestamp;
+    emit Sync(reserve0, reserve1);
+}
+
+``` 
+Here a lot of things are happening:
+- Balances need to fit within the uint112 data type in order to be encoded into UQ112x112 and undergo division operations.
+**For Soroswap: ** Balances will need to git within a u64 type to be encoded into UQ64X64
+
+- Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves os 112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
+**For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
+
+
+- The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^32 - 1 seconds (approximately 136 years).
+**For Soroswap: ** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
+
+- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each, because they hold a sum and multitplications of UQ112X112.
+**For Soroswap:** price0CumulativeLast will need to be u128
+
+
+- The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of token A/token B and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
+**For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-types..
+
+Following Uniswap official audit comments:
+https://rskswap.com/audit.html#orgc9b3190
+In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a revert in _update would block trades, and LP entry and exit). 
+
+It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a simulation:
+```
+Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~8 months until overflow...
+
+Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price accumulator overflow is a realistic possibility for the assets involved. 
+```
+
+**What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
+
+- The reserves are stored using 112 bits for each token.
+**For Soroswap:** We will use u64
+
+**Implemented**
+
+___
+___
 ___
 ___
 ## Skim
