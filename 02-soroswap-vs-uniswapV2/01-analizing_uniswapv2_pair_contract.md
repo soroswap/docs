@@ -506,8 +506,7 @@ fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -
         event::withdraw(&e, to.clone(), user_sent_shares, out_0, out_1, to);
       
         (out_0, out_1)
-    } fn withdraw
-```
+    }
 
 ___
 ___
