@@ -81,5 +81,5 @@
           path: /04-interact-with-contracts/02-tutorials/6_experiment_factory.md
         - title: Contracts in Futurenet
           path: /04-interact-with-contracts/02-tutorials/7_contracts_in_futurenet.md
-    - title: Analizing UniswapV2Facory
-      path: /04-interact-with-contracts/9_analizing_uniswapV2Facory.md
+    - title: Analizing UniswapV2Factory
+      path: /04-interact-with-contracts/9_analizing_uniswapV2Factory.md
