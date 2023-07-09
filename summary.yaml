@@ -1,3 +1,6 @@
+- title: README
+  path: /README.md
+
 - title: Concepts
   path: /01-concepts/README.md
   sections:
@@ -43,6 +46,7 @@
           path: /01-concepts/04-advanced-topics/05-math.md
         - title: Research
           path: /01-concepts/04-advanced-topics/06-research.md
+
 - title: Soroswap Vs UniswapV2
   path: /02-soroswap-vs-uniswapV2/README.md
   sections:
@@ -50,8 +54,10 @@
       path: /02-soroswap-vs-uniswapV2/01-analizing_uniswapv2_pair_contract.md
     - title: Analizing Uniswapv2 Pair Contract Part 2
       path: /02-soroswap-vs-uniswapV2/02-analizing_uniswapv2_pair_contract_part_2.md
+
 - title: Soroswap Litepaper
   path: /03-soroswap-litepaper/README.md
+
 - title: Interact With Contracts
   path: /04-interact-with-contracts/README.md
   sections:
@@ -75,7 +81,5 @@
           path: /04-interact-with-contracts/02-tutorials/6_experiment_factory.md
         - title: Contracts in Futurenet
           path: /04-interact-with-contracts/02-tutorials/7_contracts_in_futurenet.md
-    - title: Analizing Uniswapv2pair
-      path: /04-interact-with-contracts/8_analizing_uniswapv2pair.md
     - title: Analizing UniswapV2Facory
       path: /04-interact-with-contracts/9_analizing_uniswapV2Facory.md
