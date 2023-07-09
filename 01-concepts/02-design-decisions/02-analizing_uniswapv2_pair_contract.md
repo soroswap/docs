@@ -4,10 +4,10 @@ The sources for the following 2 sections are:
 - <https://blog.uniswap.org/uniswap-v2>  
 - <https://rskswap.com/audit.html>
 
-The Pair contract written in rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidity.
+The Pair contract written in Rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidity.
 However, from the first (0.0.1) version, there are a lot of functions, variables, events and others, that are not currently implemented in SoroswapPairV0.0.1.
 
-In this section we are going to compare the Soroswap pair contract with the UniswapV2 pair contract. We will use the UniswapV2 pair contract as a reference point and argument about
+In the next two sections we are going to compare the Soroswap pair contract with the UniswapV2 pair contract. We will use the UniswapV2 pair contract as a reference point and argument about
 why the Soroswap pair does implement or does not implement certain features.
 
 
@@ -34,20 +34,50 @@ Context: In Ethereum, the ERC20 does emit an `Transfer` event when minting a tok
 <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>
 
 Also, `Mint` it's not the best name for this event, as the arguments are `amount0` and  `amount1`.
-A best name for this event is `Deposit`. Also because the user deposits amount0 units of token0 token, and amount1 units of token1 tokens.
+A best name for this event is `deposit`. Also because the user deposits amount0 units of token0 token, and amount1 units of token1 tokens.
 Also, we don't need to track again the minted tokens, as the `Mint` (LP units of LP tokens) it is already being emited.
 
 Conclusion: We will use `deposit` as a event.
 
 b.- The same thing with `Burn`. We will use `withdraw`
 Also, in soroban there is no use of msg.sender, so the event implementation will be:
-events::withdraw(&e, to, out_a, out_b, to)
-why? To easily implement / transform Uniswap SDK's
 
-[]: # (TODO: review c and d)  
+```rust
+events::withdraw(&e, to, out_a, out_b, to)
+```
+why? To easily implement / transform Uniswap SDK's
+<!---
+review this
+see in the code how is implemented, appears to be
+different
+
+-->
+
 
 c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.  
+```rust
+pub(crate) fn swap(
+    e: &Env,
+    sender: Address,
+    amount_0_in: i128,
+    amount_1_in: i128,
+    amount_0_out: i128,
+    amount_1_out: i128,
+    to: Address,
+) {
+    let topics = (PAIR, Symbol::new(e, "swap"), sender);
+    e.events().publish(topics, (amount_0_in, amount_1_in, amount_0_out,amount_1_out,  to));
+}
+```
+
 d.- Sync: Is used to update the reserves after each change, we call it sync in Rust.
+
+```rust
+pub(crate) fn sync(e: &Env, reserve_0: u64, reserve_1: u64) {
+    let topics = (PAIR, Symbol::new(e, "sync"));
+    e.events().publish(topics, (reserve_0, reserve_1));
+}
+```
 
 **Included in the code!**
 
@@ -69,11 +99,11 @@ Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div`
 
 You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
 
-Conclusion: Soroswap will implement all of the tecniques above
+Conclusion: Soroswap will avoid overflows by the tecniques above.
 
 ___
 However, as we are using i128, that is a signed integer type, underflow won't happen... instead we will have negative numbers.
-Hence, this kind of checks there put in place when needed:
+Hence, this kind of checks are put in place when needed:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
     if amount < 0 {
@@ -88,7 +118,7 @@ ___
 ___
 
 
-## Reserves Function: included!
+        ## Reserves Function: included!
 In UniswapV2: The reserves function returns the reserves of token0 and token1, and the last block timestamp.
 ```javascript
  function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
