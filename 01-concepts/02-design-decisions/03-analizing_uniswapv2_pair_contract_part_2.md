@@ -120,7 +120,7 @@ TODO: see how is implement in our codebase
 From UniswapV2 Whitepaper:
 
 To protect against bespoke token implementations that can update the pair contract’s
-balance, and to more gracefully handle tokens whose total supply can be greater than 2**2112,
+balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
 Uniswap v2 has two bail-out functions: sync()and skim().
 
 sync() functions as a recovery mechanism in the case that a token asynchronously
@@ -151,6 +151,16 @@ function sync() external lock {
 ``` 
 
 Implementation in Soroban: 
+
+```rust
+  // force balances to match reserves
+    fn skim(e: Env, to: Address) {
+        let (balance_0, balance_1) = (get_balance_0(&e), get_balance_1(&e));
+        let (reserve_0, reserve_1) = (get_reserve_0(&e), get_reserve_1(&e));
+        transfer_token_0_from_pair(&e, to.clone(), balance_0.checked_sub(reserve_0).unwrap());
+        transfer_token_1_from_pair(&e, to, balance_1.checked_sub(reserve_1).unwrap());
+    }
+```
 
 
 ___
