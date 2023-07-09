@@ -32,8 +32,7 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
 a.-  Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, 
-Ethereum's ERC20 emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-
-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
+Ethereum's ERC20 emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
 
 Mint may not be the most descriptive name for this 
 event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of 
@@ -94,16 +93,16 @@ Should such a situation arise, the library throws an exception, which effectivel
 In Rust, we can achieve similar functionality by activating the overflow check flag with the following code during the 
 compilation process:
 
-In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/
-codegen-options/index.html#overflow-checks) flag during the compilation process with the following code:
+In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) 
+
+flag during the compilation process with the following code:
 ```
 [profile.release]
 overflow-checks = true
 ```
 
 Additionally, we use an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
-checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/
-esteblock/overflow-soroban/)
+checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
 
 Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
 
@@ -197,13 +196,10 @@ ___
 ## Mint (Deposit)
 
 In UniswapV2, the mint function is invoked when a user adds liquidity to the pool, resulting in the creation of pool 
-tokens. Prior to 
-calling the swap function, the seller transfers the asset to the core contract. The contract then measures the received 
-asset quantity by 
-comparing the last recorded balance with its current balance. This approach makes the core contract agnostic to how the 
-trader transfers 
-the asset. Instead of transferFrom, a meta transaction or any other future mechanism for authorizing the transfer of 
-ERC-20s can be used.
+tokens. Prior to calling the swap function, the seller transfers the asset to the core contract. The contract then 
+measures the received asset quantity by comparing the last recorded balance with its current balance. This approach 
+makes the core contract agnostic to how the trader transfers the asset. Instead of transferFrom, a meta transaction or 
+any other future mechanism for authorizing the transfer of ERC-20s can be used.
 
 
 ```javascript
@@ -233,29 +229,25 @@ ERC-20s can be used.
 }
 
 ```
-**Comments for Soroswap:**
+### Comments for Soroswap implementation:
 
-In Soroswap this function is called `deposit`. In order not to make confusions with the `mint` function of the token 
-token interface we will continue using `deposit` as the function name. 
+- The equivalent function in Soroswap is named deposit. To avoid confusion with the mint function of the token 
+interface, we have opted to keep deposit as the function name.
 
+ - This function in UniswapV2 employs a reentrancy guard. Since reentrancy is not currently possible in Soroban, we 
+have not implemented this guard.
 
- - This function (in Uniswapv2) uses reentrancy guard. Currently in Soroban it is not possible to do reentrancy (for 
-now)... So for now, reentrancy guard it is not implemented.
+- In UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing 
+the mint function.
+   This design isn't necessary in Soroban (read <https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum>) 
+   because tokens can be sent using from.require_auth();, which is checked in the token contract itself. 
 
-- On UniswapV2 this function asumes that the tokens where already sent by the user... which in fact it is done by the 
-Router contract... and it is with the Router contract that the user needs to approve its tokens to be spent. In 
-UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing the `
-mint` function... This design it's not necesary in Soroban (read <https://stellar.org/developers-blog/sorobans-
-technical-design-decisions-learnings-from-ethereum>) because the tokens can be sent with `from.require_auth();;`... 
-which it is checked in the token contract itself...... 
+- However, we need to consider tokens that do not implement require_auth. In such cases, we can follow Uniswap's design 
+and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard `addLiquidity` with `require_auth`.
 
+- For now, our objective is simply to implement the UniswapV2 Pair and Factory contracts, so we'll maintain the current
+ design:
 
-The problem here is... what happens if there is a token that does not implements `require_auth`??..
-In that case we need can follow the Uniswap design and implement a `Router` with a `addLiquidity_with_transfer_from` 
-and a normal `addLiquidity` with `require_auth` ... in order to bypass those cases where tokens did not implement `
-require_auth`.
-
-As for now, the objective is just to implement UniswapV2 Pair and Factory contracts, we will leave as it is now :
 ```rust
  fn deposit(e: Env, to: Address, desired_a: i128, min_a: i128, desired_b: i128, min_b: i128) {
         to.require_auth();
@@ -269,27 +261,16 @@ As for now, the objective is just to implement UniswapV2 Pair and Factory contra
 In the next iteration, when Periphery contracts will be implemented (see <https://github.com/Uniswap/v2-periphery>) 
 this function will change and will require the tokens to be sent before executing the  `deposit` function.
 
-- Implement `bool feeOn = _mintFee(_reserve0, _reserve1);` DONE
-- `uint _totalSupply = totalSupply;` in Soroban token interface there is no such `totalSupply`, hence we implement a `
-get_total_shares` and a `put_total_shares` function.
-- 
-- UniswapV2Pair copares whether ther totalSupply==0 in order to send the "first" LP with sqrt(x*y), this is because 
-UniswapV2Pair mints a MINIMUM_LIQUIDITY to the zero address in order to permanently lock it forever. The purpose of 
-locking the MinLiq tokens is to establish a lower bound for the liquidity in the pool. This ensures that there is 
-always some level of liquidity available, preventing scenarios where liquidity providers could fully drain a pool and 
-leave it with no liquidity.
-- 
-Uniswap takes the minimum liquidity as 1e-15 pool shares that are 1000 times the minimum quantity of pool shares (in 
-Ethereum, UniswapV2LP tokens have 18 decimals, hence 1 token unit represent 1e-18)...
-In the stellar/soroban-examples version of the liquidity_pool contract, this minimum liquidity is not implemented. 
+-  We've implemented bool feeOn = _mintFee(_reserve0, _reserve1);.
+-  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `put_total_shares` function.
+- UniswapV2Pair compares whether `totalSupply == 0` to send the "first" LP with `sqrt(x*y)`, because it mints a `MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
 
-To do something similar in Soroswap, we also mint 1000 times the minimum quantity of tokens, by also minting 10**3 as 
-minimum liquidity. As Stellar classic asset have 7 decimals, Soroswap will also have 7 decimals (at least for this 
-first version). This means that this minimum liquidity whould represent 1e-4 pool shares.
+  
+Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the smallest possible unit of pool shares. To illustrate, UniswapV2LP tokens operate with 18 decimal places, meaning one token unit corresponds to 1e-18.
 
-```
-uint public constant MINIMUM_LIQUIDITY = 10**3;
-```
+However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
+
+Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the minimum liquidity. In line with the traditional Stellar assets which have 7 decimals, Soroswap also uses 7 decimal places for this initial version. As such, this minimum liquidity symbolizes 1e-4 of the total pool shares.
 ___
 ___
 
