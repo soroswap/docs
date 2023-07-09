@@ -281,6 +281,12 @@ places for this initial version. As such, this minimum liquidity symbolizes 1e-4
 ___
 ___
 
+
+<!---
+TODO:
+review swap and burn
+--->
+
 ## Swap
 ```javascript
 
