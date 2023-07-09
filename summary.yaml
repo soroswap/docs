@@ -52,7 +52,31 @@
       path: /02-soroswap-vs-uniswapV2/02-analizing_uniswapv2_pair_contract_part_2.md
 - title: Soroswap Litepaper
   path: /03-soroswap-litepaper/README.md
+
 - title: Interact With Contracts
   path: /04-interact-with-contracts/README.md
   sections:
-    - title
+    - title: Concepts
+      path: /04-interact-with-contracts/01-concepts/README.MD
+      sections:
+        - title: Introduction and Motivation
+          path: /04-interact-with-contracts/01-concepts/1_introduction_and_motivation.md
+        - title: The Pair Contract
+          path: /04-interact-with-contracts/01-concepts/2_the_pair_contract.md
+        - title: The Factory Contract
+          path: /04-interact-with-contracts/01-concepts/3_the_factory_contract.md
+    - title: Tutorials
+      path: /04-interact-with-contracts/02-tutorials/README.MD
+      sections:
+        - title: Setup
+          path: /04-interact-with-contracts/02-tutorials/4_setup.md
+        - title: Experiment Pair
+          path: /04-interact-with-contracts/02-tutorials/5_experiment_pair.md
+        - title: Experiment Factory
+          path: /04-interact-with-contracts/02-tutorials/6_experiment_factory.md
+        - title: Contracts in Futurenet
+          path: /04-interact-with-contracts/02-tutorials/7_contracts_in_futurenet.md
+    - title: Analizing Uniswapv2pair
+      path: /04-interact-with-contracts/8_analizing_uniswapv2pair.md
+    - title: Analizing UniswapV2Facory
+      path: /04-interact-with-contracts/9_analizing_uniswapV2Facory.md
