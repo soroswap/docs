@@ -33,7 +33,9 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
 ```
 a.-  Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, 
 Ethereum's ERC20 emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-
-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. Mint may not be the most descriptive name for this 
+contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
+
+Mint may not be the most descriptive name for this 
 event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of 
 amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint 
 event (LP units of LP tokens) is already being emitted. As a result, we've chosen to use deposit for this event.
