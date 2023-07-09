@@ -108,14 +108,15 @@ potential overflows.
 ___
 ___
 ## Oracles  
+<!---
+TODO: see how is implement in our codebase
+--->
 To be written
 
 ___
 ___
 ## Skim
-<!---
-TODO: see how is implement in our codebase
---->
+
 
 From UniswapV2 Whitepaper:
 
