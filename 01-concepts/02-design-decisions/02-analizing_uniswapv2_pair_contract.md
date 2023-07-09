@@ -76,24 +76,26 @@ ___
 
 
 ## SafeMath: Included!
-In Solidity: The SafeMath library validates if an arithmetic operation would result in an integer overflow/underflow. If it would, the library throws an exception, effectively reverting the transaction.
+In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow/underflow. Should such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
-In Rust we can throw a panic by activating the [overflow check](https://doc.rust-lang.org/rustc/codegen-options/index.html#overflow-checks) flag with
+In Rust, we can achieve similar functionality by activating the overflow check flag with the following code during the compilation process:
+
+In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-options/index.html#overflow-checks) flag during the compilation process with the following code:
 ```
 [profile.release]
 overflow-checks = true
 ```
-when compilling the code.
+
+Additionally, we use an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
 
 Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
 
 You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
 
-Conclusion: Soroswap will avoid overflows by the tecniques above.
-
+In conclusion, Soroswap prevents overflows by leveraging these techniques.
 ___
-However, as we are using i128, that is a signed integer type, underflow won't happen... instead we will have negative numbers.
-Hence, this kind of checks are put in place when needed:
+
+It is worth noting that since we are using i128, a signed integer type, underflows will not occur as they would simply result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where necessary. For instance:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
     if amount < 0 {
@@ -102,14 +104,14 @@ fn put_reserve_a(e: &Env, amount: i128) {
     e.storage().set(&DataKey::Reserve0, &amount)
 }
 ```
-**Included in the code!**
+**Overflow and Underflow safety is included in the code!**
 
 ___
 ___
 
 
-        ## Reserves Function: included!
-In UniswapV2: The reserves function returns the reserves of token0 and token1, and the last block timestamp.
+## Reserves Function: included!
+In UniswapV2, the reserves function returns the reserves of token0 and token1, along with the timestamp of the last block.
 ```javascript
  function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
      _reserve0 = reserve0;
@@ -118,8 +120,7 @@ In UniswapV2: The reserves function returns the reserves of token0 and token1, a
  }
  ```
 
-In Soroswap:  this is implemented in `get_reserves`.
-
+Soroswap adopts a similar approach, implementing this functionality in the get_reserves function.
 
  ```rust
    fn get_reserves(e: Env) -> (i128, i128, i128) {
@@ -134,7 +135,8 @@ fn get_reserve_1(e: &Env) -> i128 {
     e.storage().get_unchecked(&DataKey::Reserve1).unwrap()
 }
  ```
-The `get_block_timestamp_last` function returns the last block timestamp, or 0 if does not exist.
+Additionally, the `get_block_timestamp_last` function in Soroswap returns the timestamp of the last block, defaulting to 0 if it doesn't exist.
+
  ```rust
 fn get_block_timestamp_last(e: &Env) -> u64 {
  
@@ -145,7 +147,7 @@ fn get_block_timestamp_last(e: &Env) -> u64 {
     }
 }
  ```
- Included in the code!
+ **This functionality is integrated directly into the Soroswap codebase!**
 
 ___
 ___
