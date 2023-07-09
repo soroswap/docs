@@ -262,15 +262,22 @@ In the next iteration, when Periphery contracts will be implemented (see <https:
 this function will change and will require the tokens to be sent before executing the  `deposit` function.
 
 -  We've implemented bool feeOn = _mintFee(_reserve0, _reserve1);.
--  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `put_total_shares` function.
-- UniswapV2Pair compares whether `totalSupply == 0` to send the "first" LP with `sqrt(x*y)`, because it mints a `MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
+-  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `
+put_total_shares` function.
+- UniswapV2Pair compares whether `totalSupply == 0` to send the "first" LP with `sqrt(x*y)`, because it mints a `
+MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of 
+liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
 
   
-Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the smallest possible unit of pool shares. To illustrate, UniswapV2LP tokens operate with 18 decimal places, meaning one token unit corresponds to 1e-18.
+Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the 
+smallest possible unit of pool shares. To illustrate, UniswapV2LP tokens operate with 18 decimal places, meaning one 
+token unit corresponds to 1e-18.
 
 However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
 
-Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the minimum liquidity. In line with the traditional Stellar assets which have 7 decimals, Soroswap also uses 7 decimal places for this initial version. As such, this minimum liquidity symbolizes 1e-4 of the total pool shares.
+Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the 
+minimum liquidity. In line with the traditional Stellar assets which have 7 decimals, Soroswap also uses 7 decimal 
+places for this initial version. As such, this minimum liquidity symbolizes 1e-4 of the total pool shares.
 ___
 ___
 
