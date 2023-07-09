@@ -172,7 +172,7 @@ ___
 
  ## Constructor: not needed
 
-In Soroban, the ``constructor()` and `initialize()` functions are the same, thus there's no need to separate them.
+In Soroban, the `constructor()` and `initialize()` functions are the same, thus there's no need to separate them.
 
 
  ```javascript
