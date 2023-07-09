@@ -4,11 +4,9 @@ The sources for the following 2 sections are:
 - <https://blog.uniswap.org/uniswap-v2>  
 - <https://rskswap.com/audit.html>
 
-The Pair contract written in Rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidity.
-However, from the first (0.0.1) version, there are a lot of functions, variables, events and others, that are not currently implemented in SoroswapPairV0.0.1.
+The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in Solidity. However, in its first version (0.0.1), the SoroswapPairV0.0.1 does not currently implement many functions, variables, events, and other features that are present in the UniswapV2Pair contract.
 
-In the next two sections we are going to compare the Soroswap pair contract with the UniswapV2 pair contract. We will use the UniswapV2 pair contract as a reference point and argument about
-why the Soroswap pair does implement or does not implement certain features.
+In the next two sections, we will compare the Soroswap pair contract with the UniswapV2 pair contract, using the latter as a reference point. This will allow us to discuss why certain features are implemented or not implemented in the Soroswap pair contract.
 
 
 
@@ -29,24 +27,16 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
-a.- As `Mint` already exist as an event in the SAC token interface, we will choose something else.
-Context: In Ethereum, the ERC20 does emit an `Transfer` event when minting a token:
-<https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol>
+a.-  Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, Ethereum's ERC20 emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. Mint may not be the most descriptive name for this event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint event (LP units of LP tokens) is already being emitted. As a result, we've chosen to use deposit for this event.
 
-Also, `Mint` it's not the best name for this event, as the arguments are `amount0` and  `amount1`.
-A best name for this event is `deposit`. Also because the user deposits amount0 units of token0 token, and amount1 units of token1 tokens.
-Also, we don't need to track again the minted tokens, as the `Mint` (LP units of LP tokens) it is already being emited.
-
-Conclusion: We will use `deposit` as a event.
-
-b.- The same thing with `Burn`. We will use `withdraw`
-Also, in soroban there is no use of msg.sender, so the event implementation will be:
+b.- . Similarly, Burn has been replaced with withdraw. In Soroban, msg.sender is not utilized, so the event implementation becomes:
 
 ```rust
 events::withdraw(&e, to, out_a, out_b, to)
 ```
-why? To easily implement / transform Uniswap SDK's
 <!---
+why? To easily implement / transform Uniswap SDK's
+
 review this
 see in the code how is implemented, appears to be
 different
@@ -54,7 +44,7 @@ different
 -->
 
 
-c.- Swap: We implement as swap in Rust and is essentially the same as in UniswapV2.  
+c.- The Swap event is implemented in Rust in a manner essentially equivalent to UniswapV2: 
 ```rust
 pub(crate) fn swap(
     e: &Env,
@@ -70,7 +60,7 @@ pub(crate) fn swap(
 }
 ```
 
-d.- Sync: Is used to update the reserves after each change, we call it sync in Rust.
+d.- sync is used in Rust to update the reserves after each change.
 
 ```rust
 pub(crate) fn sync(e: &Env, reserve_0: u64, reserve_1: u64) {
@@ -79,7 +69,7 @@ pub(crate) fn sync(e: &Env, reserve_0: u64, reserve_1: u64) {
 }
 ```
 
-**Included in the code!**
+**These features are all implemented in the code!**
 
 ___
 ___
