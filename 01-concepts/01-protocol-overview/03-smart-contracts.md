@@ -5,7 +5,7 @@ title: Smart contracts
 
 # Smart contracts
 
-Soroswap is asmart contract system. [Core](03-smart-contracts.md#core) contracts provide fundamental safety guarantees for all parties interacting with Soroswap. [Periphery (to be developed)](03-smart-contracts.md#periphery) contracts interact with one or more core contracts but are not themselves part of the core.
+Soroswap is a smart contract system. [Core](03-smart-contracts.md#core) contracts provide fundamental safety guarantees for all parties interacting with Soroswap. [Periphery (to be developed)](03-smart-contracts.md#periphery) contracts interact with one or more core contracts but are not themselves part of the core.
 
 ## Core
 

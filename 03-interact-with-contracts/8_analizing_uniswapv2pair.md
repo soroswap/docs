@@ -4,11 +4,12 @@ https://rskswap.com/audit.html
 
 
 # Analizing UniswapPair (UniswapV2)
-The Pair contract written in rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidiy.
+The Pair contract written in rust for Soroswap has been inspired in the UniswapV2Pair contract written in Solidity.
 
 However, from the first (0.0.1) version, there are a lot of functions, variables, events and others, that are not currently implemented in SoroswapPairV0.0.1.
 
-In the following we analize every function/ line that can or cannot be included in the Pair contract:
+In the following we analize every function/ line which can or cannot be included in the Pair contract:
+
 
 ## Events: Included!
 ```javascript
