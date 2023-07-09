@@ -52,7 +52,6 @@
       path: /02-soroswap-vs-uniswapV2/02-analizing_uniswapv2_pair_contract_part_2.md
 - title: Soroswap Litepaper
   path: /03-soroswap-litepaper/README.md
-
 - title: Interact With Contracts
   path: /04-interact-with-contracts/README.md
   sections:
