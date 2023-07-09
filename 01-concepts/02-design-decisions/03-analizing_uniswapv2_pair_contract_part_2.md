@@ -1,6 +1,9 @@
 # Comparison of Soroswap and UniswapV2 Pair Contracts: Part 2
 
-## Reentrancy Guards: Not implemented for the moment
+## Reentrancy Guards: Currently not implemented
+
+In UniswapV2, a reentrancy guard is employed to prevent recursive calls. Here is the corresponding code snippet:
+
 ```javascript
     uint private unlocked = 1;
     modifier lock() {
@@ -11,24 +14,21 @@
     }
 ```
 
-Currently, reentrancy it's not allowed inside Soroban:
-Check here: <https://github.com/esteblock/reentrancy-soroban>  
-And here: <https://discord.com/channels/897514728459468821/993874836336152576>  
+For now, Soroban does not permit reentrancy. Further information is available at these sources:
+- <https://github.com/esteblock/reentrancy-soroban>  
+- <https://discord.com/channels/897514728459468821/993874836336152576>  
 
-We will need to come back to this later if reentrancy will be allowed
+We plan to revisit this aspect if the allowance of reentrancy is considered in the future.
 
-**status: Not implemented for the moment**
+**Current Status: Not implemented**
 
 ___
 ___
 
-## Protocol fee: Mint Fee: included!
-Uniswap v2 includes a 0.05% protocol fee that can be turned on and off. If turned on,
-this fee would be sent to a feeTo address specified in the factory contract.
-Initially, feeTo is not set, and no fee is collected. A pre-specified address—feeToSetter—can
-call the setFeeTo function on the Uniswap v2 factory contract, setting feeTo to a different
-value. feeToSetter can also call the setFeeToSetter to change the feeToSetter address
-itself.
+## Protocol Fee Mechanism: Mint Fee Implemented!
+
+Uniswap V2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the Uniswap V2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its own address via the `setFeeToSetter` function.
+
 
 ```javascript
 uint public constant MINIMUM_LIQUIDITY = 10**3;
@@ -56,8 +56,7 @@ uint public kLast; // reserve0 * reserve1, as of immediately after the most rece
     }
 ```
 
-The equivalent code in Soroswap is:
-
+The Soroswap equivalent to the above code is:
 
 ```rust
 fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
@@ -98,10 +97,9 @@ fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
     fee_on
 }
 ```
-where we can see that we used the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to avoid overflow.
+In this code, we have utilized the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to prevent potential overflows.
 
-Included in the code!
-
+**This functionality has been successfully integrated into the code!**
 ___
 ___
 ## Oracles  
@@ -110,6 +108,10 @@ To be written
 ___
 ___
 ## Skim
+<!---
+TODO: see how is implement in our codebase
+--->
+
 From UniswapV2 Whitepaper:
 
 To protect against bespoke token implementations that can update the pair contract’s
