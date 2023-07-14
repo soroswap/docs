@@ -87,6 +87,9 @@ ___
 
 
 ## SafeMath: Included!
+<!---
+Make this consistent with the oracles and arithmetic section
+--->
 In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow/underflow. 
 Should such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
