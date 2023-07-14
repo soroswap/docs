@@ -140,7 +140,9 @@ format that specifies the number of bits used for the integer and fractional par
 fractional components. 
 
 A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and 
-the last m bits are used for the fractional part. For the sake of ilustration, suppose that we have a UQ4.4 format. It means
+the last m bits are used for the fractional part. 
+
+For the sake of ilustration, suppose that we have a UQ4.4 format. It means
 that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored in an 8-bit unsigned integer.
 Some examples of UQ4.4 numbers are:
  - The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the 
