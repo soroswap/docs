@@ -157,7 +157,7 @@ integer part) plus 8/16 (from the fractional part), or 1.5.
 
 In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol)
  is used, in contrast to the UQ64.64  used in Soroswap whose implementation is on 
-https://github.com/esteblock/fractions-soroban
+<https://github.com/esteblock/fractions-soroban>
 
 <!---
 Are we going to use UniswapV2 or UniswapV3 Oracle function?
