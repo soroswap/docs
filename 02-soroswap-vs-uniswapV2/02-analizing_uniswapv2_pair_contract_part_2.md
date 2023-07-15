@@ -164,9 +164,6 @@ Are we going to use UniswapV2 or UniswapV3 Oracle function?
 
 --->
 
-- `using UQ112x112 for uint224;`
-
-- Update Reserves:
 ```javascript
 using UQ112x112 for uint224;
 ...
