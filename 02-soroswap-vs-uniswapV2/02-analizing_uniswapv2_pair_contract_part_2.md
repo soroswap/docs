@@ -113,16 +113,57 @@ TODO: see how is implement in our codebase
 THIS SECTION HAS NOT BEEN REVIEWED YET
 --->
 
+The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token.
+Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will 
+follow 
+the market price.
+
+<!---
+Write why we need oracles
+--->
+
+
+<!---
+Write how oracles works in UniswapV2
+--->
+
+### A note on arithmetic operations and data types:
+
+The design of oracle functions requieres some consideration to arithmetic operations and data types, given that 
+neither Solidity nor Soroban support floating point numbers or non-integer number data types natively. Both systems employ 
+custom-made fixed-point number data types, conforming to the [Q format](https://en.wikipedia.org/wiki/Q_(number_format)),
+which are stored as integers. 
+
+The Q format is a [fixed-point number](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
+format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize
+ the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and
+fractional components. 
+
+A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and 
+the last m bits are used for the fractional part. 
+
+For the sake of ilustration, suppose that we have a UQ4.4 format. It means
+that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored in an 8-bit unsigned integer.
+Some examples of UQ4.4 numbers are:
+ - The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the 
+  integer part 1, and the last four bits (1000) represent the fractional part 0.5.
+
+- The number 3.75 in UQ4.4 format is represented as 00111100 in binary. The first four bits (0011) represent the integer
+   part 3, and the last four bits (1100) represent the fractional part 0.75.
+
+To convert the binary number back to a decimal number, we divide the value represented by the fractional part by 2 to 
+the power of m. In the case of UQ4.4 format, we divide by 2^4 = 16. So, 00011000 would be converted to 1 (from the 
+integer part) plus 8/16 (from the fractional part), or 1.5.
+
+In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol)
+ is used, in contrast to the UQ64.64  used in Soroswap whose implementation is on 
+<https://github.com/esteblock/fractions-soroban>
+
+<!---
 Are we going to use UniswapV2 or UniswapV3 Oracle function?
 
-- `using UQ112x112 for uint224;`
-This is done for storing floating points.
-In Soroban we can use a Custom Type https://soroban.stellar.org/docs/how-to-guides/custom-types
+--->
 
-In Soroswap we have created the `UQ64X64`: https://github.com/esteblock/fractions-soroban
-
-
-- Update Reserves:
 ```javascript
 using UQ112x112 for uint224;
 ...
@@ -150,35 +191,52 @@ function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reser
 
 ``` 
 Here a lot of things are happening:
-- Balances need to fit within the uint112 data type in order to be encoded into UQ112x112 and undergo division operations.
-**For Soroswap: ** Balances will need to git within a u64 type to be encoded into UQ64X64
+- Balances need to fit within the uint112 data type in order to be encoded into UQ112x112 and undergo division 
+operations.
+**For Soroswap:** Balances will need to git within a u64 type to be encoded into UQ64X64
 
-- Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves os 112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
+- Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for 
+gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves os 
+112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
 **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
 
 
-- The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^32 - 1 seconds (approximately 136 years).
+- The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are 
+required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
+32 - 1 seconds (approximately 136 years).
 **For Soroswap: ** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
 
-- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each, because they hold a sum and multitplications of UQ112X112.
+- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each, because they hold a sum 
+and multitplications of UQ112X112.
 **For Soroswap:** price0CumulativeLast will need to be u128
 
 
-- The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of token A/token B and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
-**For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-types..
+- The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
+address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of token A/token B 
+and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
+**For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
+true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-
+types..
 
 Following Uniswap official audit comments:
 https://rskswap.com/audit.html#orgc9b3190
-In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a revert in _update would block trades, and LP entry and exit). 
+In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a 
+revert in _update would block trades, and LP entry and exit). 
 
-It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a simulation:
+It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a 
+simulation:
 ```
-Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~8 months until overflow...
+Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei 
+of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
+value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~8 months until overflow...
 
-Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price accumulator overflow is a realistic possibility for the assets involved. 
+Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
+their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
+accumulator overflow is a realistic possibility for the assets involved. 
 ```
 
-**What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
+**What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = 
+true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
 - The reserves are stored using 112 bits for each token.
 **For Soroswap:** We will use u64
