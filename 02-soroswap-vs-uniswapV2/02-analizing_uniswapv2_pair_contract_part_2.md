@@ -206,7 +206,7 @@ and multiplications of UQ112X112.  
 
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
-and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
+and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.  
 **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
 true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-
 types..
@@ -231,7 +231,7 @@ accumulator overflow is a realistic possibility for the assets involved.
 **What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = 
 true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
-- The reserves are stored using 112 bits for each token.
+- The reserves are stored using 112 bits for each token.  
 **For Soroswap:** We will use u64
 
 **Implemented**
