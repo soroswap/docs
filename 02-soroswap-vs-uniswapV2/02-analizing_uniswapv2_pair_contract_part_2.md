@@ -200,7 +200,7 @@ required to account for this and ensure proper functionality by checking prices 
 **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
 
 - The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
-and multiplications of UQ112X112.  
+and multiplications of UQ112X112.    
 **For Soroswap:** price0CumulativeLast will need to be u128.
 
 
