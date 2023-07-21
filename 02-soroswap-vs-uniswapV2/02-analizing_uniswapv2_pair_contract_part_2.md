@@ -208,17 +208,16 @@ and multiplications of UQ112X112.    
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.  
 **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
-true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-
-types..
+true`. Also, there are no bigger slots in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
 Following Uniswap official audit comments:
-https://rskswap.com/audit.html#orgc9b3190
+<https://rskswap.com/audit.html#orgc9b3190>
 In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a 
 revert in _update would block trades, and LP entry and exit). 
 
 It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a 
-simulation:
-```
+simulation.
+
 Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei 
 of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
 value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~8 months until overflow...
@@ -226,7 +225,6 @@ value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~
 Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
 their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
 accumulator overflow is a realistic possibility for the assets involved. 
-```
 
 **What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = 
 true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
@@ -234,7 +232,7 @@ true, but using `checked_fn` every time the overflow it is NOT DESIRED (all part
 - The reserves are stored using 112 bits for each token.  
 **For Soroswap:** We will use u64
 
-**Implemented**
+**Implemented!**
 
 ___
 ___
