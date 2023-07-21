@@ -25,13 +25,11 @@ We plan to revisit this aspect if the allowance of reentrancy is considered in t
 ___
 ___
 
-## Protocol Fee Mechanism: Mint Fee Implemented!
+## Protocol Fee Mechanism: Mint Fee Implemented!
 
-Uniswap V2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
+UniswapV2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
 an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. 
-There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the Uniswap V2 
-factory contract, altering the `feeTo` value. `feeToSetter` can also change its own address via the `setFeeToSetter` 
-function.
+There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the UniswapV2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its address via the `setFeeToSetter` function.
 
 
 ```javascript
@@ -129,30 +127,25 @@ Write how oracles works in UniswapV2
 
 ### A note on arithmetic operations and data types:
 
-The design of oracle functions requieres some consideration to arithmetic operations and data types, given that 
-neither Solidity nor Soroban support floating point numbers or non-integer number data types natively. Both systems employ 
+The design of oracle functions requires some consideration of arithmetic operations and data types, given that 
+neither Solidity nor Soroban support floating-point numbers or non-integer number data types natively. Both systems employ 
 custom-made fixed-point number data types, conforming to the [Q format](https://en.wikipedia.org/wiki/Q_(number_format)),
 which are stored as integers. 
 
 The Q format is a [fixed-point number](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
-format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize
- the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and
-fractional components. 
-
+format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and fractional components. 
 A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and 
 the last m bits are used for the fractional part. 
 
-For the sake of ilustration, suppose that we have a UQ4.4 format. It means
-that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored in an 8-bit unsigned integer.
+For illustration, suppose that we have a UQ4.4 format. It means that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored as an 8-bit unsigned integer.
 Some examples of UQ4.4 numbers are:
- - The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the 
-  integer part 1, and the last four bits (1000) represent the fractional part 0.5.
+- The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the integer part 1, and the last four bits (1000) represent the fractional part 0.5.
 
 - The number 3.75 in UQ4.4 format is represented as 00111100 in binary. The first four bits (0011) represent the integer
-   part 3, and the last four bits (1100) represent the fractional part 0.75.
+   part 3, and the last four bits (1100) represent the fractional part 0.75.
 
 To convert the binary number back to a decimal number, we divide the value represented by the fractional part by 2 to 
-the power of m. In the case of UQ4.4 format, we divide by 2^4 = 16. So, 00011000 would be converted to 1 (from the 
+the power of m. In the case of UQ4.4 format, we divide by $2^4$ = 16. So, 00011000 would be converted to 1 (from the 
 integer part) plus 8/16 (from the fractional part), or 1.5.
 
 In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol)
@@ -190,29 +183,29 @@ function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reser
 }
 
 ``` 
-Here a lot of things are happening:
-- Balances need to fit within the uint112 data type in order to be encoded into UQ112x112 and undergo division 
-operations.
-**For Soroswap:** Balances will need to git within a u64 type to be encoded into UQ64X64
+Here, many things are happening:
+- Balances need to fit within the uint112 data type to be encoded into UQ112x112 and undergo division 
+operations.  
+**For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
 
 - Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for 
-gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves os 
-112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
+gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves as 
+112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.  
 **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
 
 
 - The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are 
 required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
-32 - 1 seconds (approximately 136 years).
-**For Soroswap: ** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
+32 - 1 seconds (approximately 136 years).  
+**For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
 
-- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each, because they hold a sum 
-and multitplications of UQ112X112.
-**For Soroswap:** price0CumulativeLast will need to be u128
+- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
+and multiplications of UQ112X112.  
+**For Soroswap:** price0CumulativeLast will need to be u128.
 
 
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
-address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of token A/token B 
+address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
 **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
 true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-
