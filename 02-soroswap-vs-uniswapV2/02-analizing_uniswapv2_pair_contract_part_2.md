@@ -216,15 +216,15 @@ In the case of the accumulators, it is instead a safety measure: a revert on ove
 revert in _update would block trades, and LP entry and exit). 
 
 It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a 
-simulation.
+simulation:
 
-> Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei 
-of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
-value of the 2 decimal token is 100 times that of the 36 decimal token: giving $\approx$ 8 months until overflow!
-
-Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
-their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
-accumulator overflow is a realistic possibility for the assets involved. 
+> Assuming that the ratio of the reserves in a given pair will be the same as > the ratio of the dollar prices of one wei 
+> of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
+> value of the 2 decimal token is 100 times that of the 36 decimal token: giving $\approx$ 8 months until overflow!
+>  
+> Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
+> their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
+> accumulator overflow is a realistic possibility for the assets involved. 
 
 
 
