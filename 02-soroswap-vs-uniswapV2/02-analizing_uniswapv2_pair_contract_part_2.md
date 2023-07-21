@@ -186,28 +186,28 @@ function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reser
 Here, many things are happening:
 - Balances need to fit within the uint112 data type to be encoded into UQ112x112 and undergo division 
 operations.
-    - **For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
+    * **For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
 
 - Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for 
 gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves as 
 112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.  
-    - **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
+    * **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
 
 
 - The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are 
 required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
 32 - 1 seconds (approximately 136 years).  
-    - **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
+    * **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
 
 - The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
 and multiplications of UQ112X112.<br>
-    - **For Soroswap:** price0CumulativeLast will need to be u128.
+    * **For Soroswap:** price0CumulativeLast will need to be u128.
 
 
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
-    - **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
+    * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
 true`. Also, there are no bigger slots in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
 Following Uniswap official audit comments:
