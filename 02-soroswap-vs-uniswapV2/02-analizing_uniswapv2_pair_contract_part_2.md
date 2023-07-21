@@ -25,7 +25,7 @@ We plan to revisit this aspect if the allowance of reentrancy is considered in t
 ___
 ___
 
-## Protocol Fee Mechanism: Mint Fee Implemented!
+## Protocol Fee Mechanism: Mint Fee Implemented!
 
 UniswapV2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
 an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. 
@@ -201,6 +201,7 @@ required to account for this and ensure proper functionality by checking prices 
 
 - The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
 and multiplications of UQ112X112.    
+
 **For Soroswap:** price0CumulativeLast will need to be u128.
 
 
