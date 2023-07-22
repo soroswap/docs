@@ -206,16 +206,18 @@ and multiplications of UQ112X112.<br>
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
-    * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
+<!--- CHECK HERE FOR CONSISTENCY WITH ORACLES
+--->
+  * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
 true`. Also, there are no bigger integer types in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
-Following Uniswap official audit comments:
-<https://rskswap.com/audit.html#orgc9b3190>
-In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a 
-revert in _update would block trades, and LP entry and exit). 
+As per the official Uniswap audit [remarks](https://rskswap.com/audit.html#orgc9b3190), we permit overflow in the case of
+ accumulators. This is primarily a protective strategy; an overflow-induced revert might result in a liveness failure. This 
+ means that a revert in the _update could impede trade operations as well as hinder the entry and exit of liquidity providers 
+(LPs).
 
-It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a 
-simulation:
+The necessity for price0CumulativeLast to overflow is emphasized to prevent the protocol from reaching a panic state. The 
+audit illustrates this through a simulation:
 
 > Assuming that the ratio of the reserves in a given pair will be the same as  the ratio of the dollar prices of one wei 
 > of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
@@ -231,7 +233,11 @@ This means that Soroswap should allow overflow, hence not using overflow-checks 
 true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
 - The reserves are stored using 112 bits for each token.  
+
+<!--- aclarar si usamos o no usamos overflow checks
+--->
 **For Soroswap:** We will use u64
+<!--- usamos u64???-->
 
 **Implemented!**
 
@@ -244,20 +250,20 @@ ___
 
 From UniswapV2 Whitepaper:
 
-To protect against bespoke token implementations that can update the pair contract’s
-balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
-Uniswap v2 has two bail-out functions: sync()and skim().
-
-sync() functions as a recovery mechanism in the case that a token asynchronously
-deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
-liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
-the reserves of the contract to the current balances, providing a somewhat graceful recovery
-from this situation.
-
-skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
-overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
-fail. skim() allows a user to withdraw the difference between the current balance of the
-pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
+>To protect against bespoke token implementations that can update the pair contract’s
+>balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
+>Uniswap v2 has two bail-out functions: sync()and skim().
+>
+>sync() functions as a recovery mechanism in the case that a token asynchronously
+>deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
+>liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
+>the reserves of the contract to the current balances, providing a somewhat graceful recovery
+>from this situation.
+>
+>skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
+>overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
+>fail. skim() allows a user to withdraw the difference between the current balance of the
+>pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
 
 
 ```javascript
