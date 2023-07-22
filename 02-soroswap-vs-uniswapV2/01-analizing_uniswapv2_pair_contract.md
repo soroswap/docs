@@ -87,9 +87,9 @@ ___
 
 
 ## SafeMath: Included!
-<!---
-Make this consistent with the oracles and arithmetic section
---->
+
+
+
 In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow and underflow. 
 When such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
@@ -99,14 +99,18 @@ In Rust, we can achieve a similar level of protection by enabling the [overflow 
 overflow-checks = true
 ```
 
-Additionally, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
+In addition, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
 checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
 
-In conclusion, Soroswap prevents overflows by leveraging these techniques.
+
+When it comes to preventing overflow in Soroban, we have the two solutions mentioned above: using the compiler flag or the 
+overflow-safe functions. Yet, as we will see in the oracle section, there are cases where overflow is the intended result. 
+Hence, we will bypass the compiler flag option, choosing instead to use overflow-safe functions for our arithmetic operations. Exceptions 
+will be made only in those unique cases where overflow is desirable.
+
 ___
 
-It is worth noting that since we are using i128, a signed integer type, underflow will not occur as they would simply 
-result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where 
+About underflow, it is worth noting that since we are using i128, a signed integer type, underflow will not occur as it would simply result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where 
 necessary. For instance:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
@@ -269,7 +273,7 @@ token unit corresponds to 1e-18.
 
 However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
 
-Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to $10^3$ as the 
+Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the 
 minimum liquidity. In line with the traditional Stellar assets, which have 7 decimals, Soroswap also uses 7 decimals 
 places for this initial version. As such, this minimum liquidity represents 1e-4 of the total pool shares.
 ___
@@ -278,7 +282,7 @@ ___
 
 <!---
 TODO:
-review swap and burn
+review swap and burn WILL CHANGE AFTER ROUTER IS READY
 --->
 
 ## Swap
@@ -327,8 +331,8 @@ The equivalent function in Soroswap is as follows:
 
         /*
         UniswapV2 implements 2 things that Soroswap it's not going to implement for now:
-        1.- FlashSwaps. Soroban is not allowing reentrancy for the momennt. So no data as a parameter.
-        2.- uint amount0Out as parameter. Soroswap will impleent all the logig in the Router contract.
+        1.- FlashSwaps. Soroban is not allowing reentrancy for the moment. So no data as a parameter.
+        2.- uint amount0Out as parameter. Soroswap will impleent all the login in the Router contract.
 
         All this logic will change in this contract when the Router contract is implemented
         */

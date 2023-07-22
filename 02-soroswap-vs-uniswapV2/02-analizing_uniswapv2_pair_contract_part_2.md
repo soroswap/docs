@@ -113,12 +113,12 @@ THIS SECTION HAS NOT BEEN REVIEWED YET
 
 The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token.
 Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will 
-follow 
-the market price.
+tend to follow the market price, so maybe we can use the marginal price as an oracle for the market price.
 
-<!---
-Write why we need oracles
---->
+ However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an
+ specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function
+ was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+
 
 
 <!---
@@ -206,8 +206,7 @@ and multiplications of UQ112X112.<br>
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
-<!--- CHECK HERE FOR CONSISTENCY WITH ORACLES
---->
+
   * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
 true`. Also, there are no bigger integer types in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
@@ -234,8 +233,7 @@ true, but using `checked_fn` every time the overflow it is NOT DESIRED (all part
 
 - The reserves are stored using 112 bits for each token.  
 
-<!--- aclarar si usamos o no usamos overflow checks
---->
+
 **For Soroswap:** We will use u64
 <!--- usamos u64???-->
 
@@ -247,7 +245,6 @@ ___
 ___
 ## Skim
 
-<!-- explicar mas -->
 From UniswapV2 Whitepaper:
 
 >To protect against bespoke token implementations that can update the pair contract’s
