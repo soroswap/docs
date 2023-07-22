@@ -247,7 +247,7 @@ ___
 ___
 ## Skim
 
-
+<!-- explicar mas -->
 From UniswapV2 Whitepaper:
 
 >To protect against bespoke token implementations that can update the pair contract’s
