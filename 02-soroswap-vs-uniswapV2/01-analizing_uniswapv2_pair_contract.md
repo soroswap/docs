@@ -91,25 +91,16 @@ ___
 Make this consistent with the oracles and arithmetic section
 --->
 In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow and underflow. 
-Should such a situation arise, the library throws an exception, which effectively reverts the transaction.
+When such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
-In Rust, we can achieve similar functionality by activating the overflow check flag with the following code during the 
-compilation process:
-
-In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) 
-
-flag during the compilation process with the following code:
+In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) flag during the compilation process with the following code:
 ```
 [profile.release]
 overflow-checks = true
 ```
 
-Additionally, we use an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
+Additionally, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
 checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
-
-Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
-
-You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
 
 In conclusion, Soroswap prevents overflows by leveraging these techniques.
 ___
