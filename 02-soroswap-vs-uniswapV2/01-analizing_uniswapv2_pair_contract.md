@@ -264,12 +264,12 @@ liquidity available, preventing scenarios where liquidity providers could fully 
 
   
 Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the 
-smallest possible unit of pool shares. To illustrate, UniswapV2LP tokens operate with 18 decimal places, meaning one 
+smallest possible unit of pool shares. To illustrate, UniswapV2 LP tokens operate with 18 decimal places, meaning one 
 token unit corresponds to 1e-18.
 
 However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
 
-Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the 
+Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to $10^3$ as the 
 minimum liquidity. In line with the traditional Stellar assets, which have 7 decimals, Soroswap also uses 7 decimals 
 places for this initial version. As such, this minimum liquidity represents 1e-4 of the total pool shares.
 ___
