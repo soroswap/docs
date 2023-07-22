@@ -198,7 +198,6 @@ gas optimization purposes, as described in the whitepaper. Consequently, each se
 required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
 32 - 1 seconds (approximately 136 years).  
     * **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
-
 - The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
 and multiplications of UQ112X112.<br>
     * **For Soroswap:** price0CumulativeLast will need to be u128.
@@ -208,7 +207,7 @@ and multiplications of UQ112X112.<br>
 address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
 and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
     * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
-true`. Also, there are no bigger slots in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
+true`. Also, there are no bigger integer types in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
 Following Uniswap official audit comments:
 <https://rskswap.com/audit.html#orgc9b3190>
@@ -227,8 +226,8 @@ simulation:
 > accumulator overflow is a realistic possibility for the assets involved. 
 
 
-
-**What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = 
+**What this means for Soroswap?**  
+This means that Soroswap should allow overflow, hence not using overflow-checks = 
 true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
 - The reserves are stored using 112 bits for each token.  
