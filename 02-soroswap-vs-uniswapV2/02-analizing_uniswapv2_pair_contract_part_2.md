@@ -27,11 +27,9 @@ ___
 
 ## Protocol Fee Mechanism: Mint Fee Implemented!
 
-Uniswap V2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
+UniswapV2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
 an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. 
-There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the Uniswap V2 
-factory contract, altering the `feeTo` value. `feeToSetter` can also change its own address via the `setFeeToSetter` 
-function.
+There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the UniswapV2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its address via the `setFeeToSetter` function.
 
 
 ```javascript
@@ -108,19 +106,26 @@ potential overflows.
 ___
 ___
 ## Oracles:  
-<!---
-TODO: see how is implement in our codebase
-THIS SECTION HAS NOT BEEN REVIEWED YET
---->
+
 
 The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token.
 Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will 
-follow 
-the market price.
+tend to follow the market price, so maybe we can use the marginal price as an oracle for the market price.
 
-<!---
-Write why we need oracles
---->
+However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an
+specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they
+can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function
+was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+
+The solution is to use a cumulative price, which is the sum of the marginal prices over a period of time. The oracle measures
+and stores the  price before the first trade of each block. This price is more difficult to manipulate than the prices in
+the middle of a block. If the attacker tries to manipulate the price at the start of the block, another arbitrageur can send a transaction
+to trade back the manipulated price to the real price, so the attacker can't profit from the manipulation. A miner or an attacker that
+uses enough gas to fill an entire block can try to manipulate the price at the end of the block, but this will be useless if they
+mine the following block themselves. The miners can't know if they will mine the next block, so they can't profit from this manipulation.
+
+So, we know that the price at the start of the block is difficult to manipulate, but we still need to know how to use it as an oracle.
+
 
 
 <!---
@@ -129,30 +134,25 @@ Write how oracles works in UniswapV2
 
 ### A note on arithmetic operations and data types:
 
-The design of oracle functions requieres some consideration to arithmetic operations and data types, given that 
-neither Solidity nor Soroban support floating point numbers or non-integer number data types natively. Both systems employ 
+The design of oracle functions requires some consideration of arithmetic operations and data types, given that 
+neither Solidity nor Soroban support floating-point numbers or non-integer number data types natively. Both systems employ 
 custom-made fixed-point number data types, conforming to the [Q format](https://en.wikipedia.org/wiki/Q_(number_format)),
 which are stored as integers. 
 
 The Q format is a [fixed-point number](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
-format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize
- the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and
-fractional components. 
-
+format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and fractional components. 
 A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and 
 the last m bits are used for the fractional part. 
 
-For the sake of ilustration, suppose that we have a UQ4.4 format. It means
-that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored in an 8-bit unsigned integer.
+For illustration, suppose that we have a UQ4.4 format. It means that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored as an 8-bit unsigned integer.
 Some examples of UQ4.4 numbers are:
- - The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the 
-  integer part 1, and the last four bits (1000) represent the fractional part 0.5.
+- The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the integer part 1, and the last four bits (1000) represent the fractional part 0.5.
 
 - The number 3.75 in UQ4.4 format is represented as 00111100 in binary. The first four bits (0011) represent the integer
-   part 3, and the last four bits (1100) represent the fractional part 0.75.
+   part 3, and the last four bits (1100) represent the fractional part 0.75.
 
 To convert the binary number back to a decimal number, we divide the value represented by the fractional part by 2 to 
-the power of m. In the case of UQ4.4 format, we divide by 2^4 = 16. So, 00011000 would be converted to 1 (from the 
+the power of m. In the case of UQ4.4 format, we divide by $2^4$ = 16. So, 00011000 would be converted to 1 (from the 
 integer part) plus 8/16 (from the fractional part), or 1.5.
 
 In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol)
@@ -190,58 +190,61 @@ function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reser
 }
 
 ``` 
-Here a lot of things are happening:
-- Balances need to fit within the uint112 data type in order to be encoded into UQ112x112 and undergo division 
+Here, many things are happening:
+- Balances need to fit within the uint112 data type to be encoded into UQ112x112 and undergo division 
 operations.
-**For Soroswap:** Balances will need to git within a u64 type to be encoded into UQ64X64
+    * **For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
 
 - Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for 
-gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves os 
-112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
-**For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
+gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves as 
+112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.  
+    * **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
 
 
 - The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are 
 required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
-32 - 1 seconds (approximately 136 years).
-**For Soroswap: ** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
-
-- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each, because they hold a sum 
-and multitplications of UQ112X112.
-**For Soroswap:** price0CumulativeLast will need to be u128
+32 - 1 seconds (approximately 136 years).  
+    * **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
+- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
+and multiplications of UQ112X112.<br>
+    * **For Soroswap:** price0CumulativeLast will need to be u128.
 
 
 - The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
-address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of token A/token B 
-and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
-**For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
-true`. Also, there are no bigger slots in Soroban. See https://soroban.stellar.org/docs/learn/built-in-types#primitive-
-types..
+address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
+and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
 
-Following Uniswap official audit comments:
-https://rskswap.com/audit.html#orgc9b3190
-In the case of the accumulators, it is instead a safety measure: a revert on overflow could cause a liveness failure (a 
-revert in _update would block trades, and LP entry and exit). 
+  * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
+true`. Also, there are no bigger integer types in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
 
-It is needed that price0CumulativeLast can overflow, in order to avoid the protocol to panic. In the audit they do a 
-simulation:
-```
-Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei 
-of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
-value of the 2 decimal token is 100 times that of the 36 decimal token: giving ~8 months until overflow...
+As per the official Uniswap audit [remarks](https://rskswap.com/audit.html#orgc9b3190), we permit overflow in the case of
+ accumulators. This is primarily a protective strategy; an overflow-induced revert might result in a liveness failure. This 
+ means that a revert in the _update could impede trade operations as well as hinder the entry and exit of liquidity providers 
+(LPs).
 
-Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
-their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
-accumulator overflow is a realistic possibility for the assets involved. 
-```
+The necessity for price0CumulativeLast to overflow is emphasized to prevent the protocol from reaching a panic state. The 
+audit illustrates this through a simulation:
 
-**What this means for Soroswap?** This means that Soroswap should allow overflow, hence not using overflow-checks = 
+> Assuming that the ratio of the reserves in a given pair will be the same as  the ratio of the dollar prices of one wei 
+> of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
+> value of the 2 decimal token is 100 times that of the 36 decimal token: giving &#8776; 8 months until overflow!
+>  
+> Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
+> their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
+> accumulator overflow is a realistic possibility for the assets involved. 
+
+
+**What this means for Soroswap?**  
+This means that Soroswap should allow overflow, hence not using overflow-checks = 
 true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
-- The reserves are stored using 112 bits for each token.
-**For Soroswap:** We will use u64
+- The reserves are stored using 112 bits for each token.  
 
-**Implemented**
+
+**For Soroswap:** We will use u64
+<!--- usamos u64???-->
+
+**Implemented!**
 
 ___
 ___
@@ -249,23 +252,22 @@ ___
 ___
 ## Skim
 
-
 From UniswapV2 Whitepaper:
 
-To protect against bespoke token implementations that can update the pair contract’s
-balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
-Uniswap v2 has two bail-out functions: sync()and skim().
-
-sync() functions as a recovery mechanism in the case that a token asynchronously
-deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
-liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
-the reserves of the contract to the current balances, providing a somewhat graceful recovery
-from this situation.
-
-skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
-overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
-fail. skim() allows a user to withdraw the difference between the current balance of the
-pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
+>To protect against bespoke token implementations that can update the pair contract’s
+>balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
+>Uniswap v2 has two bail-out functions: sync()and skim().
+>
+>sync() functions as a recovery mechanism in the case that a token asynchronously
+>deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
+>liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
+>the reserves of the contract to the current balances, providing a somewhat graceful recovery
+>from this situation.
+>
+>skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
+>overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
+>fail. skim() allows a user to withdraw the difference between the current balance of the
+>pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
 
 
 ```javascript
