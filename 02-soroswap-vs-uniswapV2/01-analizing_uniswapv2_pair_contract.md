@@ -100,7 +100,7 @@ overflow-checks = true
 ```
 
 In addition, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
-checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
+checked_sub`. You can explore these functions and test their functionality in this repository: <https://github.com/esteblock/overflow-soroban/>
 
 
 When it comes to preventing overflow in Soroban, we have the two solutions mentioned above: using the compiler flag or the 
