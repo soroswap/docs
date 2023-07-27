@@ -106,18 +106,25 @@ potential overflows.
 ___
 ___
 ## Oracles:  
-<!---
-TODO: see how is implement in our codebase
-THIS SECTION HAS NOT BEEN REVIEWED YET
---->
+
 
 The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token.
 Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will 
 tend to follow the market price, so maybe we can use the marginal price as an oracle for the market price.
 
- However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an
- specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function
- was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an
+specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they
+can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function
+was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+
+The solution is to use a cumulative price, which is the sum of the marginal prices over a period of time. The oracle measures
+and stores the  price before the first trade of each block. This price is more difficult to manipulate than the prices in
+the middle of a block. If the attacker tries to manipulate the price at the start of the block, another arbitrageur can send a transaction
+to trade back the manipulated price to the real price, so the attacker can't profit from the manipulation. A miner or an attacker that
+uses enough gas to fill an entire block can try to manipulate the price at the end of the block, but this will be useless if they
+mine the following block themselves. The miners can't know if they will mine the next block, so they can't profit from this manipulation.
+
+So, we know that the price at the start of the block is difficult to manipulate, but we still need to know how to use it as an oracle.
 
 
 
