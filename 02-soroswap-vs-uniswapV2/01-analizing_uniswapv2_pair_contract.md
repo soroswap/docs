@@ -1,22 +1,23 @@
 # Comparison of Soroswap and UniswapV2 Pair Contracts: Part 1
-The sources for the following 2 sections are:
 
-- <https://blog.uniswap.org/uniswap-v2>  
+
+The sources for the following two sections are:
+
+- <https://blog.uniswap.org/uniswap-v2>  
 - <https://rskswap.com/audit.html>
 
-  The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in 
+  The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in 
 Solidity. However, in its first version (0.0.1), the SoroswapPairV0.0.1 does not currently implement many functions, 
 variables, events, and other features that are present in the UniswapV2Pair contract.
 
 In the next two sections, we will compare the Soroswap pair contract with the UniswapV2 pair contract, using the latter 
-as a reference point. This will allow us to discuss why certain features are implemented or not implemented in the 
-Soroswap pair contract.
+as a reference point. This allows us to discuss why certain features are implemented or not implemented in the Soroswap pair contract.
 
 
 
 ## Events: Included!
-The UniswapV2 pair contract has 4 events: Mint, Burn, Swap and Sync.
-The corresponding events in the Soroswap pair contract are: deposit, withdraw, swap and sync.
+The UniswapV2 pair contract has four events: Mint, Burn, Swap and Sync.
+The corresponding events in the Soroswap pair contract are: deposit, withdraw, swap, and sync.
 
 ```javascript
  event Mint(address indexed sender, uint amount0, uint amount1);
@@ -31,15 +32,14 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
-a.-  Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, 
-Ethereum's ERC20 emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
+Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, 
+Ethereum\'s ERC20 protocol emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
 
 Mint may not be the most descriptive name for this 
-event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of 
-amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint 
+event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint 
 event (LP units of LP tokens) is already being emitted. As a result, we've chosen to use deposit for this event.
 
-b.- . Similarly, Burn has been replaced with withdraw. In Soroban, msg.sender is not utilized, so the event 
+Similarly, Burn has been replaced with withdraw. In Soroban, msg.sender is not utilized, so the event 
 implementation becomes:
 
 ```rust
@@ -55,7 +55,7 @@ different
 -->
 
 
-c.- The Swap event is implemented in Rust in a manner essentially equivalent to UniswapV2: 
+The Swap event is implemented in Rust in a manner essentially equivalent to UniswapV2: 
 ```rust
 pub(crate) fn swap(
     e: &Env,
@@ -71,7 +71,7 @@ pub(crate) fn swap(
 }
 ```
 
-d.- sync is used in Rust to update the reserves after each change.
+The sync event is used in Rust to update the reserves after each change.
 
 ```rust
 pub(crate) fn sync(e: &Env, reserve_0: u64, reserve_1: u64) {
@@ -87,35 +87,30 @@ ___
 
 
 ## SafeMath: Included!
-<!---
-Make this consistent with the oracles and arithmetic section
---->
-In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow/underflow. 
-Should such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
-In Rust, we can achieve similar functionality by activating the overflow check flag with the following code during the 
-compilation process:
 
-In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) 
 
-flag during the compilation process with the following code:
+In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow and underflow. 
+When such a situation arise, the library throws an exception, which effectively reverts the transaction.
+
+In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) flag during the compilation process with the following code:
 ```
 [profile.release]
 overflow-checks = true
 ```
 
-Additionally, we use an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
-checked_sub`. You can explore these functions and test their functionality in this repository: (https://github.com/esteblock/overflow-soroban/)
+In addition, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
+checked_sub`. You can explore these functions and test their functionality in this repository: <https://github.com/esteblock/overflow-soroban/>
 
-Also we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
 
-You can check and test these tecniques in the following repo: https://github.com/esteblock/overflow-soroban/
+When it comes to preventing overflow in Soroban, we have the two solutions mentioned above: using the compiler flag or the 
+overflow-safe functions. Yet, as we will see in the oracle section, there are cases where overflow is the intended result. 
+Hence, we will bypass the compiler flag option, choosing instead to use overflow-safe functions for our arithmetic operations. Exceptions 
+will be made only in those unique cases where overflow is desirable.
 
-In conclusion, Soroswap prevents overflows by leveraging these techniques.
 ___
 
-It is worth noting that since we are using i128, a signed integer type, underflows will not occur as they would simply 
-result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where 
+About underflow, it is worth noting that since we are using i128, a signed integer type, underflow will not occur as it would simply result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where 
 necessary. For instance:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
@@ -125,7 +120,7 @@ fn put_reserve_a(e: &Env, amount: i128) {
     e.storage().set(&DataKey::Reserve0, &amount)
 }
 ```
-**Overflow and Underflow safety is included in the code!**
+**Overflow and underflow safety are included in the code!**
 
 ___
 ___
@@ -199,7 +194,7 @@ ___
 ## Mint (Deposit)
 
 In UniswapV2, the mint function is invoked when a user adds liquidity to the pool, resulting in the creation of pool 
-tokens. Prior to calling the swap function, the seller transfers the asset to the core contract. The contract then 
+tokens. Before calling the swap function, the seller transfers the asset to the core contract. The contract then 
 measures the received asset quantity by comparing the last recorded balance with its current balance. This approach 
 makes the core contract agnostic to how the trader transfers the asset. Instead of transferFrom, a meta transaction or 
 any other future mechanism for authorizing the transfer of ERC-20s can be used.
@@ -262,32 +257,32 @@ and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard
 ```
 
 In the next iteration, when Periphery contracts will be implemented (see <https://github.com/Uniswap/v2-periphery>) 
-this function will change and will require the tokens to be sent before executing the  `deposit` function.
+this function will change and will require the tokens to be sent before executing the  `deposit` function.
 
--  We've implemented bool feeOn = _mintFee(_reserve0, _reserve1);.
--  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `
+-  We've implemented bool feeOn = _mintFee(_reserve0, _reserve1);.
+-  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `
 put_total_shares` function.
-- UniswapV2Pair compares whether `totalSupply == 0` to send the "first" LP with `sqrt(x*y)`, because it mints a `
+- UniswapV2Pair compares whether `totalSupply == 0` to send the “first” LP with `sqrt(x*y)` because it mints a `
 MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of 
 liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
 
   
 Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the 
-smallest possible unit of pool shares. To illustrate, UniswapV2LP tokens operate with 18 decimal places, meaning one 
+smallest possible unit of pool shares. To illustrate, UniswapV2 LP tokens operate with 18 decimal places, meaning one 
 token unit corresponds to 1e-18.
 
 However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
 
 Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the 
-minimum liquidity. In line with the traditional Stellar assets which have 7 decimals, Soroswap also uses 7 decimal 
-places for this initial version. As such, this minimum liquidity symbolizes 1e-4 of the total pool shares.
+minimum liquidity. In line with the traditional Stellar assets, which have 7 decimals, Soroswap also uses 7 decimals 
+places for this initial version. As such, this minimum liquidity represents 1e-4 of the total pool shares.
 ___
 ___
 
 
 <!---
 TODO:
-review swap and burn
+review swap and burn WILL CHANGE AFTER ROUTER IS READY
 --->
 
 ## Swap
@@ -336,8 +331,8 @@ The equivalent function in Soroswap is as follows:
 
         /*
         UniswapV2 implements 2 things that Soroswap it's not going to implement for now:
-        1.- FlashSwaps. Soroban is not allowing reentrancy for the momennt. So no data as a parameter.
-        2.- uint amount0Out as parameter. Soroswap will impleent all the logig in the Router contract.
+        1.- FlashSwaps. Soroban is not allowing reentrancy for the moment. So no data as a parameter.
+        2.- uint amount0Out as parameter. Soroswap will impleent all the login in the Router contract.
 
         All this logic will change in this contract when the Router contract is implemented
         */
@@ -511,5 +506,3 @@ fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -
         (out_0, out_1)
     }
 
-___
-___
