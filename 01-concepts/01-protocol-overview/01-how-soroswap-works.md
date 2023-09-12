@@ -1,5 +1,5 @@
 ---
-id: how-uniswap-works
+id: how-soroswap-works
 title: How Soroswap works
 ---
 
@@ -7,9 +7,9 @@ title: How Soroswap works
 
 ![](<images/anatomy (1).jpg>)
 
-Soroswap is an _automated liquidity protocol_ powered by a [constant product formula](../../old\_docusaurus/docs/concepts/protocol-overview/glossary/#constant-product-formula) and implemented in a system of non-upgradeable smart contracts on the [Soroban](../../old\_docusaurus/docs/concepts/01-protocol-overview/soroban.stellar.org) blockchain. It obviates the need for trusted intermediaries, prioritizing **decentralization**, **censorship resistance**, and **security**. Soroswap is **open-source software** licensed under the [Apache 2.0 Licence](https://github.com/soroswap/core/blob/main/LICENSE).
+Soroswap is an _automated liquidity protocol_ powered by a [constant product formula](./04-glossary.md/#constant-product-formula) and implemented in a system of non-upgradeable smart contracts on the [Soroban](https://soroban.stellar.org) blockchain. It obviates the need for trusted intermediaries, prioritizing **decentralization**, **censorship resistance**, and **security**. Soroswap is **open-source software** licensed under the [Apache 2.0 Licence](https://github.com/soroswap/core/blob/main/LICENSE).
 
-Each Soroswap smart contract, or pair, manages a liquidity pool made up of reserves of two tokens implemeting the [Soroban Token Interface](https://soroban.stellar.org/docs/reference/interfaces/token-interface).
+Each Soroswap smart contract, or pair, manages a liquidity pool made up of reserves of two tokens. These can be either (1) Soroban native tokens implemeting the [Soroban Token Interface](https://soroban.stellar.org/docs/reference/interfaces/token-interface), or (2) [Stellar Assets](https://developers.stellar.org/docs/issuing-assets/anatomy-of-an-asset)
 
 Anyone can become a liquidity provider (LP) for a pool by depositing an equivalent value of each underlying token in return for pool tokens. These tokens track pro-rata LP shares of the total reserves, and can be redeemed for the underlying assets at any time.
 
@@ -25,6 +25,6 @@ Because the relative price of the two pair assets can only be changed through tr
 
 ## Further reading
 
-To see how token swaps work in practice, and to walk through the lifecycle of a swap, check out [Swaps](../../old\_docusaurus/docs/concepts/core-concepts/swaps/). Or, to see how liquidity pools work, see [Pools](../../old\_docusaurus/docs/concepts/core-concepts/pools/).
+To see how token swaps work in practice, and to walk through the lifecycle of a swap, check out [Swaps](../03-core-concepts/01-swaps.md/). Or, to see how liquidity pools work, see [Pools](../03-core-concepts/01-pools.md/).
 
-Ultimately, of course, the Soroswap protocol is just smart contract code running on Soroban. To understand how they work, head over to [Smart Contracts](../../old\_docusaurus/docs/reference/smart-contracts/factory/).
+Ultimately, of course, the Soroswap protocol is just smart contract code running on Soroban. To understand how they work, head over to [The Soroban Home Page](https://soroban.stellar.org/docs/).
