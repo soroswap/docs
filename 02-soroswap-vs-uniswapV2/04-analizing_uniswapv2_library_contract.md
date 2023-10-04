@@ -37,7 +37,7 @@ function sortTokens(address tokenA, address tokenB) internal pure returns (addre
     }
 ```
 As you can see on our SoroswapPair contract, we have imposed that:
-```rust
+```rust 
 if token_a >= token_b {
             panic!("token_a must be less than token_b");
         }
