@@ -1,6 +1,6 @@
 # Table of contents
 
-* [The Soroswap.Finance Protocol](README.md)
+* [The Soroswap.Finance Protocol Smart Contracts](README.md)
 * [Concepts](01-concepts/README.md)
   * [Protocol Overview](01-concepts/01-protocol-overview/README.md)
     * [How Soroswap works](01-concepts/01-protocol-overview/01-how-soroswap-works.md)
