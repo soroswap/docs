@@ -1,4 +1,4 @@
-# The Soroswap Protocol Smart Contracts
+# The Soroswap.Finance Documentation
 
 Welcome to the Soroswap.Finance smart contracts documentation.
 
