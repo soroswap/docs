@@ -1,5 +1,5 @@
 # The Library Contract:
-Read the documentation of the SoroswapLibrary contract here: https://docs.rs/soroswap-library/latest/soroswap_library/
+Read the documentation of the SoroswapLibrary contract on **[docs.rs](https://docs.rs/soroswap-library/latest/soroswap_library/)**
 
 ### Code
 
