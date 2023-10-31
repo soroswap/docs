@@ -34,3 +34,5 @@
     * [SoroswapPair Comparison](03-technical-reference/06-soroswap-vs-uniswapV2/01-SoroswapPair-comparison.md)
     * [SoroswapRouter Comparison](03-technical-reference/06-soroswap-vs-uniswapV2/02-SoroswapRouter-comparison.md)
     * [SoroswapLibrary Comparison](03-technical-reference/06-soroswap-vs-uniswapV2/03-SoroswapLibrary-comparison.md)
+* [Partners](04-partners/README.md)
+  * [Collaboration with Mercury and SubQuery](04-partners/01-mercury-subquery.md)
