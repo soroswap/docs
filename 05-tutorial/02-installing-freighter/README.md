@@ -1,10 +1,11 @@
-# Installing Freighter
+# 1. Installing Freighter
 
-In this section, we will guide you through the installation process of Freighter, a non-custodial Stellar wallet extension that will empower you to engage with the exciting world of cryptocurrencies. Follow the steps below to get started:
+In this section, we will guide you through the installation process of Freighter, a non-custodial Stellar wallet extension that will empower you to engage with Soroswap.Finance
 
-## Step 1: Installing Freighter Browser Extension
+## Step 1: Installing Freighter on your Browser
+Freighter works as a Extension in Chrome (Google Chrome, Brave) and Firefox:
 
-1. Visit the [Chrome extension store](https://chrome.google.com/webstore/category/extensions?hl=en) and install Freighter into your browser.
+1. Visit the [Freighter Official Website](https://www.freighter.app/), to install Freighter into your browser.
 
 2. Click on "Create Account" and choose a secure password.
 
@@ -42,9 +43,9 @@ Congratulations! You are now ready to use your Freighter wallet. Follow these fi
 
    - **Mainnet**: The live and fully operational blockchain network where real transactions occur.
 
-   - **Testnet**: A simulated environment for testing and experimentation, using fake cryptocurrencies.
+   - **Testnet**: A simulated environment for testing and experimentation
 
-4. Since Soroswap is currently in the testnet environment, we will proceed with the tutorial using the testnet setting. By utilizing the testnet, we can safely explore and demonstrate the functionalities of Soroswap without any concerns about real-world financial implications.
+4. Since Soroswap is currently in the Soroban Testnet environment, we will proceed with the tutorial using the Testnet setting. By utilizing the testnet, we can safely explore and demonstrate the functionalities of Soroswap without any concerns about real-world financial implications.
 
    ![](images/testnet.png)
 
