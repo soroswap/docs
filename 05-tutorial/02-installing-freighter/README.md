@@ -49,7 +49,7 @@ Because Soroban is still in the "experimental" side of Tesnet, you first need to
 
 2. Open the Preference menu
 
-   ![](images/settings.png)
+   ![](images/preferences.png)
 
 3. Enable experimental mode
 
