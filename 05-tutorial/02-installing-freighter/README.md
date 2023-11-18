@@ -39,16 +39,32 @@ Congratulations! You are now ready to use your Freighter wallet. Follow these fi
 
 2. Your account will be displayed, labeled as "Account 1," along with your unique account address. This address serves as an identifier for receiving funds or transactions from other users or entities on the blockchain network.
 
-3. Click on the "Main Net" button located at the top right corner to explore the networks:
+## Step 5: Access to Testnet with Soroban
+
+Because Soroban is still in the "experimental" side of Tesnet, you first need to allow Freighter to connect to experimental API's. To do this:
+
+1. Open the Settings menu, by clicking the gear in the botom right corner:
+
+   ![](images/gear.png)
+
+2. Open the Preference menu
+
+   ![](images/settings.png)
+
+3. Enable experimental mode
+
+   ![](images/experimental-mode.png)
+
+4. Finally, go back and click on the "Main Net" button located at the top right corner to explore the networks:
 
    - **Mainnet**: The live and fully operational blockchain network where real transactions occur.
 
    - **Testnet**: A simulated environment for testing and experimentation
 
-4. Since Soroswap is currently in the Soroban Testnet environment, we will proceed with the tutorial using the Testnet setting. By utilizing the testnet, we can safely explore and demonstrate the functionalities of Soroswap without any concerns about real-world financial implications.
+5. Since Soroswap is currently in the Soroban Testnet environment, we will proceed with the tutorial using the Testnet setting. By utilizing the testnet, we can safely explore and demonstrate the functionalities of Soroswap without any concerns about real-world financial implications.
 
    ![](images/testnet.png)
 
-## Step 5: Let's Dive into the Tutorial
+## Step 6: Let's Dive into the Tutorial
 
 Congratulations! You are now fully equipped to embark on an exciting journey with Soroswap on the testnet. Get ready to explore and make the most of Soroswap's comprehensive range of features within this secure testing environment. Let's dive right into the tutorial and unlock the full potential of your Soroswap experience!
