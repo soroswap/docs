@@ -43,4 +43,5 @@
   - [Adding Liquidity](05-tutorial/04-adding-liquidity/README.md)
   - [Doing Swap](05-tutorial/05-doing-swap/README.md)
   - [Remove Liquidity](05-tutorial/06-remove-liquidity/README.md)
-  - [Conclusions](05-tutorial/07-conclusions/README.md)
+  - [Using Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/README.md)
+  - [Conclusions](05-tutorial/08-conclusions/README.md)
