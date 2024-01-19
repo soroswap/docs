@@ -1,6 +1,6 @@
 # Technical Architecture for Optimal Routing
 
-This document explain how Soroswap will find the optimal route for a swap
+Soroswap Optimal Routing is a key component of the Soroswap protocol, designed to find the most efficient route for executing swaps. By leveraging a combination of the solutions implemented by 1Inch and Uniswap, Soroswap aims to provide users with the best possible trading experience.
 
 ## Background
 
@@ -23,13 +23,21 @@ The algorithm to get the best route is the following:
 
 They also keep routes on cache
 
+Useful links:
+- [getQuote function on clientSideSmartOrderRouter](https://github.com/Uniswap/interface/blob/4ee70bfa34d4435d992cc54d2510572ec9de3d4d/apps/web/src/lib/hooks/routing/clientSideSmartOrderRouter.ts)
+- [best swap route](https://github.com/Uniswap/smart-order-router/blob/main/src/routers/alpha-router/functions/best-swap-route.ts#L146)
+- [generateRoute example](https://github.com/Uniswap/examples/blob/main/v3-sdk/routing/src/example/Example.tsx)
+- [pancakeSwap smart route example](https://github.com/pancakeswap/smart-router-example/tree/master/src)
+- [Pancake Swap Frontend Smart Route implementation](https://github.com/pancakeswap/pancake-frontend/tree/develop/packages/smart-router)
+- [Uniswap Blog on Auto Router](https://blog.uniswap.org/auto-router-v2)
+
 ### 1Inch
 
 They call an API called Pathfinder to get the best route across multiple protocols. However, the API is not open source and we don't know how it works.
 
 ## Soroswap Optimal Routing
 
-Here we name each of the parts of Soroswap and the responsibility they will have in the optimal route
+The technical architecture for Soroswap Optimal Routing involves several interconnected parts. At the core, we have the Soroswap-router-sdk, responsible for managing all the logic related to the optimal route swap. This component utilizes a similar algorithm to Uniswap and PancakeSwap, enabling it to compute the best route for a given swap.
 
 ![](images/draw.png)
 
@@ -47,30 +55,65 @@ This will get all the pools from the backend and then will compute the best rout
 ### Frontend
 
 ##### What will do ?
+repository: https//github.com/soroswap/frontend
 
-The frontend will call directly the @soroswap-router-sdk methods to implement it
+The frontend will have the following functions:
+```javascript
+generateRoute(tokenIn, tokenOut, TradeType, ...options)
+executeRoute(swapRoute)
+```
+These functions call directly the `@soroswap-router-sdk` methods to implement it
+
+### soroswap-router-sdk
+repository: https://github.com/soroswap/soroswap-router-sdk
+
+It will have the following methods:
+```javascript
+class router {
+      getPools(tokenIn, tokenOut)
+      getBestRoute(tokenIn, tokenOut, TradeType, ...options)
+   }
+```
 
 ##### What we need ?
 
-We don't need anything special here more than implement the @soroswap-router-sdk in the frontend
+We don't need anything special here more than implement the `@soroswap-router-sdk` in the frontend
 
 ### Backend
+repository: https://github.com/soroswap/backend.git
+
+The backend plays a crucial role in the optimal routing process. It communicates with the `@mercury-sdk` to retrieve the necessary data required by the `@soroswap-router-sdk`. Specifically, the backend needs endpoints to fetch pools with reserves from the `mercury-sdk`.
+
+The difference Mercury and subgraph is that Mercury give us the data we need in XDR. We just need to add a method to parse the data to use it in the `@soroswap-router-sdk`
+
+It will have the endpoints to be called by the `soroswap-router-sdk`
+It will have the following functions:
+```javascript
+getPairCounter()
+getPairAddresses()
+subscribeToNewPairs()
+getPairsWithTokenAndReserves()
+```
+
+`getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in __instance__ storage.
+`getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in __persistent__ storage.
+`subscribeToNewPairs` will subscribe to the Factory's new pairs when pools are created.
+`getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in __instance__ storage
 
 ##### What will do ?
 
-Will call the necessary data from @mercury-sdk to send to the @soroswap-router-sdk
+Will call the necessary data from `@mercury-sdk` to send to the `@soroswap-router-sdk`
 
 ##### What we need?
 
-We need endpoints to get the pools with reserves from mercury-sdk filter by (token0, token1)
+We need endpoints to get the pools with reserves from `mercury-sdk` filter by (token0, token1)
 
 ### Mercury-sdk
-
-The difference Mercury and subgraph is that Mercury give us the data we need in XDR. We just need to add a method to parse the data to use it in the @soroswap-router-sdk
+repository: https://github.com/paltalabs/mercury-sdk.git
 
 ##### What will do ?
 
-Will manage the methods to get the pools and necessary data for the algorithm in @soroswap-router-sdk
+Will manage the methods to subscribe and retrieve the needed information by the backend
 
 ##### What we need ?
 
@@ -78,4 +121,4 @@ We need query and methods to get the pools from mercury and then parse the data 
 
 ## Soroswap Aggregator
 
-Same but using pools from other protocols. We will need to create subscription methods to get the pools from other protocols and then use the same logic as Soroswap
+Additionally, Soroswap Aggregator extends the optimal routing capabilities by incorporating pools from other protocols. Subscription methods are created to fetch pools from these protocols, and the same logic as Soroswap is applied.
