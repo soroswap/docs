@@ -13,17 +13,17 @@ Uniswap and PancakeSwap work in a similar way: In the frontend they use an sdk t
 
 The algorithm to get the best route is the following:
 
-1. Get all the pools: they ask to subgraph for the available pools ([see here](https://github.com/Uniswap/smart-order-router/blob/9dda6a965e7f5c0e48efa8214363a660ed034350/src/providers/v2/subgraph-provider.ts#L78)).
-2. Computes all routes given a maxHops (see [computeAllRoutes](https://github.com/Uniswap/smart-order-router/blob/9dda6a965e7f5c0e48efa8214363a660ed034350/src/routers/alpha-router/functions/compute-all-routes.ts#L67)). MaxHops is the maximum number of pools that the route can have.
-3. splits the route ([see here](https://github.com/Uniswap/smart-order-router/blob/main/src/routers/alpha-router/functions/best-swap-route.ts#L146))
-   1. They define a minimum percentage for a split and make an array of 100% divided by the minimum percentage: for example is minimum percentage is 5% then the array will be [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]
-4. They get a quote for every split
-5. They validate all routes with quotes
-6. Then choose the best quote (minimum amountIn or maximum amountOut)
+1. Retrieving Available Pools: The algorithm starts by fetching all the available pools on the client side. This is done by querying the subgraph to get the list of pools. ([see here](https://github.com/Uniswap/smart-order-router/blob/9dda6a965e7f5c0e48efa8214363a660ed034350/src/providers/v2/subgraph-provider.ts#L78)).
+2. Computing All Routes: Once the pools are obtained, the algorithm computes all possible routes for a given swap. The maximum number of pools that a route can have is determined by a parameter called maxHops. This step is implemented in the computeAllRoutes function. (see [computeAllRoutes](https://github.com/Uniswap/smart-order-router/blob/9dda6a965e7f5c0e48efa8214363a660ed034350/src/routers/alpha-router/functions/compute-all-routes.ts#L67)). MaxHops is the maximum number of pools that the route can have.
+3. Splitting the Route: In order to optimize the routing process, the algorithm splits the route into smaller segments. This is done by defining a minimum percentage for a split. The algorithm creates an array by dividing 100% by the minimum percentage. For example, if the minimum percentage is 5%, then the array will be [5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95]. Each segment represents a portion of the total route. ([see here](https://github.com/Uniswap/smart-order-router/blob/main/src/routers/alpha-router/functions/best-swap-route.ts#L146))
+4. Obtaining Quotes: For each segment of the route, the algorithm obtains a quote. This quote represents the estimated amount of tokens that will be received (exact input) or sent (exact output) for that particular segment of the route.
+5. Combining and Validating Routes: After obtaining quotes for each segment, the algorithm combines and validates all the routes along with their respective quotes. This step ensures that the combined routes form a valid and optimal path for the swap.
+6. Choosing the Best Quote: Finally, the algorithm selects the best quote based on certain criteria. This can be either the minimum amount of tokens to be sent (amountIn) or the maximum amount of tokens to be received (amountOut). The quote with the best value is chosen as the optimal route for executing the swap.
 
 They also keep routes on cache
 
 Useful links:
+
 - [getQuote function on clientSideSmartOrderRouter](https://github.com/Uniswap/interface/blob/4ee70bfa34d4435d992cc54d2510572ec9de3d4d/apps/web/src/lib/hooks/routing/clientSideSmartOrderRouter.ts)
 - [best swap route](https://github.com/Uniswap/smart-order-router/blob/main/src/routers/alpha-router/functions/best-swap-route.ts#L146)
 - [generateRoute example](https://github.com/Uniswap/examples/blob/main/v3-sdk/routing/src/example/Example.tsx)
@@ -41,46 +41,41 @@ The technical architecture for Soroswap Optimal Routing involves several interco
 
 ![](images/draw.png)
 
-### Soroswap-router-sdk
-
-##### What will do ?
-
-This will manage all the logic of the optimal route swap.
-
-##### What we need ?
-
-We need to create a class with all the methods and logic for the optimal route swap and connect it with the backend to get the necessary data for the algorithm.
-This will get all the pools from the backend and then will compute the best route. It will use a similar algorithm as Uniswap and PancakeSwap.
-
 ### Frontend
 
-##### What will do ?
-repository: https//github.com/soroswap/frontend
+[Github Repository](https://github.com/soroswap/frontend)
 
 The frontend will have the following functions:
+
 ```javascript
-generateRoute(tokenIn, tokenOut, TradeType, ...options)
-executeRoute(swapRoute)
+generateRoute(tokenIn, tokenOut, TradeType, ...options);
+executeRoute(swapRoute);
 ```
+
 These functions call directly the `@soroswap-router-sdk` methods to implement it
 
-### soroswap-router-sdk
-repository: https://github.com/soroswap/soroswap-router-sdk
+generateRoute will call the sdk to get the transaction data of the optimal route and then executeRoute will run the transaction.
 
-It will have the following methods:
+### soroswap-router-sdk
+
+[Github Repository](https://github.com/soroswap/soroswap-router-sdk)
+
+Overall, we need the following methods:
+
 ```javascript
 class router {
-      getPools(tokenIn, tokenOut)
-      getBestRoute(tokenIn, tokenOut, TradeType, ...options)
-   }
+   getPools(tokenIn, tokenOut)
+   getBestRoute(tokenIn, tokenOut, TradeType, ...options)
+}
 ```
 
-##### What we need ?
+getPools will comunicate with the backend to get the data of the pools (token0, token1, reserve0, reserve1).
 
-We don't need anything special here more than implement the `@soroswap-router-sdk` in the frontend
+getBestRoute will utilize the pools data and run the algorithm to generate the optimal route for the swap returning the necessary data to execute the transaction.
 
 ### Backend
-repository: https://github.com/soroswap/backend.git
+
+[Github Repository](https://github.com/soroswap/backend.git)
 
 The backend plays a crucial role in the optimal routing process. It communicates with the `@mercury-sdk` to retrieve the necessary data required by the `@soroswap-router-sdk`. Specifically, the backend needs endpoints to fetch pools with reserves from the `mercury-sdk`.
 
@@ -88,37 +83,30 @@ The difference Mercury and subgraph is that Mercury give us the data we need in 
 
 It will have the endpoints to be called by the `soroswap-router-sdk`
 It will have the following functions:
+
 ```javascript
-getPairCounter()
-getPairAddresses()
-subscribeToNewPairs()
-getPairsWithTokenAndReserves()
+getPairCounter();
+getPairAddresses();
+subscribeToNewPairs();
+getPairsWithTokenAndReserves();
 ```
 
-`getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in __instance__ storage.
-`getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in __persistent__ storage.
+`getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in **instance** storage.
+`getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **persistent** storage.
 `subscribeToNewPairs` will subscribe to the Factory's new pairs when pools are created.
-`getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in __instance__ storage
-
-##### What will do ?
-
-Will call the necessary data from `@mercury-sdk` to send to the `@soroswap-router-sdk`
-
-##### What we need?
-
-We need endpoints to get the pools with reserves from `mercury-sdk` filter by (token0, token1)
+`getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **instance** storage
 
 ### Mercury-sdk
-repository: https://github.com/paltalabs/mercury-sdk.git
 
-##### What will do ?
+[Github Repository](https://github.com/paltalabs/mercury-sdk.git)
 
-Will manage the methods to subscribe and retrieve the needed information by the backend
+Mercury sdk is utilized to subscribe and query from mercury.
 
-##### What we need ?
+Here we will need to create the queries to return data from the pools, and subscribe to the addresses we need to track.
 
-We need query and methods to get the pools from mercury and then parse the data to use this in the backend
+Subscribe to factory ledger entries, then query and get pair counter (Thus, get how many pairs exist) and their pair adresses.
+Subscribe to all pair ledger entries, then query to get token0, token1, reserve0, reserve1.
 
 ## Soroswap Aggregator
 
-Additionally, Soroswap Aggregator extends the optimal routing capabilities by incorporating pools from other protocols. Subscription methods are created to fetch pools from these protocols, and the same logic as Soroswap is applied.
+Additionally, Soroswap Aggregator extends the optimal routing capabilities by incorporating pools from other protocols, such as Comet, Phoenix and SDEX. Subscription methods are created to fetch pools from these protocols, and the same logic as Soroswap is applied.
