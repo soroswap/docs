@@ -77,9 +77,14 @@ getBestRoute will utilize the pools data and run the algorithm to generate the o
 
 [Github Repository](https://github.com/soroswap/backend.git)
 
+Data requests summary:
+- Instance storage of Factory Contract
+- Persistent storage of Factory Contract
+- Instance storage of all the pairs
+
 The backend plays a crucial role in the optimal routing process. It communicates with the `@mercury-sdk` to retrieve the necessary data required by the `@soroswap-router-sdk`. Specifically, the backend needs endpoints to fetch pools with reserves from the `mercury-sdk`.
 
-The difference Mercury and subgraph is that Mercury give us the data we need in XDR. We just need to add a method to parse the data to use it in the `@soroswap-router-sdk`
+The difference between Mercury and subgraph is that Mercury give us the data we need in XDR. We just need to add a method to parse the data to use it in the `@soroswap-router-sdk`
 
 It will have the endpoints to be called by the `soroswap-router-sdk`
 It will have the following functions:
@@ -94,7 +99,7 @@ getPairsWithTokenAndReserves();
 `getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in **instance** storage.
 `getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **persistent** storage.
 `subscribeToNewPairs` will subscribe to the Factory's new pairs when pools are created.
-`getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **instance** storage
+`getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **instance** storage.
 
 ### Mercury-sdk
 
