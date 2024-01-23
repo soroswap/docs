@@ -21,6 +21,7 @@
     - [Math](01-concepts/04-advanced-topics/05-math.md)
     - [Research](01-concepts/04-advanced-topics/06-research.md)
 - [Technical Reference](03-technical-reference/README.md)
+
   - [SoroswapPair Contract:](03-technical-reference/01-SoroswapPair.md)
   - [SoroswapFactory Contract:](03-technical-reference/02-SoroswapFactory.md)
   - [SoroswapLibrary Contract:](03-technical-reference/03-SoroswapLibrary.md)
@@ -36,6 +37,8 @@
     - [SoroswapLibrary Comparison](03-technical-reference/06-soroswap-vs-uniswapV2/03-SoroswapLibrary-comparison.md)
     - [Soroswap vs UniswapV2](03-technical-reference/06-soroswap-vs-uniswapV2/README.md)
   - [Optimal Route](03-technical-reference/07-optimal-route/README.md)
+    - [soroswap-router-sdk](03-technical-reference/07-optimal-route/01-soroswap-router-sdk.md)
+
 - [Partners](04-partners/README.md)
   - [Collaboration with Mercury and SubQuery](04-partners/01-mercury-subquery.md)
 - [Tutorial](05-tutorial/README.md)
