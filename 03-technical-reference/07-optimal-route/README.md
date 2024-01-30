@@ -73,6 +73,17 @@ getPools will comunicate with the backend to get the data of the pools (token0, 
 
 getBestRoute will utilize the pools data and run the algorithm to generate the optimal route for the swap returning the necessary data to execute the transaction.
 
+#### Validation with token lists
+Soroswap will build routes with only known trusted tokens.
+
+Thus, Soroswap will maintain a token of known list of tokens. See [here](https://github.com/soroswap/known_tokens).
+
+This list will be used to validate the tokens used in the swap. This will be done inside the private method `_getAllRoutes`, by the function `_validateKnownTokens`. Inside the soroswap-router-sdk.
+
+`_validateKnownTokens` will fetch the known tokens list from the `known_tokens` repository and validate that the tokens used in the swap are in the list.
+
+This will protect Soroswap from executing a transaction with a malicious token in the middle of the route. Also it will allow Soroswap to allow an advanced user to swap a token that is not in the known tokens list with proper warnings and disclaimers.
+
 ### Backend
 
 [Github Repository](https://github.com/soroswap/backend.git)
