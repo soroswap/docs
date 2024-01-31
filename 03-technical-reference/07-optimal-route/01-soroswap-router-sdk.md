@@ -35,5 +35,6 @@
 - `findBestRouteExactIn(amountIn, tokenOut, routes, ...config)`: Uses the quote provider to get raw quotes and then sends them to getBestQuote to find the best quote.
 - `findBestRouteExactOut(amountOut, tokenIn, routes, ...config)`: Uses the quote provider to get raw quotes and then sends them to getBestQuote to find the best quote.
 - `buildTrade(currencyIn, currencyOut, tradeType, routeQuote)`: Creates the trade with the final route, tokens, and trade type.
+- `validateKnownTokens(tokens)`: Validates that the tokens used in the swap are in the known tokens list.
 
 ![](images/route-flow.png)
