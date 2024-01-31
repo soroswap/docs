@@ -1,4 +1,6 @@
-# Phoenix Protocol Multihop swap
+# Phoenix Protocol 
+
+## Multihop swap
 
 Phoenix protocol to perform swap across multiple pools have their own smart contract called [Multihop](https://github.com/Phoenix-Protocol-Group/phoenix-contracts/tree/main/contracts/multihop).
 
@@ -41,3 +43,18 @@ operations.iter().for_each(|op| {
   );
 });
 ```
+
+## Factory
+
+The factory contract contains multiple functions to get the pairs it currently has
+```rust
+fn query_pools(env: Env) -> Vec<Address>;
+
+fn query_pool_details(env: Env, pool_address: Address) -> LiquidityPoolInfo;
+
+fn query_all_pools_details(env: Env) -> Vec<LiquidityPoolInfo>;
+
+fn query_for_pool_by_token_pair(env: Env, token_a: Address, token_b: Address) -> Address;
+```
+
+the multihop uses `query_for_pool_by_token_pair()` to get a specific pool by token addresses
