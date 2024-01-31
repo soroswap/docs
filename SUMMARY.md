@@ -38,6 +38,10 @@
     - [Soroswap vs UniswapV2](03-technical-reference/06-soroswap-vs-uniswapV2/README.md)
   - [Optimal Route](03-technical-reference/07-optimal-route/README.md)
     - [soroswap-router-sdk](03-technical-reference/07-optimal-route/01-soroswap-router-sdk.md)
+  - [Aggregator](03-technical-reference/08-aggregator/README.md)
+    - [1inch](03-technical-reference/08-aggregator/01-1inch.md)
+    - [Phoenix](03-technical-reference/08-aggregator/02-phoenix.md)
+    - [Comet](03-technical-reference/08-aggregator/03-comet.md)
 
 - [Partners](04-partners/README.md)
   - [Collaboration with Mercury and SubQuery](04-partners/01-mercury-subquery.md)
