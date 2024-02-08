@@ -16,7 +16,7 @@ Central to the Soroswap-Aggregator is the `swap` function, designed with the fol
 
 - `fromToken` and `destToken`: Specifies the trading pair for the swap.
 - `amount`: The volume of `fromToken` to be exchanged.
-- `minReturn`: Ensures the trade is executed only if the return in `destToken` meets or exceeds this threshold, guarding against undesirable slippage.
+- `amount_out_min`: Ensures the trade is executed only if the return in `destToken` meets or exceeds this threshold, guarding against undesirable slippage.
 - `distribution`: A strategic array dictating the apportionment of the trade across selected DEXs for optimal execution.
 
 ### 2.2 Optimizing Trade Execution
