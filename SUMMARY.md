@@ -42,6 +42,8 @@
     - [1inch](03-technical-reference/08-aggregator/01-1inch.md)
     - [Phoenix](03-technical-reference/08-aggregator/02-phoenix.md)
     - [Comet](03-technical-reference/08-aggregator/03-comet.md)
+    - [SoroswapAggregator Design](03-technical-reference/08-aggregator/04-SoroswapAggregator-Design.md)
+    - [SoroswapAggregator Technical Overview](03-technical-reference/08-aggregator/05-SoroswapAggregator-Technical-Overview.md)
 
 - [Partners](04-partners/README.md)
   - [Collaboration with Mercury and SubQuery](04-partners/01-mercury-subquery.md)
