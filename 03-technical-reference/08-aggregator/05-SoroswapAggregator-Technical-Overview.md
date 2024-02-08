@@ -57,6 +57,55 @@ Upon receiving a trade request with the specified `distribution`, the smart cont
 
 - **Monitoring and Verification**: Continuous monitoring of integrated DEXes for updates or security advisories is critical. The admin team must have procedures in place to quickly verify and implement required changes to DEX addresses, ensuring the aggregator remains functional and secure against evolving threats.
 
+### Understanding the `DexDistribution` Struct
+
+The `DexDistribution` struct is designed to instruct the aggregator on how to split and execute a swap across multiple DEX protocols. Each `DexDistribution` object contains three key pieces of information:
+
+- **index**: Identifies the specific DEX protocol where the swap will be executed.
+- **path**: Specifies the token swap path required by some DEXes, particularly useful for multi-hop swaps where a direct pair might not be available.
+- **parts**: Indicates how many parts of the total swap amount should be routed through this particular DEX protocol.
+
+### Example Explanation
+
+Consider a scenario where a user wants to swap Token A for Token B, but to optimize the swap, the trade is split across two different DEX protocols, each possibly requiring a different path for the swap. The distribution for this swap might look something like this:
+
+```rust
+let distribution = vec![
+    DexDistribution {
+        index: 0, // Protocol 0, e.g., "Soroswap"
+        path: vec![TOKEN_A, TOKEN_B, TOKEN_C], // Required swap path for Soroswap
+        parts: 3, // 3 parts of the trade to go through Soroswap
+    },
+    DexDistribution {
+        index: 1, // Protocol 1, e.g., "Phoenix"
+        path: vec![TOKEN_A, TOKEN_C], // Required swap path for Phoenix
+        parts: 2, // 2 parts of the trade to go through Phoenix
+    }
+];
+```
+
+In this distribution:
+- 3/5 of the total swap amount is routed through Protocol 0 (Soroswap), following the path [TOKEN_A, TOKEN_B, TOKEN_C].
+- The remaining 2/5 is routed through Protocol 1 (Phoenix), following the path [TOKEN_A, TOKEN_C].
+
+### Swap Execution Process
+
+When executing the swap, the aggregator will:
+1. **Calculate the Total Parts**: Sum the `parts` from each `DexDistribution` object to determine the total number of parts the swap amount will be divided into. In this example, the total is 5 parts.
+   
+2. **Determine Amount per Part**: Divide the total swap amount by the total number of parts to find out how much each part represents.
+
+3. **Execute Swaps Based on Distribution**: For each `DexDistribution` in the array:
+    - Calculate the specific amount to swap through each protocol by multiplying the amount per part by the `parts` specified in the `DexDistribution`.
+    - Execute the swap on the specified protocol (`index`) using the determined amount and following the provided `path`.
+    - Ensure that each swap meets or exceeds any minimum output requirements and is completed before the specified `deadline`.
+
+### Key Points
+
+- The `path` allows for flexibility in handling swaps that require multiple hops, accommodating the specific requirements of different DEX protocols.
+- The `parts` attribute allows the aggregator to dynamically allocate the swap amount across different protocols, optimizing for factors like slippage, gas fees, or liquidity depth.
+- The `index` serves as a straightforward way to reference each protocol. While this example uses integer indices for simplicity, it's crucial in the actual implementation to map these indices to the specific smart contract addresses or interface methods required to interact with each DEX.
+
 ### Conclusion
 
 The Soroswap-Aggregator smart contract represents a sophisticated tool for optimizing DEX trades on the Soroban platform, requiring a carefully crafted balance between on-chain efficiency and off-chain computational complexity. The success of the aggregator hinges on its ability to dynamically adapt to the DeFi marketplace's fluidity, ensuring secure, efficient, and optimal trade execution for users.
