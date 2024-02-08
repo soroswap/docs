@@ -1,63 +1,65 @@
-# 1inch Aggregator and Its Functioning
+# Phoenix Protocol
 
-## Introduction
-The 1inch Network is a leading player in the decentralized finance (DeFi) space, known for its aggregator service. This aggregator optimizes and routes trades across various decentralized exchanges (DEXes). This document delves into the intricacies and technical elements of the 1inch Aggregator, with a specific focus on the OneSplit smart contract.
+## Multihop Swap
 
-## Understanding the 1inch Aggregator
-1inch Aggregator stands out for its ability to source liquidity from a multitude of DEXes, ensuring users receive the best possible trading rates. This is achieved by:
+The Phoenix Protocol enables swaps across multiple liquidity pools through a specialized smart contract known as [Multihop](https://github.com/Phoenix-Protocol-Group/phoenix-contracts/tree/main/contracts/multihop). This section outlines the key features and usage of the Multihop contract.
 
-- Splitting transactions across several DEXes, thereby reducing slippage and enhancing trade efficiency.
-- Utilizing the OneSplit smart contract, which automates the process of securing the most favorable trade execution.
+### Swap Function Parameters
 
-## OneSplit Smart Contract
+The primary function of interest in Multihop is `swap`, which accepts the following parameters:
 
-### Functionality
-The OneSplit smart contract is instrumental in dividing orders and routing them through the most advantageous paths. It is responsible for:
+- `recipient`: The address of the contract designated to receive the swapped amount.
+- `referral`: An optional address for the referral entity. If provided, this entity receives a commission bonus for the swap. (Note: This feature is currently commented out in the contract.)
+- `operations`: A vector (`Vec<Swap>`) detailing the swap operations, including addresses of the assets being asked for and offered.
+- `max_belief_price`: An optional `i64` value representing the maximum price the user is willing to accept for the swap.
+- `max_spread_bps`: An optional `i64` value indicating the maximum permitted spread (in basis points) between the asking and offering prices.
+- `amount`: An `i128` value specifying the amount offered for the swap.
 
-- Calculating expected returns for trades, taking into account various dynamics like liquidity depth and real-time token prices across different DEXes.
+### Swap Struct
 
-### Parts and Distribution
-- The concept of 'parts' plays a pivotal role in OneSplit. It denotes the division of a trade for execution across different DEXes.
-- The contract ascertains the ideal allocation of these parts to various DEXes, reflected in a distribution array. OneSplit maintains a list of DEXes to choose from for executing trades.
+Multihop processes an array of `Swap` structures. Here is the `Swap` struct definition in Rust:
 
-### Execution of Trades
-- The `swap` method in OneSplit facilitates multi-step trades.
-- The `swapMulti` method allows for a sequence of distinct swaps within a single transaction.
-
-### OneSplit Flow
-
-**getExpectedReturn Function:**
-- This function is the starting point for calculating returns. It takes parameters such as `fromToken`, `destToken`, `amount`, `parts`, and `flags`. The flags can be reviewed [here](https://github.com/1inch/1inchProtocol/blob/811f7b69b67d1d9657e3e9c18a2e97f3e2b2b33a/OneSplitAudit.full.sol#L723).
-- It returns an object comprising the expected return amount and a distribution array. The distribution array indicates the exchanges within the contract for swap execution. For example, a return might look like:
-    ```json
-    {
-      "returnAmount": 625685622893,
-      "distribution": [1,0,0,0,0,0,4,0,0,0]
-    }
-    ```
-    This suggests one swap on exchange #0 and the rest 4 parts in one swap on exchange #6.
-
-- The `_findBestDistribution` function, which takes `parts` and a matrix of reserves, is instrumental in determining the best distribution (Note: Understanding this function's operation is pending).
-
-**Swap Function:**
-- To execute a swap, the aggregator requires `fromToken`, `destToken`, `amount`, `minReturn`, `distribution`, and `flags`.
-- The function, accessible [here](https://github.com/1inch/1inchProtocol/blob/811f7b69b67d1d9657e3e9c18a2e97f3e2b2b33a/OneSplit.full.sol#L3782), aggregates various swap functions specific to each router/protocol.
-- The function iterates over the distribution array, matching each protocol's swap function with the allocated amounts. For example, in Soroswap's Aggregator, the array could include [swapSoroswap, swapPhoenix, swapComet].
-- The swap amounts are calculated as a fraction of the total amount, proportional to the distribution and divided by the number of parts. For instance, in our example, the contract will execute two swaps: one on the first exchange with 1/5 of the total amount and the second on the 6th exchange with 4/5 (or the remaining amount) of the total amount.
-
-Here is a snippet of the Swap function
 ```rust
-for (uint i = 0; i < distribution.length; i++) {
-    if (distribution[i] == 0) {
-        continue;
-    }
-
-    uint256 swapAmount = amount.mul(distribution[i]).div(parts);
-    if (i == lastNonZeroIndex) {
-        swapAmount = remainingAmount;
-    }
-    remainingAmount -= swapAmount;
-    reserves[i](fromToken, destToken, swapAmount, flags);
+pub struct Swap {
+    pub ask_asset: Address,
+    pub offer_asset: Address,
 }
-``````
-[1inch Protocol Repository](https://github.com/1inch/1inchProtocol).
+```
+
+For a successful operation, the contract iterates through this array, retrieves the corresponding pool address from the factory using `ask_asset` and `offer_asset`, and then executes the swaps. The array structure is crucial and should follow this pattern: `[{token_a, token_b}, {token_b, token_c}, {token_c, token_d}]`. If a user wishes to swap `token_a` for `token_d`, they must specify the intermediary pairs. A panic occurs if any pair lacks an existing liquidity pool.
+
+### Swap Function Implementation
+
+Below is a code snippet illustrating the implementation of the swap function:
+
+```rust
+let mut next_offer_amount: i128 = amount;
+let factory_client = factory_contract::Client::new(&env, &get_factory(&env));
+
+operations.iter().for_each(|op| {
+  let liquidity_pool_addr: Address = factory_client
+      .query_for_pool_by_token_pair(&op.clone().offer_asset, &op.ask_asset.clone());
+
+  let lp_client = lp_contract::Client::new(&env, &liquidity_pool_addr);
+  next_offer_amount = lp_client.swap(
+      &recipient,
+      &op.offer_asset,
+      &next_offer_amount,
+      &max_belief_price,
+      &max_spread_bps,
+  );
+});
+```
+
+## Factory Contract
+
+The factory contract is a crucial component of Phoenix Protocol, offering various functions to manage and retrieve information about liquidity pools:
+
+### Key Functions
+
+- `query_pools(env: Env) -> Vec<Address>`: Returns a vector of addresses for all pools.
+- `query_pool_details(env: Env, pool_address: Address) -> LiquidityPoolInfo`: Retrieves details of a specific pool.
+- `query_all_pools_details(env: Env) -> Vec<LiquidityPoolInfo>`: Obtains details for all pools.
+- `query_for_pool_by_token_pair(env: Env, token_a: Address, token_b: Address) -> Address`: Fetches the address of a specific pool based on token pair addresses.
+
+The Multihop contract predominantly uses `query_for_pool_by_token_pair()` to acquire the address of a specific liquidity pool based on the provided token addresses.
