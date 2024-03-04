@@ -21,9 +21,63 @@
   distribution: [1,0,0,0,0,0,4,0,0,0]
 }
 ```
-as you can see it returns an expected amount and a distribution array, this distribution array is a list of exchanges inside the contract where it can perform the swaps, in this example is suggesting to do 1 swap on exchange #0 and 4 swaps on exchange #6.
+The `parts` input indicates how many parts the trade should be split into, and the `distribution` array shows the allocation of these parts across different DEXes. The `returnAmount` represents the expected return for the trade.
 
-To find the best distribution it has a `_findBestDistribution` which receives the `parts` and a matrix of reserves and then returns the distribution //TODO:understand how it finds it
+as you can see it returns an expected amount and a distribution array, this distribution array is a list of exchanges inside the contract where it can perform the swaps, in this example is suggesting to swap 1 part on exchange #0 and 4 parts on exchange #6, 5 parts in total. 
+
+To find the best distribution it has a `_findBestDistribution` function which receives the `parts` and a matrix of expected amounts and then returns the distribution. 
+This Matrix is built calculating the expected return for each exchange and each accumulated parts. For example: `matrix[i][j]` is the expected return of using exchange `i` with `j` parts minus gas.
+
+**_findBestDristribution:** This function is responsible for finding the best distribution of the parts, it receives the `parts` and a matrix of expected amounts.
+it builds two arrays, answer and parent. First, the answer array stores the expected return for each exchange and each accumulated parts. Second, the parent array stores the number of parts that are left to use in another exchange.
+The answer array is a matrix of `int[n][s+1]` and the parent array is a matrix of `uint[n][s+1]` where `n` is the number of exchanges and `s` is the number of parts.
+```solidity
+        int256[][] memory answer = new int256[][](n); // int[n][s+1]
+        uint256[][] memory parent = new uint256[][](n); // int[n][s+1]
+```
+The inizialization of the arrays looks like:
+```solidity        
+for (uint j = 0; j <= s; j++) {
+    answer[0][j] = amounts[0][j];
+    for (uint i = 1; i < n; i++) {
+        answer[i][j] = -1e72;
+    }
+    parent[0][j] = 0;
+}
+```
+Which means that the expected return for the first exchange is the expected return of using the first exchange with `j` parts, and the expected return for the rest of the exchanges is -1e72 (a very low number) and the parent for the first exchange is 0.
+
+The main part of the algorithm is here:
+```solidity
+        for (uint i = 1; i < n; i++) {
+            for (uint j = 0; j <= s; j++) {
+                answer[i][j] = answer[i - 1][j];
+                parent[i][j] = j;
+
+                for (uint k = 1; k <= j; k++) {
+                    if (answer[i - 1][j - k] + amounts[i][k] > answer[i][j]) {
+                        answer[i][j] = answer[i - 1][j - k] + amounts[i][k];
+                        parent[i][j] = j - k;
+                    }
+                }
+            }
+        }
+```
+Here, first it initializes the answer and parent arrays with the expected return of using the first exchange with `j` parts and the parent for the first exchange is `j`. Then it loops through the rest of the exchanges and parts, checking if the expected return of using one exchange with `j` parts is greater than the expected return of using the previous exchange with `j` parts, if it is then it updates the answer and parent arrays with the new expected return and the new parent.
+
+Finally, it returns the distribution and the expected return:
+```solidity
+        distribution = new uint256[](DEXES_COUNT);
+
+        uint256 partsLeft = s;
+        for (uint curExchange = n - 1; partsLeft > 0; curExchange--) {
+            distribution[curExchange] = partsLeft - parent[curExchange][partsLeft];
+            partsLeft = parent[curExchange][partsLeft];
+        }
+
+        returnAmount = (answer[n - 1][s] == VERY_NEGATIVE_VALUE) ? 0 : answer[n - 1][s];
+```
+
 
 After getting the expected return (which could be done by the front) then you can call the swap function on the contract.
 
