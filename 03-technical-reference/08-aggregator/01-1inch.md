@@ -29,7 +29,7 @@ To find the best distribution it has a `_findBestDistribution` function which re
 This Matrix is built calculating the expected return for each exchange and each accumulated parts. For example: `matrix[i][j]` is the expected return of using exchange `i` with `j` parts minus gas.
 
 **_findBestDristribution:** This function is responsible for finding the best distribution of the parts, it receives the `parts` and a matrix of expected amounts.
-it builds two arrays, answer and parent. First, the answer array stores the expected return for each exchange and each accumulated parts. Second, the parent array stores the number of parts that are left to use in another exchange.
+it builds two arrays, answer and parent. First, the answer array stores the expected return of exchange and parts combinations. For example, `answer[i][j]` stores the best expected amount using `j` parts, which could be swapping `j-k` for one (or multiple) exchange and `k` for the exchange `i`. Second, the parent array stores the number of parts that are left to use in another exchange.
 The answer array is a matrix of `int[n][s+1]` and the parent array is a matrix of `uint[n][s+1]` where `n` is the number of exchanges and `s` is the number of parts.
 ```solidity
         int256[][] memory answer = new int256[][](n); // int[n][s+1]
