@@ -58,4 +58,5 @@
     - [Wrapping Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/README.md)
     - [Swap Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/02-swap-stellar-classic-assets/README.md)
     - [Test Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/03-test-stellar-assets-in-testnet/README.md)
-  - [Conclusions](05-tutorial/08-conclusions/README.md)
+  - [How to bridge](05-tutorial/08-Bridge/README.md)
+  - [Conclusions](05-tutorial/09-conclusions/README.md)
