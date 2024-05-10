@@ -45,7 +45,7 @@ First, we must create an instance of the router contract using the Contract clas
 >```
 
 ```typescript
-const horizonServer = stellarSDK.Horizon.Server('horizon-rpc url')
+const horizonServer = stellarSDK.Horizon.Server("horizon-rpc url");
 const createTx = async (account: Keypair, routerAddress: Address, method: String) => {
   const createTxBuilder = async (account: Keypair): Promise<TransactionBuilder> => {
       try {
@@ -57,7 +57,7 @@ const createTx = async (account: Keypair, routerAddress: Address, method: String
         });
       } catch (e: any) {
         console.error(e);
-        throw Error("unable to create txBuilder")
+        throw Error("unable to create txBuilder");
       }
     }
     const contractInstance = new Contract(routerAddress);
@@ -72,7 +72,7 @@ const createTx = async (account: Keypair, routerAddress: Address, method: String
 Once you have created the transaction, we must deliver it as an argument to our function to invoke transactions together with the keypair of the account with which we are going to operate. This function will be responsible for simulating the transaction (to verify the validity of this same one) and if everything is correct, we will proceed to assemble, sign and send the transaction:
 
 ```typescript
-const horizonServer = stellarSDK.Horizon.Server('horizon-rpc url')
+const horizonServer = stellarSDK.Horizon.Server("horizon-rpc url");
 const invokeTransaction = async (tx: Transaction, source: Keypair) => {
   const simulatedTx = await server.simulateTransaction(tx);
   //If you only want to review the transaction, you can return the simulatedTx object to explore it in detail.
@@ -92,17 +92,17 @@ const invokeTransaction = async (tx: Transaction, source: Keypair) => {
   );
   const prepped_tx = assemble_tx.setSorobanData(sim_tx_data).build();
   prepped_tx.sign(source);
-  const tx_hash = prepped_tx.hash().toString('hex');
+  const tx_hash = prepped_tx.hash().toString("hex");
 
-  console.log('submitting tx...');
+  console.log("submitting tx...");
   let response: txResponse = await horizonServer.sendTransaction(prepped_tx);
   let status: txStatus = response.status;
   console.log(`Hash: ${tx_hash}`);
   // Poll this until the status is not "NOT_FOUND"
-  while (status === 'PENDING' || status === 'NOT_FOUND') {
+  while (status === "PENDING" || status === "NOT_FOUND") {
     // See if the transaction is complete
     await new Promise((resolve) => setTimeout(resolve, 2000));
-    console.log('checking tx...');
+    console.log("checking tx...");
     response = await horizonServer.getTransaction(tx_hash);
     status = response.status;
   }
@@ -174,6 +174,7 @@ amount_a_min: Number | BigNumber;
 amount_b_min: Number | BigNumber;
 account: Address;
 getCurrentTimePlusOneHour: Number;
+
 ```
 - [asset_a, asset_b]: These are the respective addresses of the asset pair from which we want to remove liquidity.
 - Liquidity: This represents the desired amount of assets to remove from the liquidity pool.
@@ -203,13 +204,14 @@ const removeLiquidityParams: xdr.ScVal[] = [
 
 To create a Swap operation on Soroswap, we will need to define the following parameters:
 
- ```typescript
+```typescript
 amount_in: Number | BigNumber;
 amount_out_min: Number | BigNumber;
 path: Address[];
 account: KeyPair;
 getCurrentTimePlusOneHour: Number;
- ```
+```
+
 - amount_in: Represents the desired amount to be exchanged.
 - amount_out_min: Represents the minimum acceptable amount to receive for this operation.
 - path: Represents the exchange path to follow to obtain the requested asset.
@@ -299,7 +301,7 @@ const route = await router.route(
 
 console.log(route.trade.path);
 
-//Output: ['0x...', '0x...', '0x...']
+//Output: ["0x...", "0x...", "0x..."]
 
 ```
 This will give us the ``route`` object, which contains an ordered array of addresses representing the most optimal route for the exchange within the ``trade.path`` property.
@@ -309,7 +311,7 @@ If you need more information on how to use the Router-sdk or how it works, you c
 ## Putting it All Together:
 Once we have created our methods for interacting with the blockchain and defined the type of operation to be performed along with its parameters, we only need to call the functions to execute our transaction:
 
-for this example we will perform a swap operation on testnet with a random account::
+for this example we will perform a swap operation on testnet with a random account:
 
 ```typescript
 const executeSwap = async () => {
@@ -327,8 +329,8 @@ const executeSwap = async () => {
       nativeToScVal(getCurrentTimePlusOneHour(), { type: "u64" })
   ];
   const tx = await createTx(account, routerAddress, method);
-  const res = await invokeTransaction(tx, account)
-  console.log(res)
+  const res = await invokeTransaction(tx, account);
+  console.log(res);
 }
 
 executeSwap();
