@@ -123,6 +123,7 @@ After calling this function, we can inspect the `response` object to verify that
 
 > [!Note]
 > `method: "add_liquidity"`
+> [Reference](./04-SoroswapRouter.md#add_liquidity)
 
 To add liquidity to a Soroswap pool (or deposit funds), we will need to define the following parameters:
 
@@ -163,6 +164,7 @@ const addLiquidityParams: xdr.ScVal[] = [
 
 > [!Note]
 > `method: "remove_liquidity"`
+> [Reference](./04-SoroswapRouter.md#remove_liquidity)
 
 To remove liquidity from a Soroswap pool (or withdraw funds), we will need to define the following parameters: 
 
@@ -201,6 +203,7 @@ const removeLiquidityParams: xdr.ScVal[] = [
 
 > [!Note]
 > `method: "swap_exact_assets_for_assets"`
+> [Reference](./04-SoroswapRouter.md#swap_exact_tokens_for_tokens)
 
 To create a Swap operation on Soroswap, we will need to define the following parameters:
 
