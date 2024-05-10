@@ -31,7 +31,7 @@ yarn add soroswap-router-sdk@11.2.2
 
 ### Building the transaction:
 
-In order to execute our operations on the blockchain, we will first need to create a transaction to send ([Forward](#Methods) in this guide you will find the available methods and their predefined parameters):
+In order to execute our operations on the blockchain, we will first need to create a transaction to send ([Forward](#methods) in this guide you will find the available methods and their predefined parameters):
 
 First, we must create an instance of the router contract using the Contract class, giving as an argument the Address of the contract and using its call method, we create the operation delivering as arguments the method of the operation (for example: "swap_exact_assets_for_assets") and the parameters defined to then create the transaction with our TransactionBuilder:
 
@@ -115,9 +115,9 @@ After calling this function, we can inspect the `response` object to verify that
 
 > [!Note] 
 >The operations available in the router contract that we will review in this documentation are:
-> - [Add_liquidity](#Add liquidity to a pool): "add_liquidity"
-> - [Remove_liquidity](#Remove liquidity from a pool): "remove_liquidity"
-> - [Swap](#Swap): "swap_exact_assets_for_assets"
+> - [Add_liquidity](#add-liquidity-to-a-pool): "add_liquidity"
+> - [Remove_liquidity](#remove-liquidity-from-a-pool): "remove_liquidity"
+> - [Swap](#swap): "swap_exact_assets_for_assets"
 
 ### Add liquidity to a pool:
 
