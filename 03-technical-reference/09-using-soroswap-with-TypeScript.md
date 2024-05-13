@@ -20,13 +20,13 @@ In this guide, we will be using the ` ^11.2.2 `  version of Stellar SDK, availab
 To do this, we will install it as follows:
 
 ```bash
-npm i soroswap-router-sdk@11.2.2
+npm i stellar-sdk@11.2.2
 ```
 
 or
 
 ```bash
-yarn add soroswap-router-sdk@11.2.2
+yarn add stellar-sdk@11.2.2
 ```
 
 ### Building the transaction:
