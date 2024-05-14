@@ -14,7 +14,7 @@ See [x\*y=k](#x--y--k).
 
 ### Token Interface
 
-Token interface standar. [Read more](https://soroban.stellar.org/docs/reference/interfaces/token-interface)
+Token interface standar. [Read more](https://developers.stellar.org/docs/smart-contracts/tokens/token-interface)
 
 ### Factory
 
