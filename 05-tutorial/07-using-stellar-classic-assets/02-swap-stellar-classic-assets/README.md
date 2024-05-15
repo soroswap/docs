@@ -16,6 +16,6 @@ if the token isn't known for us we will ask you to accept the following popup, t
 
 ## Step 3: Continue
 
-You can follow the steps on [Doing Swap](../05-doing-swap/README.md)
+You can follow the steps on [Doing Swap](../../05-doing-swap/README.md)
 
 Congratulations! you have successfully swapped a Stellar Classic Assets
