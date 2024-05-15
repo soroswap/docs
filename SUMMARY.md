@@ -44,6 +44,7 @@
     - [Comet](03-technical-reference/08-aggregator/03-comet.md)
     - [SoroswapAggregator Design](03-technical-reference/08-aggregator/04-SoroswapAggregator-Design.md)
     - [SoroswapAggregator Technical Overview](03-technical-reference/08-aggregator/05-SoroswapAggregator-Technical-Overview.md)
+  - [Using Soroswap with TypeScript](03-technical-reference/09-using-soroswap-with-TypeScript.md)
 
 - [Partners](04-partners/README.md)
   - [Collaboration with Mercury and SubQuery](04-partners/01-mercury-subquery.md)
@@ -58,4 +59,5 @@
     - [Wrapping Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/README.md)
     - [Swap Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/02-swap-stellar-classic-assets/README.md)
     - [Test Stellar Classic Assets](05-tutorial/07-using-stellar-classic-assets/03-test-stellar-assets-in-testnet/README.md)
-  - [Conclusions](05-tutorial/08-conclusions/README.md)
+  - [Bridge using Pendulum](05-tutorial/08-Bridge/README.md)
+  - [Conclusions](05-tutorial/09-conclusions/README.md)
