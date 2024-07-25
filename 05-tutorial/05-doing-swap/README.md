@@ -36,6 +36,7 @@ Enter the amount you desire to swap. Make sure to align it with your balances an
 When you swap a token for the first time on Soroswap.Finance, you'll need to sign a "trustline" transaction.
 Trustlines are an explicit authorization that allows your account to hold and exchange a specific asset.
 
+![](images/swap4.png)
 
 ## Step 6: Confirm the transaction
 
@@ -43,7 +44,7 @@ Trustlines are an explicit authorization that allows your account to hold and ex
 2. Review the transaction information and click "Approve" to confirm the swap.
 3. Wait for the transaction to be confirmed on the blockchain.
 
-![](images/swap4.png)
+![](images/swap5.png)
 
 ## Step 7: View the transaction details
 
