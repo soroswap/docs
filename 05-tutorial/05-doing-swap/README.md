@@ -31,7 +31,13 @@ Enter the amount you desire to swap. Make sure to align it with your balances an
 
 ![](images/swap3.png)
 
-## Step 5: Confirm the transaction
+## Step 5: Trustlines
+
+When you swap a token for the first time on Soroswap.Finance, you'll need to sign a "trustline" transaction.
+Trustlines are an explicit authorization that allows your account to hold and exchange a specific asset.
+
+
+## Step 6: Confirm the transaction
 
 1. Your Freighter wallet will open, displaying the transaction details.
 2. Review the transaction information and click "Approve" to confirm the swap.
@@ -39,7 +45,7 @@ Enter the amount you desire to swap. Make sure to align it with your balances an
 
 ![](images/swap4.png)
 
-## Step 6: View the transaction details
+## Step 7: View the transaction details
 
 1. Once the transaction is confirmed, you will see a success message indicating that the swap was completed.
 2. You can also view the transaction details with the transaction hash or by clicking "View on explorer".
