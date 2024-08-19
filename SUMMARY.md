@@ -44,6 +44,7 @@
     - [Comet](03-technical-reference/08-aggregator/03-comet.md)
     - [SoroswapAggregator Design](03-technical-reference/08-aggregator/04-SoroswapAggregator-Design.md)
     - [SoroswapAggregator Technical Overview](03-technical-reference/08-aggregator/05-SoroswapAggregator-Technical-Overview.md)
+    - [Soroswap Aggregator Disclaimer](03-technical-reference/08-aggregator/06-SoroswapAggregatorDisclaimer.md)
   - [Using Soroswap with TypeScript](03-technical-reference/09-using-soroswap-with-TypeScript.md)
 
 - [Partners](04-partners/README.md)
