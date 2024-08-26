@@ -142,3 +142,78 @@ fn router_get_amounts_in(e: Env, amount_out: i128, path: Vec<Address>) -> Vec<i1
 Performs chained `getAmountIn` calculations on any number of pairs. Given an output amount, it calculates the required input amounts through the specified token path.
 
 These library functions are used in the router to facilitate various operations, such as estimating amounts, performing swaps, and managing liquidity. They play a crucial role in ensuring accurate and efficient token exchange within the Soroswap ecosystem.
+
+## Cross contract calls
+
+### Prerequisites:
+Ensure you have ``soroban-sdk`` version ``20.5.0`` added to your Cargo.toml file.
+
+``` toml
+[dependencies]
+soroban-sdk = { version = "20.5.0" }
+```
+
+### Steps: 
+
+1. Import the Contract as .wasm
+2. Make Contract Calls:
+Inside the function of your contract where you want to interact with router contracts, use the following functions to make calls:
+
+
+>[!Note]
+>You can see all avaliable methods in the [Soroswap/core repo](https://github.com/soroswap/core/blob/main/contracts/router/src/lib.rs).
+
+
+``` rust
+use soroban_sdk::token::Client as TokenClient;
+
+// Import the router contract as .wasm
+soroban_sdk::contractimport!(
+    file = "./soroswap_router.optimized.wasm"
+);
+
+pub type SoroswapRouterClient<'a> = Client<'a>;
+
+fn my_function(
+        e: Env,
+        //{...} any other args required for your function
+    ) -> Result<(i128, i128, i128), ContractError> {  
+  /* 
+    Define the call parameters here...
+   */
+  
+  //Create an instance of the router client
+  let soroswap_router_client = SoroswapRouterClient::new(&e, &soroswap_router_address);
+  //Calls the swap function
+  let swap = soroswap_router_client.swap_exact_tokens_for_tokens(
+      &amount_in,
+      &amount_out_min,
+      &path,
+      &to,
+      &deadline,
+  )
+
+  //Calls the add_liquidity function
+  let add_liquidty = soroswap_router_client.add_liquidity(
+      &token_a,
+      &token_b,
+      &amount_a,
+      &amount_b,
+      &0,
+      &0,
+      &current_contract,
+      &deadline,
+  );
+  
+  //Calls the remove_liquidity function
+  let remove_liquidty = soroswap_router_client.remove_liquidity(
+    &token_a,
+    &token_b,
+    &liquidity,
+    &amount_a_min,
+    &amount_b_min,
+    &to,
+    &deadline,
+  );
+}
+```
