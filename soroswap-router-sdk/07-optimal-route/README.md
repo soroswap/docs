@@ -34,7 +34,7 @@ Useful links:
 
 They call an API called Pathfinder to get the best route across multiple protocols. However, the API is not open source and we don't know how it works.
 
-1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../soroswap-aggregator/01-1inch.md)
+1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../soroswap-aggregator/technical-reference/inspirations/01-1inch.md)
 
 ## Soroswap Optimal Routing
 
