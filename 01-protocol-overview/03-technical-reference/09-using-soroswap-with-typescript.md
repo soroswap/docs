@@ -120,7 +120,7 @@ After calling this function, we can inspect the `response` object to verify that
 
 ### Add liquidity to a pool:
 
-> \[!Note] `method: "add_liquidity"` [Reference](03-smart-contracts/04-soroswaprouter.md#add\_liquidity)
+> \[!Note] `method: "add_liquidity"` [Reference](../03-smart-contracts/04-soroswaprouter.md#add\_liquidity)
 
 To add liquidity to a Soroswap pool (or deposit funds), we will need to define the following parameters:
 
@@ -159,7 +159,7 @@ const addLiquidityParams: xdr.ScVal[] = [
 
 ### Remove liquidity from a pool:
 
-> \[!Note] `method: "remove_liquidity"` [Reference](03-smart-contracts/04-soroswaprouter.md#remove\_liquidity)
+> \[!Note] `method: "remove_liquidity"` [Reference](../03-smart-contracts/04-soroswaprouter.md#remove\_liquidity)
 
 To remove liquidity from a Soroswap pool (or withdraw funds), we will need to define the following parameters:
 
@@ -196,7 +196,7 @@ const removeLiquidityParams: xdr.ScVal[] = [
 
 ### Swap:
 
-> \[!Note] `method: "swap_exact_assets_for_assets"` [Reference](03-smart-contracts/04-soroswaprouter.md#swap\_exact\_tokens\_for\_tokens)
+> \[!Note] `method: "swap_exact_assets_for_assets"` [Reference](../03-smart-contracts/04-soroswaprouter.md#swap\_exact\_tokens\_for\_tokens)
 
 To create a Swap operation on Soroswap, we will need to define the following parameters:
 
