@@ -1,6 +1,7 @@
 ---
 id: flash-swaps
 title: Flash Swaps
+hidden: true
 ---
 
 # Flash Swaps
@@ -47,4 +48,4 @@ Luckily, flash swaps enable us to withdraw the _full_ ETH amount upfront. If we 
 
 ## Developer resources
 
-* To see how to integrate a flash swap in your smart contract read [Using Flash Swaps](../../old\_docusaurus/docs/guides/smart-contract-integration/using-flash-swaps/).
+* To see how to integrate a flash swap in your smart contract read [Using Flash Swaps](../old\_docusaurus/docs/guides/smart-contract-integration/using-flash-swaps/).

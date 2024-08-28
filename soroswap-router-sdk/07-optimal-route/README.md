@@ -34,13 +34,13 @@ Useful links:
 
 They call an API called Pathfinder to get the best route across multiple protocols. However, the API is not open source and we don't know how it works.
 
-1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../aggregator/01-1inch.md)
+1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../soroswap-aggregator/01-1inch.md)
 
 ## Soroswap Optimal Routing
 
 The technical architecture for Soroswap Optimal Routing involves several interconnected parts. At the core, we have the Soroswap-router-sdk, responsible for managing all the logic related to the optimal route swap. This component utilizes a similar algorithm to Uniswap and PancakeSwap, enabling it to compute the best route for a given swap.
 
-![](images/draw.png)
+![](../../03-technical-reference/07-optimal-route/images/draw.png)
 
 ### Frontend
 

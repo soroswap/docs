@@ -3,9 +3,9 @@ id: pools
 title: Pools
 ---
 
-# Pools
+# Liquidity Pools
 
-![](../01-protocol-overview/images/anatomy.jpg)
+![](01-protocol-overview/images/anatomy.jpg)
 
 ## Introduction
 
@@ -15,7 +15,7 @@ When other liquidity providers add to an existing pool, they must deposit pair t
 
 ## Pool tokens
 
-![](../01-protocol-overview/images/lp.jpg)
+![](01-protocol-overview/images/lp.jpg)
 
 Whenever liquidity is deposited into a pool, unique tokens known as _liquidity tokens_ are minted and sent to the provider's address. These tokens represent a given liquidity provider's contribution to a pool. The proportion of the pool's liquidity provided determines the number of liquidity tokens the provider receives. If the provider is minting a new pool, the number of liquidity tokens they will receive will equal sqrt(x \* y), where x and y represent the amount of each token provided.
 
@@ -27,8 +27,8 @@ As liquidity tokens are themselves tradable assets, liquidity providers may sell
 
 > Learn more with advanced topics:
 
-* [Understanding Returns](../04-advanced-topics/03-understanding-returns.md)
-* [Fees](../04-advanced-topics/01-fees.md)
+* [Understanding Returns](04-advanced-topics/03-understanding-returns.md)
+* [Fees](01-fees.md)
 
 ## Why pools?
 
@@ -48,4 +48,4 @@ Just how end-users can interact with the Uniswap protocol through the Interface 
 
 ## Developer resources
 
-* To see how to pool tokens in a smart contract read [Providing Liquidity](../../03-technical-reference/04-SoroswapRouter.md#add_liquidity).
+* To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md#add\_liquidity).

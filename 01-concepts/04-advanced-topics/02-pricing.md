@@ -13,7 +13,7 @@ As we learned in [Protocol Overview](../../01-protocol-overview/), each pair on 
 
 In Uniswap V1, trades are always executed at the "best possible" price, calculated at execution time. Somewhat confusingly, this calculation is actually accomplished with one of two different formulas, depending on whether the trade specifies an exact _input_ or _output_ amount. Functionally, the difference between these two functions is miniscule, but the very existence of a difference increases conceptual complexity. Initial attempts to support both functions in V2 proved inelegant, and the decision was made to **not provide any pricing functions in the core**. Instead, pairs directly check whether the invariant was satisfied (accounting for fees) after every trade. This means that rather than relying on a pricing function to _also_ enforce the invariant, V2 pairs simply and transparently ensure their own safety, a nice separation of concerns. One downstream benefit is that V2 pairs will more naturally support other flavors of trades which may emerge, (e.g. trading to a specific price at execution time).
 
-At a high level, in Uniswap V2, _trades must be priced in the periphery_. The good news is that the [library](../../03-technical-reference/03-SoroswapLibrary.md) provides a variety of functions designed to make this quite simple, and all swapping functions in the [router](../../03-technical-reference/04-SoroswapRouter.md) are designed with this in mind.
+At a high level, in Uniswap V2, _trades must be priced in the periphery_. The good news is that the [library](../../01-protocol-overview/03-technical-reference/03-smart-contracts/03-soroswaplibrary.md) provides a variety of functions designed to make this quite simple, and all swapping functions in the [router](../../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md) are designed with this in mind.
 
 ## Pricing Trades
 
@@ -23,15 +23,15 @@ Say a smart contract naively wants to send 10 DAI to the DAI/WETH pair and recei
 
 To prevent these types of attacks, it's vital to submit swaps _that have access to knowledge about the "fair" price their swap should execute at_. In other words, swaps need access to an _oracle_, to be sure that the best execution they can get from Uniswap is close enough to what the oracle considers the "true" price. While this may sound complicated, the oracle can be as simple as an _off-chain observation of the current market price of a pair_. Because of arbitrage, it's typically the case that the ratio of the intra-block reserves of a pair is close to the "true" market price. So, if a user submits a trade with this knowledge in mind, they can ensure that the losses due to front-running are tightly bounded. This is how, for example, the Uniswap frontend ensure trade safety. It calculates the optimal input/output amounts given observed intra-block prices, and uses the router to perform the swap, which guarantees the swap will execute at a rate no less that `x`% worse than the observed intra-block rate, where `x` is a user-specified slippage tolerance (0.5% by default).
 
-There are, of course, other options for oracles, including [native V2 oracles](../03-core-concepts/04-oracles.md).
+There are, of course, other options for oracles, including [native V2 oracles](../04-oracles.md).
 
 ### Exact Input
 
-If you'd like to send an exact amount of input tokens in exchange for as many output tokens as possible, you'll want to use [getAmountsOut](../../03-technical-reference/04-SoroswapRouter.md). The equivalent SDK function is [getOutputAmount](../../03-technical-reference/01-SoroswapPair.md), or [minimumAmountOut](../../03-technical-reference/01-SoroswapPair.md) for slippage calculations.
+If you'd like to send an exact amount of input tokens in exchange for as many output tokens as possible, you'll want to use [getAmountsOut](../../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md). The equivalent SDK function is [getOutputAmount](../../01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair.md), or [minimumAmountOut](../../01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair.md) for slippage calculations.
 
 ### Exact Output
 
-If you'd like to receive an exact amount of output tokens for as few input tokens as possible, you'll want to use [getAmountsIn](../../03-technical-reference/04-SoroswapRouter.md). The equivalent SDK function is [getInputAmount](../../03-technical-reference/01-SoroswapPair.md), or [maximumAmountIn](../../03-technical-reference/01-SoroswapPair.md) for slippage calculations.
+If you'd like to receive an exact amount of output tokens for as few input tokens as possible, you'll want to use [getAmountsIn](../../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md). The equivalent SDK function is [getInputAmount](../../01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair.md), or [maximumAmountIn](../../01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair.md) for slippage calculations.
 
 ### Swap to Price
 

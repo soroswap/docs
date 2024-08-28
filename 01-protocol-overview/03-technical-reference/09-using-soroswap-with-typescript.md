@@ -1,4 +1,4 @@
-# Using Soroswap in TypeScript
+# Using Soroswap with TypeScript
 
 The Soroswap protocol allows you to interact with Stellar's smart contract platform: Soroban. In this section, we will explore how to write TypeScript scripts to use the contracts in our own automations or applications:
 
@@ -6,18 +6,15 @@ The Soroswap protocol allows you to interact with Stellar's smart contract platf
 
 Before starting, it is necessary to clarify that to understand what we are doing here, you need to have a good understanding of TypeScript, smart contracts, and how a blockchain works. In addition, you need to know how to use [stellar-sdk](https://stellar.github.io/js-stellar-sdk/#usage) since we will use its [TransactionBuilder](https://stellar.github.io/js-stellar-sdk/TransactionBuilder.html) class to create operations, simulate, sign, and send transactions. Additionally, some types and functions for transforming values.
 
->[!Tip]
-If you need practical examples of how to create a transaction builder or how to use the SDK in general, you can guide yourself from our projects [soroswap/core](https://github.com/soroswap/core/tree/main/scripts) and [paltalabs/mercury-client.](https://github.com/paltalabs/mercury-client)
+> \[!Tip] If you need practical examples of how to create a transaction builder or how to use the SDK in general, you can guide yourself from our projects [soroswap/core](https://github.com/soroswap/core/tree/main/scripts) and [paltalabs/mercury-client.](https://github.com/paltalabs/mercury-client)
 
 ## Build, sign & send:
 
->[!Warning]
-For educational purposes, we will use an adaptation of the TransactionBuilder used in the [soroswap/core](https://github.com/soroswap/core/) repository. The code will need adjustments depending on your project and work methodology, so we recommend always working hand-in-hand with the official Stellar SDK [Documentation](https://stellar.github.io/js-stellar-sdk/#usage) to be able to build one tailored to your needs.
+> \[!Warning] For educational purposes, we will use an adaptation of the TransactionBuilder used in the [soroswap/core](https://github.com/soroswap/core/) repository. The code will need adjustments depending on your project and work methodology, so we recommend always working hand-in-hand with the official Stellar SDK [Documentation](https://stellar.github.io/js-stellar-sdk/#usage) to be able to build one tailored to your needs.
 
 #### Installing Stellar SDK
 
-In this guide, we will be using the ` ^11.2.2 `  version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk).
-To do this, we will install it as follows:
+In this guide, we will be using the `^11.2.2` version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk). To do this, we will install it as follows:
 
 ```bash
 npm i soroswap-router-sdk@11.2.2
@@ -31,18 +28,17 @@ yarn add soroswap-router-sdk@11.2.2
 
 ### Building the transaction:
 
-In order to execute our operations on the blockchain, we will first need to create a transaction to send ([Forward](#methods) in this guide you will find the available methods and their predefined parameters):
+In order to execute our operations on the blockchain, we will first need to create a transaction to send ([Forward](09-using-soroswap-with-typescript.md#methods) in this guide you will find the available methods and their predefined parameters):
 
-First, we must create an instance of the router contract using the Contract class, giving as an argument the Address of the contract and using its call method, we create the operation delivering as arguments the method of the operation (for example: "swap_exact_assets_for_assets") and the parameters defined to then create the transaction with our TransactionBuilder:
+First, we must create an instance of the router contract using the Contract class, giving as an argument the Address of the contract and using its call method, we create the operation delivering as arguments the method of the operation (for example: "swap\_exact\_assets\_for\_assets") and the parameters defined to then create the transaction with our TransactionBuilder:
 
-> [!Tip]
->If you need to thoroughly review all the methods available in the router contract or simply want to know how the contract works, you can review it directly [here](https://github.com/soroswap/core/blob/febe01d8bbd9677a902863925efcc509129b0306/contracts/router/src/lib.rs) in the official repository of Soroswap.
+> \[!Tip] If you need to thoroughly review all the methods available in the router contract or simply want to know how the contract works, you can review it directly [here](https://github.com/soroswap/core/blob/febe01d8bbd9677a902863925efcc509129b0306/contracts/router/src/lib.rs) in the official repository of Soroswap.
 
-> [!Tip]
->To obtain the routerAddress respective to the network on which you want to operate, you can make a direct call to the Soroswap api in the following way: 
+> \[!Tip] To obtain the routerAddress respective to the network on which you want to operate, you can make a direct call to the Soroswap api in the following way:
+>
 > ```curl
->curl -XGET -H "Content-type: application/json" 'https://api.soroswap.finance/api/${network}/router'
->```
+> curl -XGET -H "Content-type: application/json" 'https://api.soroswap.finance/api/${network}/router'
+> ```
 
 ```typescript
 const horizonServer = stellarSDK.Horizon.Server("horizon-rpc url");
@@ -68,7 +64,9 @@ const createTx = async (account: Keypair, routerAddress: Address, method: String
   return tx;
 }
 ```
+
 ### Simulate, sign & send the transaction:
+
 Once you have created the transaction, we must deliver it as an argument to our function to invoke transactions together with the keypair of the account with which we are going to operate. This function will be responsible for simulating the transaction (to verify the validity of this same one) and if everything is correct, we will proceed to assemble, sign and send the transaction:
 
 ```typescript
@@ -109,21 +107,20 @@ const invokeTransaction = async (tx: Transaction, source: Keypair) => {
   return response;
 }
 ```
+
 After calling this function, we can inspect the `response` object to verify that everything went as expected.
 
 ## Methods:
 
-> [!Note] 
->The operations available in the router contract that we will review in this documentation are:
-> - [Add_liquidity](#add-liquidity-to-a-pool): "add_liquidity"
-> - [Remove_liquidity](#remove-liquidity-from-a-pool): "remove_liquidity"
-> - [Swap](#swap): "swap_exact_assets_for_assets"
+> \[!Note] The operations available in the router contract that we will review in this documentation are:
+>
+> * [Add\_liquidity](09-using-soroswap-with-typescript.md#add-liquidity-to-a-pool): "add\_liquidity"
+> * [Remove\_liquidity](09-using-soroswap-with-typescript.md#remove-liquidity-from-a-pool): "remove\_liquidity"
+> * [Swap](09-using-soroswap-with-typescript.md#swap): "swap\_exact\_assets\_for\_assets"
 
 ### Add liquidity to a pool:
 
-> [!Note]
-> `method: "add_liquidity"`
-> [Reference](./04-SoroswapRouter.md#add_liquidity)
+> \[!Note] `method: "add_liquidity"` [Reference](03-smart-contracts/04-soroswaprouter.md#add\_liquidity)
 
 To add liquidity to a Soroswap pool (or deposit funds), we will need to define the following parameters:
 
@@ -137,14 +134,14 @@ amount_b_min: Number | BigNumber;
 account: Address;
 getCurrentTimePlusOneHour: Number;
 ```
-- [asset_a, asset_b]: These are the respective addresses of the asset pair to which we want to add liquidity.
-- [amount_a_desired, amount_b_desired]: These are the liquidity amounts you want to add to the respective assets.
-- [amount_a_min, amount_b_min]: These are the minimum amounts required to add to each asset, respectively.
-- account: This is the address where the tokens will be sent.
-- getCurrentTimePlusOneHour: This is the maximum date by which the transaction can be executed.
 
-> [!Note]
-All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
+* \[asset\_a, asset\_b]: These are the respective addresses of the asset pair to which we want to add liquidity.
+* \[amount\_a\_desired, amount\_b\_desired]: These are the liquidity amounts you want to add to the respective assets.
+* \[amount\_a\_min, amount\_b\_min]: These are the minimum amounts required to add to each asset, respectively.
+* account: This is the address where the tokens will be sent.
+* getCurrentTimePlusOneHour: This is the maximum date by which the transaction can be executed.
+
+> \[!Note] All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
 
 ```typescript
 
@@ -162,11 +159,9 @@ const addLiquidityParams: xdr.ScVal[] = [
 
 ### Remove liquidity from a pool:
 
-> [!Note]
-> `method: "remove_liquidity"`
-> [Reference](./04-SoroswapRouter.md#remove_liquidity)
+> \[!Note] `method: "remove_liquidity"` [Reference](03-smart-contracts/04-soroswaprouter.md#remove\_liquidity)
 
-To remove liquidity from a Soroswap pool (or withdraw funds), we will need to define the following parameters: 
+To remove liquidity from a Soroswap pool (or withdraw funds), we will need to define the following parameters:
 
 ```typescript
 asset_a: Address;
@@ -178,14 +173,14 @@ account: Address;
 getCurrentTimePlusOneHour: Number;
 
 ```
-- [asset_a, asset_b]: These are the respective addresses of the asset pair from which we want to remove liquidity.
-- Liquidity: This represents the desired amount of assets to remove from the liquidity pool.
-- [amount_a_min, amount_b_min]: These are the minimum amounts required to receive from each asset, respectively.
-- account: This is the address where the tokens will be sent.
-- getCurrentTimePlusOneHour: This is the maximum date by which the transaction can be executed.
 
-> [!Note]
-All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
+* \[asset\_a, asset\_b]: These are the respective addresses of the asset pair from which we want to remove liquidity.
+* Liquidity: This represents the desired amount of assets to remove from the liquidity pool.
+* \[amount\_a\_min, amount\_b\_min]: These are the minimum amounts required to receive from each asset, respectively.
+* account: This is the address where the tokens will be sent.
+* getCurrentTimePlusOneHour: This is the maximum date by which the transaction can be executed.
+
+> \[!Note] All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
 
 ```typescript
 const removeLiquidityParams: xdr.ScVal[] = [
@@ -201,9 +196,7 @@ const removeLiquidityParams: xdr.ScVal[] = [
 
 ### Swap:
 
-> [!Note]
-> `method: "swap_exact_assets_for_assets"`
-> [Reference](./04-SoroswapRouter.md#swap_exact_tokens_for_tokens)
+> \[!Note] `method: "swap_exact_assets_for_assets"` [Reference](03-smart-contracts/04-soroswaprouter.md#swap\_exact\_tokens\_for\_tokens)
 
 To create a Swap operation on Soroswap, we will need to define the following parameters:
 
@@ -215,14 +208,13 @@ account: KeyPair;
 getCurrentTimePlusOneHour: Number;
 ```
 
-- amount_in: Represents the desired amount to be exchanged.
-- amount_out_min: Represents the minimum acceptable amount to receive for this operation.
-- path: Represents the exchange path to follow to obtain the requested asset.
-- account: Represents the account where the transaction will be executed.
-- getCurrentTimePlusOneHour: Represents the maximum date by which this transaction can be executed.
+* amount\_in: Represents the desired amount to be exchanged.
+* amount\_out\_min: Represents the minimum acceptable amount to receive for this operation.
+* path: Represents the exchange path to follow to obtain the requested asset.
+* account: Represents the account where the transaction will be executed.
+* getCurrentTimePlusOneHour: Represents the maximum date by which this transaction can be executed.
 
-> [!Note]
-All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
+> \[!Note] All of these values must be converted to [ScVal](https://gist.github.com/Smephite/09b40e842ef454effe4693e0d18246d7#scval-low-level-description) as shown below.
 
 ```typescript
 const swapParams: xdr.ScVal[] = [
@@ -240,8 +232,7 @@ It is important to note that: the swap methods in the router will iterate throug
 
 This is why we at Soroswap have developed [soroswap-router-sdk](https://github.com/soroswap/soroswap-router-sdk), a tool that helps you find the most efficient route for exchanging assets, taking into account the available reserves in Soroswap's liquidity pools.
 
-To utilize this tool, we'll install the ``1.2.4`` version of Soroswap Router SDK into our project. It's available through npm or yarn as ["soroswap-router-sdk"](https://www.npmjs.com/package/soroswap-router-sdk).
-
+To utilize this tool, we'll install the `1.2.4` version of Soroswap Router SDK into our project. It's available through npm or yarn as ["soroswap-router-sdk"](https://www.npmjs.com/package/soroswap-router-sdk).
 
 ```bash
 npm i soroswap-router-sdk
@@ -307,11 +298,11 @@ console.log(route.trade.path);
 //Output: ["0x...", "0x...", "0x..."]
 
 ```
-This will give us the ``route`` object, which contains an ordered array of addresses representing the most optimal route for the exchange within the ``trade.path`` property.
-If you need more information on how to use the Router-sdk or how it works, you can do it directly in the repository of [soroswap/soroswap-router-sdk](https://github.com/soroswap/soroswap-router-sdk)
 
+This will give us the `route` object, which contains an ordered array of addresses representing the most optimal route for the exchange within the `trade.path` property. If you need more information on how to use the Router-sdk or how it works, you can do it directly in the repository of [soroswap/soroswap-router-sdk](https://github.com/soroswap/soroswap-router-sdk)
 
 ## Putting it All Together:
+
 Once we have created our methods for interacting with the blockchain and defined the type of operation to be performed along with its parameters, we only need to call the functions to execute our transaction:
 
 for this example we will perform a swap operation on testnet with a random account:
@@ -338,4 +329,3 @@ const executeSwap = async () => {
 
 executeSwap();
 ```
-

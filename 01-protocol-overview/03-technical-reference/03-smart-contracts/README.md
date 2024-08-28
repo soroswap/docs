@@ -5,23 +5,23 @@ title: Smart contracts
 
 # Smart contracts
 
-Soroswap is a smart contract system. [Core](03-smart-contracts.md#core) contracts provide fundamental safety guarantees for all parties interacting with Soroswap. [Periphery](03-smart-contracts.md#periphery) contracts interact with one or more core contracts but are not themselves part of the core.
+Soroswap is a smart contract system. [Core](./#core) contracts provide fundamental safety guarantees for all parties interacting with Soroswap. [Periphery](./#periphery) contracts interact with one or more core contracts but are not themselves part of the core.
 
 ## Core
 
 [Source code](https://github.com/soroswap/core)
 
-The core consists of a singleton [factory](03-smart-contracts.md#factory) and many [pairs](03-smart-contracts.md#pairs), which the factory is responsible for creating and indexing. These contracts are quite minimal, even brutalist. The simple rationale for this is that contracts with a smaller surface area are easier to reason about, less bug-prone, and more functionally elegant. Perhaps the biggest upside of this design is that many desired properties of the system can be asserted directly in the code, leaving little room for error. One downside, however, is that core contracts are somewhat user-unfriendly. In fact, interacting directly with these contracts is not recommended for most use cases. Instead, a periphery contract should be used.
+The core consists of a singleton [factory](./#factory) and many [pairs](./#pairs), which the factory is responsible for creating and indexing. These contracts are quite minimal, even brutalist. The simple rationale for this is that contracts with a smaller surface area are easier to reason about, less bug-prone, and more functionally elegant. Perhaps the biggest upside of this design is that many desired properties of the system can be asserted directly in the code, leaving little room for error. One downside, however, is that core contracts are somewhat user-unfriendly. In fact, interacting directly with these contracts is not recommended for most use cases. Instead, a periphery contract should be used.
 
 ### Factory
 
-[Reference documentation](../../03-technical-reference/02-SoroswapFactory.md)
+[Reference documentation](02-soroswapfactory.md)
 
 The factory holds the generic bytecode responsible for powering pairs. Its primary job is to create one and only one smart contract per unique token pair. It also contains logic to turn on the protocol charge.
 
 ### Pairs
 
-[Reference documentation](../../03-technical-reference/01-SoroswapPair.md)
+[Reference documentation](01-soroswappair.md)
 
 Pairs have two primary purposes: serving as automated market makers and keeping track of pool token balances. They also expose data which can be used to build decentralized price oracles.
 
@@ -33,12 +33,12 @@ The periphery is a constellation of smart contracts designed to support domain-s
 
 ### Library:
 
-[Reference documentation](../../03-technical-reference/03-SoroswapLibrary.md)
+[Reference documentation](03-soroswaplibrary.md)
 
 The library provides a variety of convenience functions for fetching data and pricing.
 
 ### Router:
 
-[Reference documentation](../../03-technical-reference/04-SoroswapRouter.md)
+[Reference documentation](04-soroswaprouter.md)
 
 The router, which uses the library, fully supports all the basic requirements of a front-end offering trading and liquidity management functionality. Notably, it natively supports multi-pair trades (e.g. x to y to z), treats ETH as a first-class citizen, and offers meta-transactions for removing liquidity.

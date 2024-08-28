@@ -1,6 +1,7 @@
 ---
 id: oracles
 title: Oracles
+hidden: true
 ---
 
 # Oracles
@@ -25,13 +26,13 @@ Unfortunately, this alone is not enough. If significant value settles based on t
 
 Instead, Uniswap V2 adds this end-of-block price to a single cumulative-price variable in the core contract weighted by the amount of time this price existed. **This variable represents a sum of the Uniswap price for every second in the entire history of the contract.**
 
-![](images/v2\_onchain\_price\_data.png)
+![](03-core-concepts/images/v2\_onchain\_price\_data.png)
 
 This variable can be used by external contracts to track accurate time-weighted average prices (TWAPs) across any time interval.
 
 The TWAP is constructed by reading the cumulative price from an ERC20 token pair at the beginning and at the end of the desired interval. The difference in this cumulative price can then be divided by the length of the interval to create a TWAP for that period.
 
-![](images/v2\_twap.png)
+![](03-core-concepts/images/v2\_twap.png)
 
 TWAPs can be used directly or as the basis for moving averages (EMAs and SMAs) as needed.
 
@@ -41,7 +42,7 @@ A few notes:
 * For a simple TWAP, the cost of manipulation increases (approx. linear) with liquidity on Uniswap, as well as (approx. linear) with the length of time over which you average.
 * The Cost of an attack is relatively simple to estimate. Moving the price 5% on a 1-hour TWAP is approximately equal to the amount lost to arbitrage and fees for moving the price 5% every block for 1 hour.
 
-There are some nuances that are good to be aware of when using Uniswap V2 as an oracle, especially where manipulation resistance is concerned. The [whitepaper](../../whitepaper.pdf) elaborates on some of them. Additional oracle-focused developer guides and documentation will be released soon.
+There are some nuances that are good to be aware of when using Uniswap V2 as an oracle, especially where manipulation resistance is concerned. The [whitepaper](../whitepaper.pdf) elaborates on some of them. Additional oracle-focused developer guides and documentation will be released soon.
 
 In the meantime, check out our [example implementation](https://github.com/Uniswap/uniswap-v2-periphery/blob/master/contracts/examples/ExampleOracleSimple.sol) of a 24 hr TWAP Oracle built on Uniswap V2!
 
@@ -53,4 +54,4 @@ Other factors, such as network congestion, can reduce the cost of attack. For a 
 
 ## Building an oracle
 
-To learn more about building oracles check out [building an Oracle](../../old\_docusaurus/docs/guides/smart-contract-integration/building-an-oracle/) in the developer guides.
+To learn more about building oracles check out [building an Oracle](../old\_docusaurus/docs/guides/smart-contract-integration/building-an-oracle/) in the developer guides.
