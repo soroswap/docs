@@ -1,2 +1,3 @@
-# Guides & Tutorials
+# Deploy Soroswap Yourself
 
+\[SECTION IS OUT DATED, CHECK INSTRUCTIONS OUR README OF CORE REPO]

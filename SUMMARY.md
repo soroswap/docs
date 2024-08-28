@@ -44,6 +44,7 @@
       * [SoroswapRouter Comparison](01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/02-soroswaprouter-comparison.md)
       * [SoroswapLibrary Comparison](01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/03-soroswaplibrary-comparison.md)
     * [Using Soroswap with TypeScript](01-protocol-overview/03-technical-reference/09-using-soroswap-with-typescript.md)
+    * [Smart Contract Integration](01-protocol-overview/03-technical-reference/smart-contract-integration.md)
     * [Design Decisions](01-protocol-overview/03-technical-reference/02-design-decisions.md)
     * [Deploy Soroswap Yourself](01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/README.md)
       * [Setup your environment.](01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/01-setup.md)
