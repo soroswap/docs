@@ -1,17 +1,7 @@
 # The Soroswap.Finance Protocol
 
-Welcome to the documentation for the Soroswap.Finance Protocol's smart contracts!
+Welcome to the Soroswap.Finance smart contracts documentation.
 
-Here, you'll find comprehensive conceptual and technical details about the Soroswap.Finance Protocol. Whether you're a developer, investor, or simply curious, this guide will help you understand the inner workings of our protocol.
+The pages here contain conceptual and technical documentation of the Soroswap.Finance Protocol.
 
-## New to Soroswap?
-
-If you're just getting started, we recommend beginning with the [Protocol Overview](01-protocol-overview/01-how-soroswap-works.md) for a foundational understanding.
-
-## Resources
-
-* [Website](https://soroswap.finance)
-* [GitHub](https://github.com/soroswap/)
-* [Twitter](https://x.com/SoroswapFinance)
-* [LinkedIn](https://www.linkedin.com/company/soroswap/)
-* [Discord](https://discord.gg/A2rQ3cm9XG)
+If you are new to Soroswap, you might want to check out the [Protocol overview ](01-protocol-overview/)first.
