@@ -7,7 +7,7 @@ title: Pricing
 
 ## How are prices determined?
 
-As we learned in [Protocol Overview](../01-protocol-overview/README.md), each pair on Uniswap is actually underpinned by a liquidity pool. Liquidity pools are smart contracts that hold balances of two unique tokens and enforces rules around depositing and withdrawing them. The primary rule is the [constant product formula](../../01-concepts/01-protocol-overview/04-glossary.md#x--y--k). When a token is withdrawn (bought), a proportional amount must be deposited (sold) to maintain the constant. The ratio of tokens in the pool, in combination with the constant product formula, ultimately determine the price that a swap executes at.
+As we learned in [Protocol Overview](../../01-protocol-overview/), each pair on Uniswap is actually underpinned by a liquidity pool. Liquidity pools are smart contracts that hold balances of two unique tokens and enforces rules around depositing and withdrawing them. The primary rule is the [constant product formula](../../01-protocol-overview/04-glossary.md#x--y--k). When a token is withdrawn (bought), a proportional amount must be deposited (sold) to maintain the constant. The ratio of tokens in the pool, in combination with the constant product formula, ultimately determine the price that a swap executes at.
 
 ## How Uniswap handles prices
 
@@ -23,7 +23,7 @@ Say a smart contract naively wants to send 10 DAI to the DAI/WETH pair and recei
 
 To prevent these types of attacks, it's vital to submit swaps _that have access to knowledge about the "fair" price their swap should execute at_. In other words, swaps need access to an _oracle_, to be sure that the best execution they can get from Uniswap is close enough to what the oracle considers the "true" price. While this may sound complicated, the oracle can be as simple as an _off-chain observation of the current market price of a pair_. Because of arbitrage, it's typically the case that the ratio of the intra-block reserves of a pair is close to the "true" market price. So, if a user submits a trade with this knowledge in mind, they can ensure that the losses due to front-running are tightly bounded. This is how, for example, the Uniswap frontend ensure trade safety. It calculates the optimal input/output amounts given observed intra-block prices, and uses the router to perform the swap, which guarantees the swap will execute at a rate no less that `x`% worse than the observed intra-block rate, where `x` is a user-specified slippage tolerance (0.5% by default).
 
-There are, of course, other options for oracles, including [native V2 oracles](../../01-concepts/03-core-concepts/04-oracles.md).
+There are, of course, other options for oracles, including [native V2 oracles](../03-core-concepts/04-oracles.md).
 
 ### Exact Input
 

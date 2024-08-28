@@ -5,9 +5,9 @@ title: Ecosystem Participants
 
 # Ecosystem Participants
 
-![](images/participants.jpg)
+![](../01-concepts/01-protocol-overview/images/participants.jpg)
 
-The Soroswap ecosystem is primarily comprised of three types of users: liquidity providers, traders, and developers. Liquidity providers are incentivized to contribute tokens to common liquidity pools. Traders can swap these tokens for one another for a fixed [0.30% fee](../04-advanced-topics/01-fees.md) (which goes to liquidity providers). Developers can integrate directly with Soroswap smart contracts to power new and exciting interactions with tokens, trading interfaces, retail experiences, and more.
+The Soroswap ecosystem is primarily comprised of three types of users: liquidity providers, traders, and developers. Liquidity providers are incentivized to contribute tokens to common liquidity pools. Traders can swap these tokens for one another for a fixed [0.30% fee](../01-concepts/04-advanced-topics/01-fees.md) (which goes to liquidity providers). Developers can integrate directly with Soroswap smart contracts to power new and exciting interactions with tokens, trading interfaces, retail experiences, and more.
 
 In total, interactions between these classes create a positive feedback loop, fueling digital economies by defining a common language through which tokens can be pooled, traded and used.
 

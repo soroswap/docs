@@ -1,4 +1,4 @@
-# Removing Liquidity
+# Remove Liquidity
 
 Now that we have learned how to add liquidity and perform swaps on Soroswap, let's explore how to remove liquidity from our liquidity positions.
 
@@ -6,14 +6,14 @@ Now that we have learned how to add liquidity and perform swaps on Soroswap, let
 
 1. Go to the Soroswap app and click on the "Liquidity" tab in the navigation menu.
 
-![Liquidity page](images/liquidity1.png)
+![Liquidity page](../../05-tutorial/06-remove-liquidity/images/liquidity1.png)
 
 ## Step 2: Select the liquidity position
 
 1. Find the liquidity position from which you want to remove liquidity.
 2. Click on the liquidity position to view its details.
 
-![Select liquidity position](images/liquidity2.png)
+![Select liquidity position](../../05-tutorial/06-remove-liquidity/images/liquidity2.png)
 
 You will see a modal displaying the liquidity pool information, balances, and your share of the pool.
 
@@ -23,11 +23,11 @@ You will see a modal displaying the liquidity pool information, balances, and yo
 
 1. In the "Remove Liquidity" section, use the slider or enter the amount of liquidity you would like to remove.
 
-![Remove liquidity](images/liquidity3.png)
+![Remove liquidity](../../05-tutorial/06-remove-liquidity/images/liquidity3.png)
 
 2. Click the "Remove" button.
 
-![Confirm removal](images/liquidity4.png)
+![Confirm removal](../../05-tutorial/06-remove-liquidity/images/liquidity4.png)
 
 3. Review the details of the removal, including the amount of tokens you will receive.
 4. If everything looks correct, click the "Confirm" button.

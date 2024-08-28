@@ -1,4 +1,4 @@
-# How to Test Stellar Classic Assets on Soroswap Testnet
+# Test Stellar Classic Assets
 
 Experimenting with Stellar Classic assets on the Soroswap testnet is straightforward. Our API endpoint `/api/random_tokens` provides you with a variety of test tokens, including Stellar Classic assets that can be wrapped and used within the Soroban network.
 
@@ -7,10 +7,8 @@ Experimenting with Stellar Classic assets on the Soroswap testnet is straightfor
 To access the test tokens, follow these steps:
 
 1. Navigate to the API endpoint for random tokens:
-
-   - In a local enviroment: `http://localhost:8010/api/random_tokens`
-   - In production/testnet: `https://api.soroswap.finance/api/random_tokens`
-
+   * In a local enviroment: `http://localhost:8010/api/random_tokens`
+   * In production/testnet: `https://api.soroswap.finance/api/random_tokens`
 2. The API will return a JSON object containing an array of tokens indexed by network. Tokens with only the `asset` and `symbol` keys are Stellar Classic assets, whereas Soroban tokens will have additional information such as `address`, `name`, and `decimals`. To test remember to select the tokens from the network you are on.
 
 Example response from the API:
@@ -45,11 +43,11 @@ To test the wrapping functionality with Stellar Classic assets:
 3. Paste the copied `CODE:ISSUER` into the search input from the Swap or Add liquidity pages, and select the asset from the results.
 4. The interface will recognize that the asset is a Stellar Classic asset and offer you the option to wrap it for use on the Soroban network.
 
-![](../01-wrapping-stellar-classic-assets/images/wrapping_process_modal.png)
+![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping\_process\_modal.png)
 
 5. Click on the asset, and a wrapping modal will appear, guiding you through the wrapping process.
 
-![](../01-wrapping-stellar-classic-assets/images/wrapping-view.png)
+![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping-view.png)
 
 6. Once you initiate the wrapping process, you will be prompted to sign the transaction with your wallet.
 

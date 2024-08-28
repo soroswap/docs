@@ -1,23 +1,17 @@
-# Comparison of Soroswap and UniswapV2 Pair Contracts: Part 1
-
+# SoroswapPair Comparison
 
 The sources for the following two sections are:
 
-- <https://blog.uniswap.org/uniswap-v2>  
-- <https://rskswap.com/audit.html>
+* [https://blog.uniswap.org/uniswap-v2](https://blog.uniswap.org/uniswap-v2) &#x20;
+* [https://rskswap.com/audit.html](https://rskswap.com/audit.html)
 
-  The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in 
-Solidity. However, in its first version (0.0.1), the SoroswapPairV0.0.1 does not currently implement many functions, 
-variables, events, and other features that are present in the UniswapV2Pair contract.
+&#x20; The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in Solidity. However, in its first version (0.0.1), the SoroswapPairV0.0.1 does not currently implement many functions, variables, events, and other features that are present in the UniswapV2Pair contract.
 
-In the next two sections, we will compare the Soroswap pair contract with the UniswapV2 pair contract, using the latter 
-as a reference point. This allows us to discuss why certain features are implemented or not implemented in the Soroswap pair contract.
-
-
+In the next two sections, we will compare the Soroswap pair contract with the UniswapV2 pair contract, using the latter as a reference point. This allows us to discuss why certain features are implemented or not implemented in the Soroswap pair contract.
 
 ## Events: Included!
-The UniswapV2 pair contract has four events: Mint, Burn, Swap and Sync.
-The corresponding events in the Soroswap pair contract are: deposit, withdraw, swap, and sync.
+
+The UniswapV2 pair contract has four events: Mint, Burn, Swap and Sync. The corresponding events in the Soroswap pair contract are: deposit, withdraw, swap, and sync.
 
 ```javascript
  event Mint(address indexed sender, uint amount0, uint amount1);
@@ -32,30 +26,19 @@ The corresponding events in the Soroswap pair contract are: deposit, withdraw, s
  );
  event Sync(uint112 reserve0, uint112 reserve1);
 ```
-Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, 
-Ethereum\'s ERC20 protocol emits a Transfer event when a token is minted. Refer to <https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol> for details. 
 
-Mint may not be the most descriptive name for this 
-event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint 
-event (LP units of LP tokens) is already being emitted. As a result, we've chosen to use deposit for this event.
+Since Mint already exists as an event in the SAC token interface, an alternative name is necessary. For context, Ethereum's ERC20 protocol emits a Transfer event when a token is minted. Refer to [https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol](https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/contracts/token/ERC20/ERC20.sol) for details.
 
-Similarly, Burn has been replaced with withdraw. In Soroban, msg.sender is not utilized, so the event 
-implementation becomes:
+Mint may not be the most descriptive name for this event, as the arguments are amount0 and amount1. A more fitting name is deposit, which represents the user's deposit of amount0 units of token0 and amount1 units of token1. Further, tracking the minted tokens is unnecessary, as the Mint event (LP units of LP tokens) is already being emitted. As a result, we've chosen to use deposit for this event.
+
+Similarly, Burn has been replaced with withdraw. In Soroban, msg.sender is not utilized, so the event implementation becomes:
 
 ```rust
 events::withdraw(&e, to, out_a, out_b, to)
 ```
-<!---
-why? To easily implement / transform Uniswap SDK's
 
-review this
-see in the code how is implemented, appears to be
-different
+The Swap event is implemented in Rust in a manner essentially equivalent to UniswapV2:
 
--->
-
-
-The Swap event is implemented in Rust in a manner essentially equivalent to UniswapV2: 
 ```rust
 pub(crate) fn swap(
     e: &Env,
@@ -82,36 +65,29 @@ pub(crate) fn sync(e: &Env, reserve_0: u64, reserve_1: u64) {
 
 **These features are all implemented in the code!**
 
-___
-___
+***
 
+***
 
 ## SafeMath: Included!
 
-
-
-In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow and underflow. 
-When such a situation arise, the library throws an exception, which effectively reverts the transaction.
+In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow and underflow. When such a situation arise, the library throws an exception, which effectively reverts the transaction.
 
 In Rust, we can achieve a similar level of protection by enabling the [overflow check](https://doc.rust-lang.org/rustc/codegen-optionsindex.html#overflow-checks) flag during the compilation process with the following code:
+
 ```
 [profile.release]
 overflow-checks = true
 ```
 
-In addition, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `
-checked_sub`. You can explore these functions and test their functionality in this repository: <https://github.com/esteblock/overflow-soroban/>
+In addition, we have an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `checked_sub`. You can explore these functions and test their functionality in this repository: [https://github.com/esteblock/overflow-soroban/](https://github.com/esteblock/overflow-soroban/)
 
+When it comes to preventing overflow in Soroban, we have the two solutions mentioned above: using the compiler flag or the overflow-safe functions. Yet, as we will see in the oracle section, there are cases where overflow is the intended result. Hence, we will bypass the compiler flag option, choosing instead to use overflow-safe functions for our arithmetic operations. Exceptions will be made only in those unique cases where overflow is desirable.
 
-When it comes to preventing overflow in Soroban, we have the two solutions mentioned above: using the compiler flag or the 
-overflow-safe functions. Yet, as we will see in the oracle section, there are cases where overflow is the intended result. 
-Hence, we will bypass the compiler flag option, choosing instead to use overflow-safe functions for our arithmetic operations. Exceptions 
-will be made only in those unique cases where overflow is desirable.
+***
 
-___
+About underflow, it is worth noting that since we are using i128, a signed integer type, underflow will not occur as it would simply result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where necessary. For instance:
 
-About underflow, it is worth noting that since we are using i128, a signed integer type, underflow will not occur as it would simply result in negative numbers. However, to ensure the integrity of our calculations, we've implemented checks where 
-necessary. For instance:
 ```rust
 fn put_reserve_a(e: &Env, amount: i128) {
     if amount < 0 {
@@ -120,85 +96,85 @@ fn put_reserve_a(e: &Env, amount: i128) {
     e.storage().set(&DataKey::Reserve0, &amount)
 }
 ```
+
 **Overflow and underflow safety are included in the code!**
 
-___
-___
+***
 
+***
 
 ## Reserves Function: included!
-In UniswapV2, the reserves function returns the reserves of token0 and token1, along with the timestamp of the last 
-block.
+
+In UniswapV2, the reserves function returns the reserves of token0 and token1, along with the timestamp of the last block.
+
 ```javascript
  function getReserves() public view returns (uint112 _reserve0, uint112 _reserve1, uint32 _blockTimestampLast) {
      _reserve0 = reserve0;
      _reserve1 = reserve1;
      _blockTimestampLast = blockTimestampLast;
  }
- ```
+```
 
-Soroswap adopts a similar approach, implementing this functionality in the get_reserves function.
+Soroswap adopts a similar approach, implementing this functionality in the get\_reserves function.
 
- ```rust
-   fn get_reserves(e: Env) -> (i128, i128, i128) {
-        (get_reserve_a(&e), get_reserve_b(&e), get_block_timestamp_last(&e))
-    }
+```rust
+  fn get_reserves(e: Env) -> (i128, i128, i128) {
+       (get_reserve_a(&e), get_reserve_b(&e), get_block_timestamp_last(&e))
+   }
 
 fn get_reserve_0(e: &Env) -> i128 {
-    e.storage().get_unchecked(&DataKey::Reserve0).unwrap()
+   e.storage().get_unchecked(&DataKey::Reserve0).unwrap()
 }
 
 fn get_reserve_1(e: &Env) -> i128 {
-    e.storage().get_unchecked(&DataKey::Reserve1).unwrap()
+   e.storage().get_unchecked(&DataKey::Reserve1).unwrap()
 }
- ```
-Additionally, the `get_block_timestamp_last` function in Soroswap returns the timestamp of the last block, defaulting 
-to 0 if it doesn't exist.
+```
 
- ```rust
+Additionally, the `get_block_timestamp_last` function in Soroswap returns the timestamp of the last block, defaulting to 0 if it doesn't exist.
+
+```rust
 fn get_block_timestamp_last(e: &Env) -> u64 {
- 
-    if let Some(block_timestamp_last) = e.storage().get(&DataKey::BlockTimestampLast) {
-        block_timestamp_last.unwrap()
-    } else {
-        0
-    }
+
+   if let Some(block_timestamp_last) = e.storage().get(&DataKey::BlockTimestampLast) {
+       block_timestamp_last.unwrap()
+   } else {
+       0
+   }
 }
- ```
- **This functionality is integrated directly into the Soroswap codebase!**
+```
 
-___
-___
+**This functionality is integrated directly into the Soroswap codebase!**
 
- ## Name of Pairs: included!
+***
+
+***
+
+## Name of Pairs: included!
 
 In UniswapV2, the name and symbol of the token pairs are designated as follows:
 
-``` javascript
+```javascript
 string public constant name = 'Uniswap V2';
 string public constant symbol = 'UNI-V2';
 ```
 
 Soroswap has similarly implemented the assignment of names and symbols for token pairs:
 
-``` rust
+```rust
 Bytes::from_slice(&e, b"Soroswap Pair Token"),
 Bytes::from_slice(&e, b"SOROSWAP-LP"),
 ```
 
 **This feature has been seamlessly integrated into the Soroswap codebase!**
-___
-___
 
+***
+
+***
 
 ## Mint (Deposit)
 
-In UniswapV2, the mint function is invoked when a user adds liquidity to the pool, resulting in the creation of pool 
-tokens. Before calling the swap function, the seller transfers the asset to the core contract. The contract then 
-measures the received asset quantity by comparing the last recorded balance with its current balance. This approach 
-makes the core contract agnostic to how the trader transfers the asset. Instead of transferFrom, a meta transaction or 
-any other future mechanism for authorizing the transfer of ERC-20s can be used.
-
+In UniswapV2, the mint function is invoked when a user adds liquidity to the pool, resulting in the creation of pool tokens. Before calling the swap function, the seller transfers the asset to the core contract. The contract then measures the received asset quantity by comparing the last recorded balance with its current balance. This approach makes the core contract agnostic to how the trader transfers the asset. Instead of transferFrom, a meta transaction or any other future mechanism for authorizing the transfer of ERC-20s can be used.
 
 ```javascript
 
@@ -227,24 +203,14 @@ any other future mechanism for authorizing the transfer of ERC-20s can be used.
 }
 
 ```
+
 ### Comments for Soroswap implementation:
 
-- The equivalent function in Soroswap is named deposit. To avoid confusion with the mint function of the token 
-interface, we have opted to keep deposit as the function name.
-
- - This function in UniswapV2 employs a reentrancy guard. Since reentrancy is not currently possible in Soroban, we 
-have not implemented this guard.
-
-- In UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing 
-the mint function.
-   This design isn't necessary in Soroban (read <https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum>) 
-   because tokens can be sent using from.require_auth();, which is checked in the token contract itself. 
-
-- However, we need to consider tokens that do not implement require_auth. In such cases, we can follow Uniswap's design 
-and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard `addLiquidity` with `require_auth`.
-
-- For now, our objective is simply to implement the UniswapV2 Pair and Factory contracts, so we'll maintain the current
- design:
+* The equivalent function in Soroswap is named deposit. To avoid confusion with the mint function of the token interface, we have opted to keep deposit as the function name.
+* This function in UniswapV2 employs a reentrancy guard. Since reentrancy is not currently possible in Soroban, we have not implemented this guard.
+* In UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing the mint function. This design isn't necessary in Soroban (read [https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum](https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum)) because tokens can be sent using from.require\_auth();, which is checked in the token contract itself.
+* However, we need to consider tokens that do not implement require\_auth. In such cases, we can follow Uniswap's design and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard `addLiquidity` with `require_auth`.
+* For now, our objective is simply to implement the UniswapV2 Pair and Factory contracts, so we'll maintain the current design:
 
 ```rust
  fn deposit(e: Env, to: Address, desired_a: i128, min_a: i128, desired_b: i128, min_b: i128) {
@@ -256,34 +222,21 @@ and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard
         token_b_client.transfer(&to, &e.current_contract_address(), &amounts.1);
 ```
 
-In the next iteration, when Periphery contracts will be implemented (see <https://github.com/Uniswap/v2-periphery>) 
-this function will change and will require the tokens to be sent before executing the  `deposit` function.
+In the next iteration, when Periphery contracts will be implemented (see [https://github.com/Uniswap/v2-periphery](https://github.com/Uniswap/v2-periphery)) this function will change and will require the tokens to be sent before executing the  `deposit` function.
 
--  We've implemented bool feeOn = _mintFee(_reserve0, _reserve1);.
--  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `
-put_total_shares` function.
-- UniswapV2Pair compares whether `totalSupply == 0` to send the “first” LP with `sqrt(x*y)` because it mints a `
-MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of 
-liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
+* &#x20;We've implemented bool feeOn = \_mintFee(\_reserve0, \_reserve1);.
+* &#x20;As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `put_total_shares` function.
+* UniswapV2Pair compares whether `totalSupply == 0` to send the “first” LP with `sqrt(x*y)` because it mints a `MINIMUM_LIQUIDITY` to the zero address to permanently lock it forever. This ensures there's always some level of liquidity available, preventing scenarios where liquidity providers could fully drain a pool.
 
-  
-Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the 
-smallest possible unit of pool shares. To illustrate, UniswapV2 LP tokens operate with 18 decimal places, meaning one 
-token unit corresponds to 1e-18.
+Uniswap defines the least amount of liquidity as 1e-15 of the total pool shares, which equates to 1000 times the smallest possible unit of pool shares. To illustrate, UniswapV2 LP tokens operate with 18 decimal places, meaning one token unit corresponds to 1e-18.
 
 However, in the Stellar-based soroban-examples liquidity pool contract, such a minimum liquidity requirement is absent.
 
-Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10**3 as the 
-minimum liquidity. In line with the traditional Stellar assets, which have 7 decimals, Soroswap also uses 7 decimals 
-places for this initial version. As such, this minimum liquidity represents 1e-4 of the total pool shares.
-___
-___
+Soroswap emulates this approach by creating 1000 times the smallest possible unit of tokens, equating to 10\*\*3 as the minimum liquidity. In line with the traditional Stellar assets, which have 7 decimals, Soroswap also uses 7 decimals places for this initial version. As such, this minimum liquidity represents 1e-4 of the total pool shares.
 
+***
 
-<!---
-TODO:
-review swap and burn WILL CHANGE AFTER ROUTER IS READY
---->
+***
 
 ## Swap
 
@@ -325,6 +278,7 @@ This function is invoked when a user swaps tokens. Emits Swap and Sync events.
 ```
 
 The equivalent function in Soroswap is as follows:
+
 ```rust
    fn swap(e: Env, to: Address, buy_0: bool, amount_out: i128, amount_in_max: i128) {
         to.require_auth();
@@ -409,10 +363,11 @@ The equivalent function in Soroswap is as follows:
         event::swap(&e, to.clone(), amount_0_in, amount_1_in, amount_0_out, amount_1_out, to);
     } fn swap
 ```
-    
 
-___
-___
+***
+
+***
+
 ## Burn (Withdraw)
 
 This function is invoked when a user withdraws liquidity from the pool. Emits Burn, Transfer and Sync events.
@@ -448,7 +403,7 @@ This function is invoked when a user withdraws liquidity from the pool. Emits Bu
 
 The equivalent function in Soroswap is as follows:
 
-```rust
+````rust
 fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -> (i128, i128) {
         to.require_auth();
         // We get the original reserves before the action:
@@ -520,25 +475,24 @@ In UniswapV2, a reentrancy guard is employed to prevent recursive calls. Here is
         _;
         unlocked = 1;
     }
-```
+````
 
 For now, Soroban does not permit reentrancy. Further information is available at these sources:
-- <https://github.com/esteblock/reentrancy-soroban>  
-- <https://discord.com/channels/897514728459468821/993874836336152576>  
+
+* [https://github.com/esteblock/reentrancy-soroban](https://github.com/esteblock/reentrancy-soroban)
+* [https://discord.com/channels/897514728459468821/993874836336152576](https://discord.com/channels/897514728459468821/993874836336152576)
 
 We plan to revisit this aspect if the allowance of reentrancy is considered in the future.
 
 **Current Status: Not implemented**
 
-___
-___
+***
+
+***
 
 ## Protocol Fee Mechanism: Mint Fee Implemented!
 
-UniswapV2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to 
-an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. 
-There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the UniswapV2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its address via the `setFeeToSetter` function.
-
+UniswapV2 incorporates a protocol fee of 0.05%, which can be toggled on or off. When activated, this fee is routed to an address, `feeTo`, specified in the factory contract. Initially, `feeTo` isn't set, and hence, no fees are collected. There is a designated address, `feeToSetter`, with the power to invoke the `setFeeTo` function on the UniswapV2 factory contract, altering the `feeTo` value. `feeToSetter` can also change its address via the `setFeeToSetter` function.
 
 ```javascript
 uint public constant MINIMUM_LIQUIDITY = 10**3;
@@ -607,70 +561,39 @@ fn mint_fee(e: &Env, reserve_0: i128, reserve_1: i128) -> bool{
     fee_on
 }
 ```
-In this code, we have utilized the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to prevent 
-potential overflows.
+
+In this code, we have utilized the `checked_add`, `checked_sub`, `checked_mult` and `checked_div` functions to prevent potential overflows.
 
 **This functionality has been successfully integrated into the code!**
-___
-___
-## Oracles:  
 
+***
 
-The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token.
-Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will 
-tend to follow the market price, so maybe we can use the marginal price as an oracle for the market price.
+***
 
-However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an
-specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they
-can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function
-was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+## Oracles:
 
-The solution is to use a cumulative price, which is the sum of the marginal prices over a period of time. The oracle measures
-and stores the  price before the first trade of each block. This price is more difficult to manipulate than the prices in
-the middle of a block. If the attacker tries to manipulate the price at the start of the block, another arbitrageur can send a transaction
-to trade back the manipulated price to the real price, so the attacker can't profit from the manipulation. A miner or an attacker that
-uses enough gas to fill an entire block can try to manipulate the price at the end of the block, but this will be useless if they
-mine the following block themselves. The miners can't know if they will mine the next block, so they can't profit from this manipulation.
+The marginal price of a token pair is calculated by dividing the reserve of one token by the reserve of the other token. Since arbitrageurs will trade against the pair contract to make profits, the marginal price of the pair contract will tend to follow the market price, so maybe we can use the marginal price as an oracle for the market price.
+
+However, this is not enough to reliably use this price as an on-chain oracle. An attacker could manipulate the price at an specific moment. If the attacker can get a dApp to check the oracle at the precise instant when the price has been manipulated, then they can cause significant harm to the system. UniswapV1 was vulnerable to this attack, as we can see [here](https://samczsun.com/taking-undercollateralized-loans-for-fun-and-for-profit/). In UniswapV2, the oracle function was modified to prevent this attack, and we will use this oracle function as a reference for our implementation.
+
+The solution is to use a cumulative price, which is the sum of the marginal prices over a period of time. The oracle measures and stores the price before the first trade of each block. This price is more difficult to manipulate than the prices in the middle of a block. If the attacker tries to manipulate the price at the start of the block, another arbitrageur can send a transaction to trade back the manipulated price to the real price, so the attacker can't profit from the manipulation. A miner or an attacker that uses enough gas to fill an entire block can try to manipulate the price at the end of the block, but this will be useless if they mine the following block themselves. The miners can't know if they will mine the next block, so they can't profit from this manipulation.
 
 So, we know that the price at the start of the block is difficult to manipulate, but we still need to know how to use it as an oracle.
 
-
-
-<!---
-Write how oracles works in UniswapV2
---->
-
 ### A note on arithmetic operations and data types:
 
-The design of oracle functions requires some consideration of arithmetic operations and data types, given that 
-neither Solidity nor Soroban support floating-point numbers or non-integer number data types natively. Both systems employ 
-custom-made fixed-point number data types, conforming to the [Q format](https://en.wikipedia.org/wiki/Q_(number_format)),
-which are stored as integers. 
+The design of oracle functions requires some consideration of arithmetic operations and data types, given that neither Solidity nor Soroban support floating-point numbers or non-integer number data types natively. Both systems employ custom-made fixed-point number data types, conforming to the [Q format](https://en.wikipedia.org/wiki/Q\_\(number\_format\)), which are stored as integers.
 
-The Q format is a [fixed-point number](https://en.wikipedia.org/wiki/Fixed-point_arithmetic)
-format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and fractional components. 
-A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and 
-the last m bits are used for the fractional part. 
+The Q format is a [fixed-point number](https://en.wikipedia.org/wiki/Fixed-point\_arithmetic) format that specifies the number of bits used for the integer and fractional parts. Both UniswapV2 and Soroswap utilize the **unsigned** variant of the Q format, called UQ, only diverging in the number of bits assigned for the integer and fractional components. A UQn.m number is stored as an unsigned integer of n+m bits, where the first n bits are used for the integer part, and the last m bits are used for the fractional part.
 
-For illustration, suppose that we have a UQ4.4 format. It means that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored as an 8-bit unsigned integer.
-Some examples of UQ4.4 numbers are:
-- The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the integer part 1, and the last four bits (1000) represent the fractional part 0.5.
+For illustration, suppose that we have a UQ4.4 format. It means that we are using 4 bits for the integer part and 4 bits for the fractional part. The whole number is stored as an 8-bit unsigned integer. Some examples of UQ4.4 numbers are:
 
-- The number 3.75 in UQ4.4 format is represented as 00111100 in binary. The first four bits (0011) represent the integer
-   part 3, and the last four bits (1100) represent the fractional part 0.75.
+* The number 1.5 in UQ4.4 format is represented as 00011000 in binary. The first four bits (0001) represent the integer part 1, and the last four bits (1000) represent the fractional part 0.5.
+* The number 3.75 in UQ4.4 format is represented as 00111100 in binary. The first four bits (0011) represent the integer    part 3, and the last four bits (1100) represent the fractional part 0.75.
 
-To convert the binary number back to a decimal number, we divide the value represented by the fractional part by 2 to 
-the power of m. In the case of UQ4.4 format, we divide by $2^4$ = 16. So, 00011000 would be converted to 1 (from the 
-integer part) plus 8/16 (from the fractional part), or 1.5.
+To convert the binary number back to a decimal number, we divide the value represented by the fractional part by 2 to the power of m. In the case of UQ4.4 format, we divide by $2^4$ = 16. So, 00011000 would be converted to 1 (from the integer part) plus 8/16 (from the fractional part), or 1.5.
 
-In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol)
- is used, in contrast to the UQ64.64  used in Soroswap whose implementation is on 
-<https://github.com/esteblock/fractions-soroban>
-
-<!---
-Are we going to use UniswapV2 or UniswapV3 Oracle function?
-
---->
+In the case of UniswapV2, the [UQ112.112](https://github.com/Uniswap/v2-core/blob/master/contracts/libraries/UQ112x112.sol) is used, in contrast to the UQ64.64 used in Soroswap whose implementation is on [https://github.com/esteblock/fractions-soroban](https://github.com/esteblock/fractions-soroban)
 
 ```javascript
 using UQ112x112 for uint224;
@@ -697,86 +620,56 @@ function _update(uint balance0, uint balance1, uint112 _reserve0, uint112 _reser
     emit Sync(reserve0, reserve1);
 }
 
-``` 
+```
+
 Here, many things are happening:
-- Balances need to fit within the uint112 data type to be encoded into UQ112x112 and undergo division 
-operations.
-    * **For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
 
-- Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for 
-gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves as 
-112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.  
-    * **For Soroswap:** We won't pay much attention for now in gas usage.  Can be u32 or u64
+* Balances need to fit within the uint112 data type to be encoded into UQ112x112 and undergo division operations.
+  * **For Soroswap:** Balances will need to fit within an u64 type to be encoded into UQ64X64.
+* Block timestamps are obtained by using the modulo operator to fit them within the uint32 data type. This is done for gas optimization purposes, as described in the whitepaper. Consequently, each set of 224-bit reserves (two reserves as 112-bit) is accompanied by a 32-bit timestamp within a single 256-bit storage slot.
+  * **For Soroswap:** We won't pay much attention for now in gas usage. Can be u32 or u64
+* The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^ 32 - 1 seconds (approximately 136 years).
+  * **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
+* The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum and multiplications of UQ112X112.\
 
+  * **For Soroswap:** price0CumulativeLast will need to be u128.
+* The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices.
+  * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the `overflow-checks = true`. Also, there are no bigger integer types in Soroban. See [https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types](https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types)
 
-- The block timestamp has the potential to overflow, with the next overflow occurring on 02/07/2106. Oracles are 
-required to account for this and ensure proper functionality by checking prices at least once within each interval of 2^
-32 - 1 seconds (approximately 136 years).  
-    * **For Soroswap:** Block timestamp can be stored in u64, and will overflow in the year 2554, so we are safe.
-- The variables price0CumulativeLast and price1CumulativeLast are stored using 224 bits each because they hold a sum 
-and multiplications of UQ112X112.<br>
-    * **For Soroswap:** price0CumulativeLast will need to be u128.
+As per the official Uniswap audit [remarks](https://rskswap.com/audit.html#orgc9b3190), we permit overflow in the case of  accumulators. This is primarily a protective strategy; an overflow-induced revert might result in a liveness failure. This  means that a revert in the \_update could impede trade operations as well as hinder the entry and exit of liquidity providers (LPs).
 
+The necessity for price0CumulativeLast to overflow is emphasized to prevent the protocol from reaching a panic state. The audit illustrates this through a simulation:
 
-- The price itself will not overflow, but the accumulated price over an interval may exceed the 224-bit limit. To 
-address this, an additional 32 bits are allocated in the storage slots for the accumulated prices of the ratios token A/token B 
-and token B/token A. These extra bits handle any overflow resulting from repeated summations of prices. 
+> Assuming that the ratio of the reserves in a given pair will be the same as the ratio of the dollar prices of one wei of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit value of the 2 decimal token is 100 times that of the 36 decimal token: giving ≈ 8 months until overflow!
+>
+> Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price accumulator overflow is a realistic possibility for the assets involved.
 
-  * **For Soroswap:** By default price0CumulativeLast won't be able to overflow in soroban due to the  `overflow-checks = 
-true`. Also, there are no bigger integer types in Soroban. See <https://soroban.stellar.org/docs/fundamentals-and-concepts/built-in-types>
+**What this means for Soroswap?**\
+This means that Soroswap should allow overflow, hence not using overflow-checks = true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
 
-As per the official Uniswap audit [remarks](https://rskswap.com/audit.html#orgc9b3190), we permit overflow in the case of
- accumulators. This is primarily a protective strategy; an overflow-induced revert might result in a liveness failure. This 
- means that a revert in the _update could impede trade operations as well as hinder the entry and exit of liquidity providers 
-(LPs).
-
-The necessity for price0CumulativeLast to overflow is emphasized to prevent the protocol from reaching a panic state. The 
-audit illustrates this through a simulation:
-
-> Assuming that the ratio of the reserves in a given pair will be the same as  the ratio of the dollar prices of one wei 
-> of each token, we can solve for a example pair consisting of a 36 decimal token and a 2 decimal token where the unit 
-> value of the 2 decimal token is 100 times that of the 36 decimal token: giving &#8776; 8 months until overflow!
->  
-> Authors of oracles that build upon the price accumulator functionality in the core should therefore take care that the 
-> their oracles do not introduce spikes or discontinuities in the reported price at the overflow point, if price 
-> accumulator overflow is a realistic possibility for the assets involved. 
-
-
-**What this means for Soroswap?**  
-This means that Soroswap should allow overflow, hence not using overflow-checks = 
-true, but using `checked_fn` every time the overflow it is NOT DESIRED (all parts except for price0CumulativeLast)
-
-- The reserves are stored using 112 bits for each token.  
-
+* The reserves are stored using 112 bits for each token.
 
 **For Soroswap:** We will use u64
-<!--- usamos u64???-->
 
 **Implemented!**
 
-___
-___
-___
-___
+***
+
+***
+
+***
+
+***
+
 ## Skim
 
 From UniswapV2 Whitepaper:
 
->To protect against bespoke token implementations that can update the pair contract’s
->balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$,
->Uniswap v2 has two bail-out functions: sync()and skim().
+> To protect against bespoke token implementations that can update the pair contract’s balance, and to more gracefully handle tokens whose total supply can be greater than $2^{112}$, Uniswap v2 has two bail-out functions: sync()and skim().
 >
->sync() functions as a recovery mechanism in the case that a token asynchronously
->deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no
->liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set
->the reserves of the contract to the current balances, providing a somewhat graceful recovery
->from this situation.
+> sync() functions as a recovery mechanism in the case that a token asynchronously deflates the balance of a pair. In this case, trades will receive sub-optimal rates, and if no liquidity provider is willing to rectify the situation, the pair is stuck. sync() exists to set the reserves of the contract to the current balances, providing a somewhat graceful recovery from this situation.
 >
->skim() functions as a recovery mechanism in case enough tokens are sent to an pair to
->overflow the two uint112 storage slots for reserves, which could otherwise cause trades to
->fail. skim() allows a user to withdraw the difference between the current balance of the
->pair and 2**2112 − 1 to the caller, if that difference is greater than 0.
-
+> skim() functions as a recovery mechanism in case enough tokens are sent to an pair to overflow the two uint112 storage slots for reserves, which could otherwise cause trades to fail. skim() allows a user to withdraw the difference between the current balance of the pair and 2\*\*2112 − 1 to the caller, if that difference is greater than 0.
 
 ```javascript
 function sync() external lock {
@@ -791,9 +684,9 @@ function sync() external lock {
          _safeTransfer(_token1, to, IERC20(_token1).balanceOf(address(this)).sub(reserve1));
     }
 
-``` 
+```
 
-Implementation in Soroban: 
+Implementation in Soroban:
 
 ```rust
   // force balances to match reserves
@@ -805,37 +698,39 @@ Implementation in Soroban:
     }
 ```
 
+***
 
-___
-___
+***
 
- ## Safe Transfer: not needed
- The `_safeTransfer` function is specific to Solidity and isn't necessary to be implemented in Soroban.
+## Safe Transfer: not needed
 
- ```javascript
- bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
+The `_safeTransfer` function is specific to Solidity and isn't necessary to be implemented in Soroban.
 
- function _safeTransfer(address token, address to, uint value) private {
-     (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
-     require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
- }
- ```
- ___
- ___
+```javascript
+bytes4 private constant SELECTOR = bytes4(keccak256(bytes('transfer(address,uint256)')));
 
- ## Constructor: not needed
+function _safeTransfer(address token, address to, uint value) private {
+    (bool success, bytes memory data) = token.call(abi.encodeWithSelector(SELECTOR, to, value));
+    require(success && (data.length == 0 || abi.decode(data, (bool))), 'UniswapV2: TRANSFER_FAILED');
+}
+```
+
+***
+
+***
+
+## Constructor: not needed
 
 In Soroban, the `constructor()` and `initialize()` functions are the same, thus there's no need to separate them.
 
-
- ```javascript
-     constructor() public {
-         factory = msg.sender;
-     }
-     // called once by the factory at time of deployment
-     function initialize(address _token0, address _token1) external {
-         require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
-         token0 = _token0;
-         token1 = _token1; 
-     }
- ```
+```javascript
+    constructor() public {
+        factory = msg.sender;
+    }
+    // called once by the factory at time of deployment
+    function initialize(address _token0, address _token1) external {
+        require(msg.sender == factory, 'UniswapV2: FORBIDDEN'); // sufficient check
+        token0 = _token0;
+        token1 = _token1; 
+    }
+```
