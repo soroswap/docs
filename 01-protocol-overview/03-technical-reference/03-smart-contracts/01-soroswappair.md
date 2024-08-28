@@ -1,6 +1,8 @@
 # SoroswapPair
 
-The SoroswapPair Contract implements the token interface (hence, it has the same functions that any Stellar Asset Contract) and it also has the specific functions for a liquidity pool to exist:
+The SoroswapPair Contract implements the token interface (hence, it has the same functions that any Stellar Asset Contract) and it also has the specific functions for a liquidity pool to exist.\
+\
+Check the code here: [https://github.com/soroswap/core/tree/main/contracts/pair](https://github.com/soroswap/core/tree/main/contracts/pair)
 
 Here is the contract interface:
 

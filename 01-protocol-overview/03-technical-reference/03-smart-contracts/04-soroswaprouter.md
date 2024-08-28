@@ -1,6 +1,12 @@
 # SoroswapRouter
 
-The `SoroswapRouter` contract is a smart contract on the Soroban blockchain that provides functions for token swapping and liquidity management in token pairs. It is designed for use in decentralized exchanges (DEX) and other DeFi applications on the Soroban platform.
+The `SoroswapRouter` contract is a smart contract on the Soroban blockchain that provides functions for token swapping and liquidity management in token pairs. It is designed for use in decentralized exchanges (DEX) and other DeFi applications on the Soroban platform.\
+\
+Check the code here: [https://github.com/soroswap/core/tree/main/contracts/router](https://github.com/soroswap/core/tree/main/contracts/router)
+
+
+
+Here is the contract interface:
 
 ```rust
 pub trait SoroswapRouterTrait {

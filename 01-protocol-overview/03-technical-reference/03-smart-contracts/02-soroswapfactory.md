@@ -2,6 +2,8 @@
 
 Creates one SoroswapPair (Liquidity Pool) smart contract per unique token pair. It does receive as initialization argument the WASM hash of a already installed SoroswapPair smart contract.
 
+Check the code here: [https://github.com/soroswap/core/tree/main/contracts/factory/src](https://github.com/soroswap/core/tree/main/contracts/factory/src)
+
 Here is the contract interface:
 
 ```rust

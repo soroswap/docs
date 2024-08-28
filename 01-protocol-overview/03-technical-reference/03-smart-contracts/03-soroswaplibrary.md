@@ -6,7 +6,9 @@ The SoroswapLibrary is a rust crate that anyone can implement in their smart con
 
 ### Code
 
-You can find the Soroswap library code on the [Soroswap GitHub repository](https://github.com/soroswap/core/tree/main/contracts/library).
+You can find the Soroswap library code on the [Soroswap GitHub repository](https://github.com/soroswap/core/tree/main/contracts/library).  in [https://github.com/soroswap/core/tree/main/contracts/library](https://github.com/soroswap/core/tree/main/contracts/library)
+
+
 
 
 
