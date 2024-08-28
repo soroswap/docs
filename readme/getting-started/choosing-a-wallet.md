@@ -39,20 +39,21 @@ Some Stellar wallets offer advanced features such as:
 * **Description**: A browser extension wallet designed specifically for the Stellar network.
 * **Key Features**: Integrates seamlessly with web applications, supports multiple Stellar accounts.
 * **Recommended Use Cases**: Best for users who frequently interact with Stellar-based web applications.
+* **Installation Guide**: For a step-by-step tutorial on [how to install and set up Freighter Wallet](https://docs.soroswap.finance/05-tutorial/02-installing-freighter).
 
-#### XBull Wallet
+#### [XBull Wallet](https://xbull.app)
 
 * **Description**: A comprehensive wallet offering both mobile and desktop versions.
 * **Key Features**: Support for multiple assets, built-in exchange features, and high-level security measures.
 * **Recommended Use Cases**: Suitable for users looking for a versatile wallet that supports frequent trading and investment.
 
-#### Lobstr Wallet
+#### [Lobstr Wallet](https://lobstr.co)
 
 * **Description**: Popular among Stellar users for its user-friendly mobile app.
 * **Key Features**: Social features for sending and receiving payments, strong security protocols.
 * **Recommended Use Cases**: Ideal for everyday users needing a simple and secure way to manage and transact with Stellar Lumens and other tokens.
 
-#### Hana Wallet
+#### [Hana Wallet](https://hanawallet.io)
 
 * **Description**: Known for its simplicity and effectiveness.
 * **Key Features**: Minimalistic design, ease of use, focus on user privacy.
