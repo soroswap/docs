@@ -27,7 +27,7 @@
     * [Research](01-concepts/04-advanced-topics/06-research.md)
 * [Soroswap AMM](01-protocol-overview/README.md)
   * [How Soroswap works](01-protocol-overview/01-how-soroswap-works.md)
-  * [Ecosystem Participants](01-protocol-overview/02-ecosystem-participants.md)
+  * [Ecosystem Participants](01-concepts/01-protocol-overview/02-ecosystem-participants.md)
   * [Glossary](01-protocol-overview/04-glossary.md)
   * [Technical Reference](01-protocol-overview/03-technical-reference/README.md)
     * [Smart contracts](01-protocol-overview/03-technical-reference/03-smart-contracts/README.md)
