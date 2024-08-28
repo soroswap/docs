@@ -13,13 +13,13 @@ Soroswap is a smart contract system. [Core](./#core) contracts provide fundament
 
 The core consists of a singleton [factory](./#factory) and many [pairs](./#pairs), which the factory is responsible for creating and indexing. These contracts are quite minimal, even brutalist. The simple rationale for this is that contracts with a smaller surface area are easier to reason about, less bug-prone, and more functionally elegant. Perhaps the biggest upside of this design is that many desired properties of the system can be asserted directly in the code, leaving little room for error. One downside, however, is that core contracts are somewhat user-unfriendly. In fact, interacting directly with these contracts is not recommended for most use cases. Instead, a periphery contract should be used.
 
-### Factory
+### SoroswapFactory:
 
 [Reference documentation](02-soroswapfactory.md)
 
 The factory holds the generic bytecode responsible for powering pairs. Its primary job is to create one and only one smart contract per unique token pair. It also contains logic to turn on the protocol charge.
 
-### Pairs
+### SoroswapPairs:
 
 [Reference documentation](01-soroswappair.md)
 
@@ -29,16 +29,16 @@ Pairs have two primary purposes: serving as automated market makers and keeping 
 
 [Source code](https://github.com/soroswap/core/tree/main/contracts)
 
-The periphery is a constellation of smart contracts designed to support domain-specific interactions with the core. Because of Uniswap's permissionless nature, the contracts described below have no special privileges, and are in fact only a small subset of the universe of possible periphery-like contracts. However, they are useful examples of how to safely and efficiently interact with the Soroswap Protocol.
+The periphery is a constellation of smart contracts designed to support domain-specific interactions with the core. Because of Soroswap's permissionless nature, the contracts described below have no special privileges, and are in fact only a small subset of the universe of possible periphery-like contracts. However, they are useful examples of how to safely and efficiently interact with the Soroswap Protocol.
 
-### Library:
+### SoroswapLibrary:
 
 [Reference documentation](03-soroswaplibrary.md)
 
 The library provides a variety of convenience functions for fetching data and pricing.
 
-### Router:
+### SoroswapRouter:
 
 [Reference documentation](04-soroswaprouter.md)
 
-The router, which uses the library, fully supports all the basic requirements of a front-end offering trading and liquidity management functionality. Notably, it natively supports multi-pair trades (e.g. x to y to z), treats ETH as a first-class citizen, and offers meta-transactions for removing liquidity.
+The router, which uses the library, fully supports all the basic requirements of a front-end offering trading and liquidity management functionality.&#x20;

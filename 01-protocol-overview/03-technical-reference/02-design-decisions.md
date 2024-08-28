@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Design Decisions
 
 The following sections describe some of the notable design decisions made in the Soroswap Protocol. These are safe to skip unless you're interested in gaining a deep technical understanding of how the protocol works under the hood, or writing smart contract integrations!

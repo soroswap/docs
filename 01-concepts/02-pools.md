@@ -48,4 +48,4 @@ Just how end-users can interact with the Uniswap protocol through the Interface 
 
 ## Developer resources
 
-* To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-smart-contracts/04-soroswaprouter.md#add\_liquidity).
+* To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md#add\_liquidity).

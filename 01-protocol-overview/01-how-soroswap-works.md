@@ -3,11 +3,11 @@ id: how-soroswap-works
 title: How Soroswap works
 ---
 
-# How Soroswap works
+# How Soroswap AMM works
 
 ![](<../01-concepts/01-protocol-overview/images/anatomy (1).jpg>)
 
-Soroswap is an _automated liquidity protocol_ powered by a [constant product formula](04-glossary.md#constant-product-formula) and implemented in a system of non-upgradeable smart contracts on the [Soroban](https://developers.stellar.org/docs/smart-contracts) blockchain. It obviates the need for trusted intermediaries, prioritizing **decentralization**, **censorship resistance**, and **security**. Soroswap is **open-source software** licensed under the [Apache 2.0 Licence](https://github.com/soroswap/core/blob/main/LICENSE).
+Soroswap AMM is an _automated liquidity protocol_ powered by a [constant product formula](04-glossary.md#constant-product-formula) and implemented in a system of non-upgradeable smart contracts on the [Soroban](https://developers.stellar.org/docs/smart-contracts) blockchain. It obviates the need for trusted intermediaries, prioritizing **decentralization**, **censorship resistance**, and **security**. Soroswap is **open-source software** licensed under the [Apache 2.0 Licence](https://github.com/soroswap/core/blob/main/LICENSE).
 
 Each Soroswap Pair smart contract, manages a liquidity pool made up of reserves of two tokens. These can be either (1) Soroban native tokens implemeting the [Soroban Token Interface](https://developers.stellar.org/docs/smart-contracts/tokens/token-interface), or (2) [Stellar Assets](https://developers.stellar.org/docs/issuing-assets/anatomy-of-an-asset)
 
