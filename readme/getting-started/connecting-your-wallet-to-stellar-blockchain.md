@@ -1,3 +1,9 @@
+---
+description: >-
+  Connect your wallet to Stellar by selecting Mainnet or Testnet and entering
+  the passphrase.
+---
+
 # Connecting Your Wallet to Stellar Blockchain
 
 Connecting your wallet to the Stellar blockchain is a crucial step for interacting securely and efficiently with the network. Whether you're working in the production environment (Mainnet) or a test environment (Testnet), establishing this connection allows you to perform transactions, manage assets, and engage with decentralized applications (dApps) on Stellar. Below is a guide to help you connect your wallet to the Stellar blockchain:

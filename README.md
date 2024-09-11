@@ -2,8 +2,7 @@
 
 Welcome to the Soroswap.Finance Protocol Documentation.
 
-The pages here contain conceptual and technical documentation of the Soroswap.Finance Protocol.
+This documentation offers a thorough exploration of the [Soroswap.Finance ](./)Protocol, encompassing both conceptual insights and technical details. If you're new to Soroswap, start with the [**Getting Started**](https://docs.soroswap.finance/readme/getting-started) section to familiarize yourself with the basics and navigate to [**What is Soroswap Finance?**](https://docs.soroswap.finance/readme/what-is-soroswap-finance) for a detailed overview of our platform.
 
-If you are new to Soroswap, you might want to check out the [Protocol overview ](01-protocol-overview/)first.\
+Soroswap.Finance functions as both an Automated Market Maker (AMM) through [**Soroswap AMM** ](https://docs.soroswap.finance/01-protocol-overview)and an AMM Aggregator via[ **Soroswap Aggregator**](https://docs.soroswap.finance/soroswap-aggregator), providing innovative solutions for efficient trading and liquidity management.\
 \
-Soroswap.Finance is both a AMM (**Soroswap AMM**) and a AMM Aggregator (**Soroswap Aggregator**)

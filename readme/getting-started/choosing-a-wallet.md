@@ -1,10 +1,16 @@
+---
+description: >-
+  This guide highlights essential wallet types, key features, and top
+  recommendations like Freighter, XBull, Lobstr, and Hana.
+---
+
 # Choosing a Wallet
 
-Before you can start using Soroswap Finance, the decentralized exchange on the Stellar blockchain, you'll need to set up a wallet for Stellar Lumens (XLM). A Stellar Lumens wallet is essential for storing and sending XLM. In this article, you'll learn about the importance of a Stellar Lumens wallet, the types available, our recommended choices, and more.
+Before you can start using [Soroswap Finance](https://soroswap.finance), the decentralized exchange on the Stellar blockchain, you'll need to set up a wallet for Stellar Lumens (XLM). A Stellar Lumens wallet is essential for storing and sending XLM. In this article, you'll learn about the importance of a Stellar Lumens wallet, the types available, our recommended choices, and more.
 
 ### Key Considerations
 
-#### Types of Assets
+#### Types of [Assets](https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets)
 
 On the Stellar network, wallets can manage various digital assets including native Stellar Lumens (XLM) and a multitude of tokens issued on the network. These can range from currencies to utility tokens.
 
@@ -55,7 +61,7 @@ Some Stellar wallets offer advanced features such as:
 
 #### [Hana Wallet](https://hanawallet.io)
 
-* **Description**: Known for its simplicity and effectiveness.
+* **Description**: Is a mobil wallet known for its simplicity and effectiveness.
 * **Key Features**: Minimalistic design, ease of use, focus on user privacy.
 * **Recommended Use Cases**: Great for new users of the Stellar network who prefer a straightforward and secure wallet.
 
@@ -75,7 +81,7 @@ Some Stellar wallets offer advanced features such as:
 
 ### Further Research
 
-Before making a final decision, visit official wallet websites, read user reviews, and check out community feedback on forums like Reddit or Stellar community channels. Understanding the experiences of other users can provide valuable insights into the reliability and efficiency of a wallet.
+Before making a final decision, visit official wallet websites, read user reviews, and check out community feedback on forums like [Discord](https://discord.gg/wVkaxxJtFm) or [Stellar community channels](https://discord.gg/stellardev). Understanding the experiences of other users can provide valuable insights into the reliability and efficiency of a wallet.
 
 Choosing the right Stellar wallet will enhance your experience and ensure that your assets are secure and easily manageable. Take the time to evaluate each option based on these criteria to find the best fit for your needs.\
 \
