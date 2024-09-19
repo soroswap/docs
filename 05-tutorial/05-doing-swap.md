@@ -2,54 +2,79 @@
 
 Now that you have successfully added liquidity to a pool, let's move on to the next step: doing swaps. Swapping tokens on Soroswap allows you to exchange one token for another within the liquidity pool. Follow the steps below to perform a swap:
 
-## Step 1: Navigate to the Swap page
+## Step 1: Access Soroswap
 
-1. Go to the Soroswap app and click on the "Swap" tab in the navigation menu.
+Visit the official [Soroswap.Finance](https://soroswap.finance/) website.
 
-![](../../05-tutorial/05-doing-swap/images/swap1.png)
+Click the “Launch App” button on the homepage to access Soroswap’s decentralized platform. This action will direct you to the swap interface.
 
-## Step 2: Select the tokens for the swap
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.15.11.png" alt=""><figcaption></figcaption></figure>
 
-1. In the top section, select the token you want to sell.
-2. In the bottom section, select the token you want to receive.
+## Step 2: Connect Your Wallet to Soroswap.Finance
 
-For example, let's use the XLM/USDC pair, which is the pair we provided liquidity for in the previous section.
+1. **Choose a Stellar Wallet:** Select a wallet compatible with the Stellar network. For assistance, refer to this article: [Guide to Choosing a Stellar Wallet](https://dev.to/soroswap/guide-to-choosing-wallet-for-the-stellar-network-53k1).
 
-![](../../05-tutorial/05-doing-swap/images/swap.png)
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.21.42.png" alt=""><figcaption></figcaption></figure>
 
-## Step 3: Enter the swap amount
+2. **Acquire Stellar (XLM):** Purchase XLM from a reputable exchange or transfer it from another wallet if you already possess some.
+3. **Deposit XLM into Your Wallet:** Transfer the XLM to your Stellar wallet address.
 
-Enter the amount you desire to swap. Make sure to align it with your balances and the liquidity pool reserves, or the swap button will be disabled.
+> If this is your first time, ensure you acquire and transfer Stellar (XLM) to your wallet.
 
-![](../../05-tutorial/05-doing-swap/images/swap2.png)
+## Step 3: Navigate the Soroswap Finance Interface
 
-## Step 4: Review and confirm the swap
+Once your Stellar wallet is connected, familiarize yourself with the Soroswap dashboard. It displays your account details, token balances, and options for swapping tokens and managing your assets.
 
-1. Click the "Swap" button.
-2. Take a moment to review the details of the swap, including the estimated amount and any applicable fees.
-3. If everything looks correct, click the "Confirm Swap" button to proceed.
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.44.15.png" alt=""><figcaption></figcaption></figure>
 
-![](../../05-tutorial/05-doing-swap/images/swap3.png)
+## Step 4: Execute a Token Swap
+
+1. **Select Tokens:** Choose the tokens you wish to swap from and to.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.28.46 (1).png" alt=""><figcaption></figcaption></figure>
+
+2. **Enter Amount:** Specify the amount of tokens you want to exchange.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.51.21.png" alt=""><figcaption></figcaption></figure>
 
 ## Step 5: Trustlines
 
-When you swap a token for the first time on Soroswap.Finance, you'll need to sign a "trustline" transaction. Trustlines are an explicit authorization that allows your account to hold and exchange a specific asset.
+When swapping a new token for the first time on Soroswap.Finance, you’ll need to sign a "trustline" transaction. Trustlines authorize your account to hold and exchange the specific asset.
 
-![](../../05-tutorial/05-doing-swap/images/swap4.png)
+1. **Transaction Request:** A transaction request will be sent to authorize your wallet to hold and trade the new token.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.30.06.png" alt=""><figcaption></figcaption></figure>
+
+2. **Sign the Trustline Transaction:** Sign the transaction to authorize the trustline, allowing your wallet to manage the new asset.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 19.16.39.png" alt=""><figcaption></figcaption></figure>
+
+For more information, refer to the official documentation on [trustlines](https://docs.soroswap.finance/01-concepts/trustlines).
 
 ## Step 6: Confirm the transaction
 
-1. Your Freighter wallet will open, displaying the transaction details.
-2. Review the transaction information and click "Approve" to confirm the swap.
-3. Wait for the transaction to be confirmed on the blockchain.
+1. **Sign the Transaction:** Your Freighter wallet will display the transaction details. Review and click “Approve” to confirm the swap.
 
-![](../../05-tutorial/05-doing-swap/images/swap5.png)
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 16.20.22.png" alt=""><figcaption></figcaption></figure>
 
-## Step 7: View the transaction details
+Congratulations! You have successfully completed a swap on Soroswap.Finance Now.\
 
-1. Once the transaction is confirmed, you will see a success message indicating that the swap was completed.
-2. You can also view the transaction details with the transaction hash or by clicking "View on explorer".
 
-![](../../05-tutorial/05-doing-swap/images/success.png)
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 21.01.45.png" alt=""><figcaption></figcaption></figure>
 
-Congratulations! You have successfully performed a swap on Soroswap. You can now explore the liquidity pools and continue to engage with the exciting world of decentralized finance. In the next step, we will learn how to remove liquidity from our liquidity positions.
+## Step 7: Check That Your Transaction Went Through
+
+After signing the transaction, it's important to confirm that everything went smoothly. To do this, check the details in your wallet or by using one of the blockchain explorers. This step ensures that the token swap has been completed and that the new tokens are now visible in your balance.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 21.58.54.png" alt=""><figcaption></figcaption></figure>
+
+Once the transaction is confirmed, you’ll see a success message indicating the swap is complete. At this point, you can review the transaction details by selecting one of these options:
+
+* [**View in Stellar.Expert**](https://stellar.expert/explorer)
+* [**View in StellarChain**](https://stellarchain.io/)
+
+### **Best Practices**
+
+1. **Sufficient XLM for Fees:** Ensure your wallet contains enough XLM to cover transaction fees.
+2. **Review Trustlines:** Confirm that all necessary trustlines are established before initiating a swap.
+3. **Check Transaction History:** Verify in your wallet that the swap is complete and that the new tokens are reflected in your balance.

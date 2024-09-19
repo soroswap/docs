@@ -9,21 +9,23 @@ title: Pools
 
 ## Introduction
 
-Each Uniswap liquidity pool is a trading venue for a pair of ERC20 tokens. When a pool contract is created, its balances of each token are 0; in order for the pool to begin facilitating trades, someone must seed it with an initial deposit of each token. This first liquidity provider is the one who sets the initial price of the pool. They are incentivized to deposit an equal _value_ of both tokens into the pool. To see why, consider the case where the first liquidity provider deposits tokens at a ratio different from the current market rate. This immediately creates a profitable arbitrage opportunity, which is likely to be taken by an external party.
+In Soroswap Finance, each liquidity pool acts as a trading venue for a pair of assets. When a pool is initially created, it starts with zero balance for each asset, requiring an initial deposit to facilitate trades. The first liquidity provider sets the initial price by depositing equal values of both assets, aligning with the current market rate. This prevents immediate arbitrage opportunities, which occur if the assets are deposited at a ratio different from the prevailing market price.
 
-When other liquidity providers add to an existing pool, they must deposit pair tokens proportional to the current price. If they don’t, the liquidity they added is at risk of being arbitraged as well. If they believe the current price is not correct, they may arbitrage it to the level they desire, and add liquidity at that price.
+Subsequent liquidity providers must deposit assets proportional to the current pool price to prevent their contributions from being arbitraged. If they believe the current price is inaccurate, they can engage in arbitrage to adjust the price to their desired level before adding liquidity, ensuring their assets are valued correctly in the pool.
 
 ## Pool tokens
 
 ![](01-protocol-overview/images/lp.jpg)
 
-Whenever liquidity is deposited into a pool, unique tokens known as _liquidity tokens_ are minted and sent to the provider's address. These tokens represent a given liquidity provider's contribution to a pool. The proportion of the pool's liquidity provided determines the number of liquidity tokens the provider receives. If the provider is minting a new pool, the number of liquidity tokens they will receive will equal sqrt(x \* y), where x and y represent the amount of each token provided.
+When liquidity is deposited into a Soroswap liquidity pool, unique tokens known as pool tokens are minted and sent to the provider's address. These tokens represent the provider's stake in the pool and are a crucial component of the liquidity provision process. The number of pool tokens a provider receives is proportional to their contribution to the pool's total liquidity.
 
-Whenever a trade occurs, a 0.3% fee is charged to the transaction sender. This fee is distributed _pro-rata_ to all LPs in the pool upon completion of the trade.
+When seeding a new pool, the initial liquidity provider sets the quantities of the assets, and the relationship between these assets follows the equation (x \cdot y = k), where (x) and (y) are the amounts of each asset, and (k) is a constant that remains constant during the pool's operations.
 
-To retrieve the underlying liquidity, plus any fees accrued, liquidity providers must "burn" their liquidity tokens, effectively exchanging them for their portion of the liquidity pool, plus the proportional fee allocation.
+Every time a trade is executed within the pool, a transaction fee of 0.3% is charged to the sender. This fee is then distributed pro-rata among all liquidity providers (LPs) in the pool, rewarding them for their participation and incentivizing continued liquidity provision.
 
-As liquidity tokens are themselves tradable assets, liquidity providers may sell, transfer, or otherwise use their liquidity tokens in any way they see fit.
+To withdraw their original assets along with any accrued fees, liquidity providers must "burn" their pool tokens. This process effectively exchanges the tokens for their share of the pool's liquidity, including the proportional allocation of the collected fees.
+
+Pool tokens themselves are tradable assets, providing flexibility to liquidity providers. They can sell, transfer, or utilize these tokens in various ways, offering additional liquidity management options and potential profit opportunities within the decentralized finance ecosystem.
 
 > Learn more with advanced topics:
 
@@ -32,20 +34,13 @@ As liquidity tokens are themselves tradable assets, liquidity providers may sell
 
 ## Why pools?
 
-Uniswap is unique in that it doesn’t use an order book to derive the price of an asset or to match buyers and sellers of tokens. Instead, Uniswap uses what are called Liquidity Pools.
+Soroswap Finance uses liquidity pools instead of traditional order books to enable decentralized token swaps. Liquidity pools consist of user-provided assets locked in smart contracts, allowing seamless, automated trades without relying on a centralized intermediary. This structure addresses key limitations of order books, such as the need for intermediaries, active management by market makers, and high infrastructure requirements.
 
-Liquidity is typically represented by discrete orders placed by individuals onto a centrally operated order book. A participant looking to provide liquidity or make markets must actively manage their orders, continuously updating them in response to the activity of others in the marketplace.
+Pools in Soroswap operate autonomously, leveraging smart contracts to continuously provide liquidity and execute trades. This design is more suited for decentralized ecosystems where tokens may have low liquidity and anyone can create or trade assets without permission. It simplifies the process, ensures more consistent liquidity, and opens up participation to a wider audience, including those without sophisticated trading tools.
 
-While order books are foundational to finance and work great for certain usecases, they suffer from a few important limitations that are especially magnified when applied to a decentralized or blockchain-native setting. Order books require intermediary infrastructure to host the orderbook and match orders. This creates points of control and adds additional layers of complexity. They also require active participation and management from market makers who usually use sophisticated infrastructure and algorithms, limiting participation to advanced traders. Order books were invented in a world with relatively few assets being traded, so it is not surprising they aren't ideal for an ecosystem where anyone can create their own token, and those tokens usually have low liquidity. In sum, with the infrastructural trade-offs presented by a platform like Ethereum, order books are not the native architecture for implementing a liquidity protocol on a blockchain.
-
-Uniswap focuses on the strengths of Ethereum to reimagine token swaps from first principles.
-
-A blockchain-native liquidity protocol should take advantage of the trusted code execution environment, the autonomous and perpetually running virtual machine, and an open, permissionless, and inclusive access model that produces an exponentially growing ecosystem of virtual assets.
-
-It is important to reiterate that a Pool is just a smart contract, operated by users calling functions on it. Swapping tokens is calling `swap` on a Pool contract instance, while providing liquidity is calling `deposit`.
-
-Just how end-users can interact with the Uniswap protocol through the Interface (which in turn interacts with the underlying contracts), developers can interact directly with the smart contracts and integrate Uniswap functionality into their own applications without relying on intermediaries or needing permission.
+By embracing a pool-based system, Soroswap benefits from the open, trustless, and permissionless nature of blockchain technology, allowing decentralized finance (DeFi) to thrive with minimal friction.
 
 ## Developer resources
 
 * To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md#add\_liquidity).
+
