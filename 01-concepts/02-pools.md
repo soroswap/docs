@@ -5,7 +5,7 @@ title: Pools
 
 # Liquidity Pools
 
-![](01-protocol-overview/images/anatomy.jpg)
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-20 a las 15.39.15.png" alt=""><figcaption></figcaption></figure>
 
 ## Introduction
 
@@ -15,7 +15,9 @@ Subsequent liquidity providers must deposit assets proportional to the current p
 
 ## Pool tokens
 
-![](01-protocol-overview/images/lp.jpg)
+
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-20 a las 15.42.48.png" alt=""><figcaption></figcaption></figure>
 
 When liquidity is deposited into a Soroswap liquidity pool, unique tokens known as pool tokens are minted and sent to the provider's address. These tokens represent the provider's stake in the pool and are a crucial component of the liquidity provision process. The number of pool tokens a provider receives is proportional to their contribution to the pool's total liquidity.
 

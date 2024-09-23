@@ -1,6 +1,8 @@
 # Ecosystem Participants
 
-![](images/participants.jpg)
+
+
+<figure><img src="../../.gitbook/assets/Captura de pantalla 2024-09-20 a las 16.23.07.png" alt=""><figcaption></figcaption></figure>
 
 The Soroswap ecosystem is primarily comprised of three types of users: liquidity providers, traders, and developers. Liquidity providers are [incentivized](../../05-tutorial/summary/03-test-stellar-assets-in-testnet.md#accessing-test-tokens) to contribute tokens to common liquidity pools. Traders can swap these tokens for one another for a fixed [0.30% fee](../01-fees.md) (which goes to liquidity providers). Developers can integrate directly with Soroswap smart contracts to power new and exciting interactions with tokens, trading interfaces, retail experiences, and more.
 

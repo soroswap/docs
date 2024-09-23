@@ -6,7 +6,7 @@ subtitle: Learn about the core functionality of the uniswap protocol. Token Swap
 
 # Swaps
 
-![](01-protocol-overview/images/trade.jpg)
+<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-20 a las 15.42.48.png" alt=""><figcaption></figcaption></figure>
 
 ## Introduction
 
