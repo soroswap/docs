@@ -1,36 +1,39 @@
 # Experiment the Pair contract
+
 Once you are inside the `soroban-preview-9` container (by `bash quickstart.sh` and `bash run.sh`) you can start experimenting with the SoroswapPair contract.
 
 ## 1. Open and read the contract:
+
 Open in your favourite IDE or text editor, and check the `pair` folder:
 
 In the `pair/src` folder you will find:
-- The `lib.rs` file with the `SoroswapPair` functions
 
-- The `token` folder, which is a fork of the `token` contract from `soroban-examples`, with two added functions: The `internal_burn` and the `internal_mint` function.
-As the `SoroswapPair` contract is a token itself, if it's not making a cross-contract call to iself in order to mint or burn tokens, it will have problems with `require_auth`. Read more about this in the following issue: [#16](https://github.com/soroswap/core/issues/16)
+* The `lib.rs` file with the `SoroswapPair` functions
+* The `token` folder, which is a fork of the `token` contract from `soroban-examples`, with two added functions: The `internal_burn` and the `internal_mint` function. As the `SoroswapPair` contract is a token itself, if it's not making a cross-contract call to iself in order to mint or burn tokens, it will have problems with `require_auth`. Read more about this in the following issue: [#16](https://github.com/soroswap/core/issues/16)
+* The `test.rs`.
+* The `events.rs` to emmit events
+* The `factory.rs` used as a Interface of some of the factory functions
+* The `create` folder, that contains the `create mod`, used in testings in order to create the pair contract.
 
-- The `test.rs`. 
-- The `events.rs` to emmit events
-- The `factory.rs` used as a Interface of some of the factory functions
-- The `create` folder, that contains the `create mod`, used in testings in order to create the pair contract.
-
-Also, you will see that in the root folder, there is a `./soroban_token_contract.wasm` file. This was taken by compiling the []`soroban-examples/token contract v0.8.4`](https://github.com/stellar/soroban-examples/releases/tag/v0.8.4)
-
+Also, you will see that in the root folder, there is a `./soroban_token_contract.wasm` file. This was taken by compiling the \[]`soroban-examples/token contract v0.8.4`]\(https://github.com/stellar/soroban-examples/releases/tag/v0.8.4)
 
 ## 2. Compile the contract
+
 We can compile both contracts by just calling `make build` from the root directory, however, we can go contract by contract:
+
 ```
 cd pair
 make build
 ```
 
 ## 3. Read and run the tests:
+
 ```bash
 make test
 ```
 
 ## 4.- Experiment with the SoroswapFactory contract using the soroban CLI:
+
 You can see the followng step-by-step. However, if you decide you can read and just run the `initialize_factory.sh` contract:
 
 ```
@@ -38,6 +41,7 @@ bash initialize_pair.sh
 ```
 
 ### 1.- First, set your enviromental variables
+
 Here, as we are using the `soroban-network` docker network, containers can call each other just using their name. In the case of the stellar quickstart container, it's name is `stellar`:
 
 Choose your network. In this example we will use `standalone`, but you can also use `futurenet`:
@@ -45,6 +49,7 @@ Choose your network. In this example we will use `standalone`, but you can also 
 ```bash
 NETWORK="standalone"
 ```
+
 Then:
 
 ```bash
@@ -79,6 +84,7 @@ echo "Using ARGS: $ARGS"
 ### 2.- Let's create two dummy tokens:
 
 We need to create 2 tokens in order to interact with the Pair contract
+
 ```bash
 mkdir -p .soroban
 PAIR_WASM="pair/target/wasm32-unknown-unknown/release/soroswap_pair_contract.wasm"
@@ -126,7 +132,7 @@ echo Current TOKEN_A_ID: $TOKEN_A_ID
 echo Current TOKEN_B_ID: $TOKEN_B_ID
 ```
 
-Because the Pair token always uses token_a and token_b so `token_a<token_b`, this is something we need to check before initializing the pair contract with our two tokens. Later, this is something that will be done automatically by the Factory contract:
+Because the Pair token always uses token\_a and token\_b so `token_a<token_b`, this is something we need to check before initializing the pair contract with our two tokens. Later, this is something that will be done automatically by the Factory contract:
 
 ```bash
 if [[ "$TOKEN_B_ID" > "$TOKEN_A_ID" ]]; then
@@ -151,6 +157,7 @@ echo -n "$TOKEN_B_ID" > .soroban/token_b_id
 ```
 
 ### 3.- Build, deploy and initialize the Pair contract
+
 ```bash
 echo Build the SoroswapPair contract
     cd pair
@@ -178,7 +185,9 @@ soroban contract invoke \
   --token_a "$TOKEN_A_ID" \
   --token_b "$TOKEN_B_ID" 
 ```
+
 ### 4.- Creare a USER account and mint tokens to that account.
+
 ```bash
 echo In the following we are going to use a new USER account:
   echo Creating the user identity
@@ -237,9 +246,11 @@ soroban contract invoke \
   balance \
   --id $USER_ADDRESS
 ```
+
 ### 5.- Deposit tokens in the PAIR contract
 
 Now is the fun part! Interacting with our pair contract!!!
+
 ```bash
 echo "Deposit these tokens into the Pool contract"
     echo "This will be called by the user"
@@ -266,7 +277,7 @@ soroban contract invoke \
 
 ```
 
-After this, you should receive a `sucess` message... But how do we know that we actually deposited 100 units of each token? The user shoud have new pair tokens, and it should have 100 token_a less and 100 token_b less!
+After this, you should receive a `sucess` message... But how do we know that we actually deposited 100 units of each token? The user shoud have new pair tokens, and it should have 100 token\_a less and 100 token\_b less!
 
 ```bash
 echo Check that the user\'s pair tokens balance is 100
@@ -336,12 +347,11 @@ echo "--"
 echo "--"
 ```
 
-
-
 ### 6.- Swap tokens.
-Once the SoroswapPair contract (which is a liquidity pool) has been initialized with some units of token_a and token_b, any user can perform a trade executing the `swap` function.
 
-Here we will call the `fn swap(e: Env, to: Address, buy_a: bool, out: i128, in_max: i128)` function.   If "buy_a" is true, the swap will buy token_a and sell token_b. This is flipped if "buy_a" is false "out" is the amount being bought, with in_max being a safety to make sure you receive at least that amount. The swap function will transfer the selling token "to" to this contract, and then the contract will transfer the buying token to "to".
+Once the SoroswapPair contract (which is a liquidity pool) has been initialized with some units of token\_a and token\_b, any user can perform a trade executing the `swap` function.
+
+Here we will call the `fn swap(e: Env, to: Address, buy_a: bool, out: i128, in_max: i128)` function. If "buy\_a" is true, the swap will buy token\_a and sell token\_b. This is flipped if "buy\_a" is false "out" is the amount being bought, with in\_max being a safety to make sure you receive at least that amount. The swap function will transfer the selling token "to" to this contract, and then the contract will transfer the buying token to "to".
 
 ```bash
 
@@ -402,9 +412,11 @@ soroban contract invoke \
 ```
 
 ### 7.- The final part: Withdraw
-The final test is when the user want's to exit the liquidity pool and withdraw its tokens by giving back the pair_tokens that it has:
+
+The final test is when the user want's to exit the liquidity pool and withdraw its tokens by giving back the pair\_tokens that it has:
 
 The function here will be
+
 ```rust
 fn withdraw(    e: Env,
                 to: Address,
@@ -412,8 +424,6 @@ fn withdraw(    e: Env,
                 min_a: i128, 
                 min_b: i128) -> (i128, i128)
 ```
-
-
 
 ```bash
 
@@ -454,14 +464,15 @@ echo TOKEN_B_ID = $TOKEN_B_ID
 echo "--"
 echo "--"
 ```
-___
+
+***
 
 You can go through all this steps just by doing:
+
 ```bash
 bash initialize_pair.sh
 ```
 
-___
+***
+
 In the next, we will experiment the creation of Pair contracts through the SoroswapFactory contract!
-
-

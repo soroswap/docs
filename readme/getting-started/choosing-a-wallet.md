@@ -1,87 +1,37 @@
 ---
-description: >-
-  This guide highlights essential wallet types, key features, and top
-  recommendations like Freighter, XBull, Lobstr, and Hana.
+cover: ../../.gitbook/assets/Component 97.png
+coverY: 123
 ---
 
 # Choosing a Wallet
 
-Before you can start using [Soroswap Finance](https://soroswap.finance), the decentralized exchange on the Stellar blockchain, you'll need to set up a wallet for Stellar Lumens (XLM). A Stellar Lumens wallet is essential for storing and sending XLM. In this article, you'll learn about the importance of a Stellar Lumens wallet, the types available, our recommended choices, and more.
+### What to Look For in a Wallet
 
-### Key Considerations
+* **Stellar asset support**: Must handle native XLM and custom tokens (stablecoins, NFTs, etc.).
+* **Clean UI**: Easy to use on browser, desktop, or mobile.
+* **Non-custodial**: You retain full control of your private keys.
+* **Backup & recovery options**: For secure account restoration.
+* **dApp compatibility**: Must work with Soroban-based contracts.
+* **Multi-account support**: Manage multiple addresses from a single interface.
 
-#### Types of [Assets](https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/assets)
+### ✅ Compatible Wallets with Soroswap.Finance
 
-On the Stellar network, wallets can manage various digital assets including native Stellar Lumens (XLM) and a multitude of tokens issued on the network. These can range from currencies to utility tokens.
+These wallets are fully integrated via [`stellar-wallets-kit`](https://github.com/paltalabs/soroban-react-stellar-wallets-kit) and work seamlessly with the Soroswap app.
 
-#### User Interface
+| Wallet                                        | Type                       | Best for                  | Key Features                                      |
+| --------------------------------------------- | -------------------------- | ------------------------- | ------------------------------------------------- |
+| [**Freighter**](https://www.freighter.app/)   | Browser extension, web     | Web users & dApps         | Fast, non-custodial, multi-account support        |
+| [**xBull**](https://xbull.app/)               | Web, mobile, extension     | Advanced users, traders   | Multi-asset, built-in swap, open source           |
+| [**Hana Wallet**](https://www.hanawallet.io/) | Mobile, web                | Beginners & privacy-first | Simple UI, multi-chain, Stellar NFTs              |
+| [**Lobstr**](https://lobstr.co/)              | Mobile, web                | Everyday use              | Friendly UI, social payments, widely used         |
+| [**Rabet**](https://rabet.io/download)        | Extension, desktop, mobile | Desktop-first new users   | Lightweight, intuitive, good for dApp interaction |
+| [**Albedo**](https://albedo.link/)            | Web (redirect)             | Quick signing             | No install needed, fast transaction authorization |
+| [**HOT Wallet**](https://hot-labs.org/)       | Telegram mini app          | Multi-chain web3 users    | Non-custodial, $HOT token mining, EVM support     |
 
-Wallets on the Stellar network come in several forms:
+#### 🔍 Quick Recommendations
 
-* **Mobile Wallets**: Offer convenience and accessibility. Ideal for users who need access on the go.
-* **Browser Extensions**: Facilitate quick transactions and are easy to integrate with web services.
-* **Desktop Wallets**: Provide robust security features and are suitable for handling larger amounts or for more frequent trading.
+* **Using Soroswap in the browser?** → Go with **Freighter, Rabet** or **xBull**
+* **Prefer mobile?** → Try **Lobstr**, **Hana**, or **HOT Wallet**
+* **Need fast signing with no setup?** → Use **Albedo**
 
-### **Security**
-
-Key security features to consider include:
-
-* **Private Key Management**: Ensuring that the wallet gives you full control over your private keys.
-* **Encryption**: Strong encryption standards to protect your data.
-* **Backup & Recovery**: Options available for backing up and recovering your wallet.
-
-### Special Features
-
-Some Stellar wallets offer advanced features such as:
-
-* **dApp Integration**: Allows interaction with decentralized applications directly through the wallet.
-* **Anchored Accounts**: Integration with services that allow the deposit and withdrawal of fiat currencies.
-* **Multi-Account Management**: The ability to manage multiple accounts from a single interface.
-
-### Popular Wallet Options for Stellar
-
-#### [Freighter Wallet](https://www.freighter.app)
-
-* **Description**: A browser extension wallet designed specifically for the Stellar network.
-* **Key Features**: Integrates seamlessly with web applications, supports multiple Stellar accounts.
-* **Recommended Use Cases**: Best for users who frequently interact with Stellar-based web applications.
-* **Installation Guide**: For a step-by-step tutorial on [how to install and set up Freighter Wallet](https://docs.soroswap.finance/05-tutorial/02-installing-freighter).
-
-#### [XBull Wallet](https://xbull.app)
-
-* **Description**: A comprehensive wallet offering both mobile and desktop versions.
-* **Key Features**: Support for multiple assets, built-in exchange features, and high-level security measures.
-* **Recommended Use Cases**: Suitable for users looking for a versatile wallet that supports frequent trading and investment.
-
-#### [Lobstr Wallet](https://lobstr.co)
-
-* **Description**: Popular among Stellar users for its user-friendly mobile app.
-* **Key Features**: Social features for sending and receiving payments, strong security protocols.
-* **Recommended Use Cases**: Ideal for everyday users needing a simple and secure way to manage and transact with Stellar Lumens and other tokens.
-
-#### [Hana Wallet](https://hanawallet.io)
-
-* **Description**: Is a mobil wallet known for its simplicity and effectiveness.
-* **Key Features**: Minimalistic design, ease of use, focus on user privacy.
-* **Recommended Use Cases**: Great for new users of the Stellar network who prefer a straightforward and secure wallet.
-
-### Factors to Consider
-
-#### Security and Privacy
-
-* Assess the wallet’s security track record and read reviews about its reliability and privacy protections.
-
-#### Ease of Use
-
-* The wallet interface should be intuitive, making it easy for you to manage your assets and transactions without confusion.
-
-#### Compatibility
-
-* Consider how well the wallet integrates with other platforms and applications, including exchanges and other blockchain services.
-
-### Further Research
-
-Before making a final decision, visit official wallet websites, read user reviews, and check out community feedback on forums like [Discord](https://discord.gg/wVkaxxJtFm) or [Stellar community channels](https://discord.gg/stellardev). Understanding the experiences of other users can provide valuable insights into the reliability and efficiency of a wallet.
-
-Choosing the right Stellar wallet will enhance your experience and ensure that your assets are secure and easily manageable. Take the time to evaluate each option based on these criteria to find the best fit for your needs.\
-\
+####

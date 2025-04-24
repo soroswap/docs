@@ -2,6 +2,8 @@
 description: >-
   Connect your wallet to Stellar by selecting Mainnet or Testnet and entering
   the passphrase.
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
 ---
 
 # Connecting Your Wallet to Stellar Blockchain

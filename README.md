@@ -1,8 +1,18 @@
-# The Soroswap.Finance Protocol
+---
+cover: .gitbook/assets/Header Embed Soroswap.png
+coverY: 0
+---
 
-Welcome to the Soroswap.Finance Protocol Documentation.
+# Welcome 👋🏼
 
-This documentation offers a thorough exploration of the [Soroswap.Finance ](./)Protocol, encompassing both conceptual insights and technical details. If you're new to Soroswap, start with the [**Getting Started**](https://docs.soroswap.finance/readme/getting-started) section to familiarize yourself with the basics and navigate to [**What is Soroswap Finance?**](https://docs.soroswap.finance/readme/what-is-soroswap-finance) for a detailed overview of our platform.
+[Soroswap.Finance ](./)is the first DEX and exchange aggregator built on [Stellar](https://stellar.org), powered by smart contracts on [Soroban](https://stellar.org/soroban).\
+\
+If you’re new here, we recommend starting with the [**Getting Started**](https://docs.soroswap.finance/readme/getting-started) section, and then reading [**What is Soroswap Finance?**](https://docs.soroswap.finance/readme/what-is-soroswap-finance) for a full overview of how the platform works.
 
-Soroswap.Finance functions as both an Automated Market Maker (AMM) through [**Soroswap AMM** ](https://docs.soroswap.finance/01-protocol-overview)and an AMM Aggregator via[ **Soroswap Aggregator**](https://docs.soroswap.finance/soroswap-aggregator), providing innovative solutions for efficient trading and liquidity management.\
+Soroswap operates as:
+
+* 🌀 **An Automated Market Maker (AMM)** via [**Soroswap AMM**](https://docs.soroswap.finance/01-protocol-overview) for direct token swaps and liquidity provisioning
+* 🧠 **An AMM Aggregator** via [**Soroswap Aggregator**](https://docs.soroswap.finance/soroswap-aggregator), optimizing trades across multiple protocols to secure the best execution
+
+Together, these components deliver a powerful, decentralized trading experience on the Soroban smart contract platform.\
 \

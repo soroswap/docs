@@ -1,11 +1,15 @@
 ---
 id: pools
 title: Pools
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-24 a las 15.20.59.png
+coverY: 0
 ---
 
 # Liquidity Pools
 
-<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-20 a las 15.39.15.png" alt=""><figcaption></figcaption></figure>
+Each liquidity pool functions as a market for a specific pair of tokens.
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2025-04-24 a las 15.07.19.png" alt=""><figcaption></figcaption></figure>
 
 ## Introduction
 
@@ -15,9 +19,7 @@ Subsequent liquidity providers must deposit assets proportional to the current p
 
 ## Pool tokens
 
-
-
-<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-20 a las 15.42.48.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../.gitbook/assets/Captura de pantalla 2025-04-24 a las 15.09.28.png" alt=""><figcaption></figcaption></figure>
 
 When liquidity is deposited into a Soroswap liquidity pool, unique tokens known as pool tokens are minted and sent to the provider's address. These tokens represent the provider's stake in the pool and are a crucial component of the liquidity provision process. The number of pool tokens a provider receives is proportional to their contribution to the pool's total liquidity.
 
@@ -44,5 +46,5 @@ By embracing a pool-based system, Soroswap benefits from the open, trustless, an
 
 ## Developer resources
 
-* To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md#add\_liquidity).
+* To see how to pool tokens in a smart contract read [Providing Liquidity](../01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter.md#add_liquidity).
 

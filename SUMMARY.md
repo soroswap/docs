@@ -1,6 +1,6 @@
 # Table of contents
 
-* [The Soroswap.Finance Protocol](README.md)
+* [Welcome 👋🏼](README.md)
   * [What is Soroswap Finance?](readme/what-is-soroswap-finance.md)
   * [Getting Started](readme/getting-started/README.md)
     * [Choosing a Wallet](readme/getting-started/choosing-a-wallet.md)

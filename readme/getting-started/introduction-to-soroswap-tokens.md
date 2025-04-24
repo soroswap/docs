@@ -1,5 +1,7 @@
 ---
 description: The Soroswap Token List features verified assets for reliable transactions.
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
 ---
 
 # Introduction to Soroswap Tokens

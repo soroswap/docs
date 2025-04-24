@@ -1,3 +1,8 @@
+---
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
 # Liquidity Management on Soroswap
 
 On **Soroswap Finance**, liquidity management is facilitated through **liquidity pools** managed by an [**Automated Market Maker (AMM)**](https://docs.soroswap.finance/01-concepts/amm). This automated approach allows for efficient and continuous asset conversion without the need for a traditional order book. Here’s an overview of how to interact with liquidity pools on Soroswap and get started.

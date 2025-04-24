@@ -1,3 +1,9 @@
+---
+cover: >-
+  https://images.unsplash.com/photo-1505506874110-6a7a69069a08?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwzfHxzcGFjZXxlbnwwfHx8fDE3NDUyNTAzOTF8MA&ixlib=rb-4.0.3&q=85
+coverY: 0
+---
+
 # What is Soroswap Finance?
 
 [Soroswap.Finance](../) is an open-source protocol designed for liquidity provision and token trading on the Soroban blockchain. It operates without the need for intermediaries, ensuring a secure, transparent, and efficient trading environment. The protocol is immutable and built to resist censorship. Development of Soroswap.Finance and its interface is managed by [PaltaLabs.](https://paltalabs.io)

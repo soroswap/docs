@@ -1,23 +1,24 @@
-# Contracts in Futurenet
-There are already some contracts ready to interact with in Futurenet!
-The contract id's are:
+# Deployments.
+
+There are already some contracts ready to interact with in Futurenet! The contract id's are:
 
 The Factory contract: `1486c77ba3a9639226dbbe64d1ac6f73a7dd6122201c6bc335d382981ec566b4`
 
 This is the only address in theory you need to interact with the protocol.
 
 There is an already written script to interact with this contract. You can just do:
+
 ```bash
 bash interact_futurenet.sh
 ```
 
 So if you want to test the protocol yourself you can follow these instructions:
 
-
 ### 1.- First, set your enviromental variables
+
 Here, as we are using the `soroban-network` docker network, containers can call each other just using their name. In the case of the stellar quickstart container, it's name is `stellar`:
 
-Let's start by setting the FACTORY_ID and the NETWORK
+Let's start by setting the FACTORY\_ID and the NETWORK
 
 ```bash
 
@@ -72,6 +73,7 @@ echo "Using ARGS: $ARGS"
 ### 2.- Let's create two dummy tokens:
 
 We need to create 2 tokens in order to interact with the Pair contract
+
 ```bash
 mkdir -p .soroban
 PAIR_WASM="pair/target/wasm32-unknown-unknown/release/soroswap_pair_contract.wasm"
@@ -119,7 +121,7 @@ echo Current TOKEN_A_ID: $TOKEN_A_ID
 echo Current TOKEN_B_ID: $TOKEN_B_ID
 ```
 
-Because the Pair token always uses token_a and token_b so `token_a<token_b`, this is something we need to check before initializing the pair contract with our two tokens. Later, this is something that will be done automatically by the Factory contract:
+Because the Pair token always uses token\_a and token\_b so `token_a<token_b`, this is something we need to check before initializing the pair contract with our two tokens. Later, this is something that will be done automatically by the Factory contract:
 
 ```bash
 if [[ "$TOKEN_B_ID" > "$TOKEN_A_ID" ]]; then
