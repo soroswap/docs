@@ -1,3 +1,7 @@
+---
+hidden: true
+---
+
 # Optimal Route
 
 Soroswap Optimal Routing is a key component of the Soroswap protocol, designed to find the most efficient route for executing swaps. By leveraging a combination of the solutions implemented by 1Inch and Uniswap, Soroswap aims to provide users with the best possible trading experience.
