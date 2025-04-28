@@ -1,7 +1,7 @@
 ---
 id: pools
 title: Pools
-cover: ../.gitbook/assets/Captura de pantalla 2025-04-24 a las 15.20.59.png
+cover: ../.gitbook/assets/Pools.png
 coverY: 0
 ---
 

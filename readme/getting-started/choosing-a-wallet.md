@@ -1,9 +1,14 @@
 ---
+description: >-
+  To get started, you need a wallet compatible with the Stellar network and able
+  to interact with Soroban smart contracts. Here's how to choose one and connect
+  it.
+icon: wallet
 cover: ../../.gitbook/assets/Component 97.png
 coverY: 123
 ---
 
-# Choosing a Wallet
+# Wallet Setup and Connection
 
 ### What to Look For in a Wallet
 
@@ -28,10 +33,25 @@ These wallets are fully integrated via [`stellar-wallets-kit`](https://github.co
 | [**Albedo**](https://albedo.link/)            | Web (redirect)             | Quick signing             | No install needed, fast transaction authorization |
 | [**HOT Wallet**](https://hot-labs.org/)       | Telegram mini app          | Multi-chain web3 users    | Non-custodial, $HOT token mining, EVM support     |
 
-#### 🔍 Quick Recommendations
+> **Quick Recommendations**\ <sup>- Using Soroswap in the browser? → Go with</sup> <sup></sup><sup>**Freighter**</sup><sup>,</sup> <sup></sup><sup>**Rabet**</sup><sup>, or</sup> <sup></sup><sup>**xBull**</sup>\ <sup>- Prefer mobile? → Try</sup> <sup></sup><sup>**Lobstr**</sup><sup>,</sup> <sup></sup><sup>**Hana**</sup><sup>, or</sup> <sup></sup><sup>**HOT Wallet**</sup>\ <sup>- Need fast signing with no setup? → Use</sup> <sup></sup><sup>**Albedo**</sup>
 
-* **Using Soroswap in the browser?** → Go with **Freighter, Rabet** or **xBull**
-* **Prefer mobile?** → Try **Lobstr**, **Hana**, or **HOT Wallet**
-* **Need fast signing with no setup?** → Use **Albedo**
+### 🌐 Connecting to the Stellar Network
+
+Connecting your wallet to Stellar is required to interact with tokens, perform swaps, and use Soroban dApps.
+
+### [Choosing the Network](https://developers.stellar.org/docs/learn/fundamentals/networks)
+
+* **Mainnet**: For real transactions and assets.\
+  Passphrase: `Public Global Stellar Network ; September 2015`
+* **Testnet**: For development and testing (used with Soroswap test version).\
+  Passphrase: `Test SDF Network ; December 2014`
+
+> To learn how to use  [Soroswap Testnet Overview](https://docs.soroswap.finance/05-tutorial/01-soroswap-testnet-overviews).
+
+### Configuring Your Wallet
+
+* **Select network**: Most wallets allow switching between Mainnet and Testnet in settings.
+* **Enter** [**passphrase**](https://developers.stellar.org/docs/networks): Required by some wallets to connect correctly.
+* **(Optional)** [**Set custom Horizon node**](https://developers.stellar.org/docs/data/horizon/horizon-providers#ecosystem-horizon-providers): Advanced users can configure a custom Horizon URL (e.g., ANKR node).
 
 ####

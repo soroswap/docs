@@ -8,7 +8,9 @@ Visit the official [Soroswap.Finance](https://soroswap.finance/) website.
 
 Click the “Launch App” button on the homepage to access Soroswap’s decentralized platform. This action will direct you to the swap interface.
 
-<figure><img src="../.gitbook/assets/Captura de pantalla 2024-09-18 a las 18.15.11.png" alt=""><figcaption></figcaption></figure>
+##
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2025-04-25 a las 12.24.18.png" alt=""><figcaption></figcaption></figure>
 
 ## Step 2: Connect Your Wallet to Soroswap.Finance
 

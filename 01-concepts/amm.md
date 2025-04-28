@@ -2,7 +2,7 @@
 description: >-
   Soroswap.Finance is an AMM that has its own Liquidity Pools, independent of
   other AMMs out there like the Stellar Classic DEX or Phoenix
-cover: ../.gitbook/assets/Captura de pantalla 2025-04-24 a las 12.38.57.png
+cover: ../.gitbook/assets/AMM.png
 coverY: 0
 ---
 

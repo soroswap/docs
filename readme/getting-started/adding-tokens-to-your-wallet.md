@@ -3,6 +3,7 @@ description: >-
   To add a specific token to your Stellar wallet, you need the following asset
   information. We'll use the example of the USDC token issued by the account
   mentioned.
+hidden: true
 cover: ../../.gitbook/assets/Component 94.png
 coverY: 0
 ---

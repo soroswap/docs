@@ -10,9 +10,11 @@ coverY: 0
 
 ## <sup>What do you need?</sup>
 
-1. A **wallet compatible with Stellar/Soroban**
-2. Access to the [Soroswap app](https://soroswap.finance/)
-3. **Testnet XLM** — get it for free from Friendbot
+* A **wallet compatible with Stellar/Soroban**
+* Access to the [Soroswap app](https://soroswap.finance/)
+* **Testnet XLM** — get it for free from Friendbot
+* Make your first **token swap** using the AMM
+* &#x20;To try the **Aggregator** it automatically finds the best price across multiple liquidity pools&#x20;
 
 #### 🔐 Supported Wallets
 
@@ -31,7 +33,7 @@ The app automatically detects your available wallets and shows a simple UI to se
 #### 🔄 How to connect?
 
 1. Go to [soroswap.finance](https://soroswap.finance/)
-2. Click **“Connect Wallet”**
+2. Click **“**[**Connect Wallet**](choosing-a-wallet.md)**”**
 3. Choose your preferred wallet (e.g., Freighter or **Lobstr**)
 4. Approve the connection
 5. Done! You’re ready to start swapping or providing liquidity
