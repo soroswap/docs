@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Router
 
 The [**Router** in Soroswap Finance ](https://github.com/soroswap/soroswap-router-sdk)is a key component of the protocol that facilitates interactions with multiple [**Liquidity Pools**.](https://docs.soroswap.finance/01-concepts/02-pools) Liquidity Pools are always formed between two tokens, creating what are known as **Pairs**. For example, a pool might be between Token A and Token B, forming the pair **A:B**.

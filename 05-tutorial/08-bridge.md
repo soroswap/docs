@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Bridge using Pendulum
 
 **Navigate to the Bridge section:**
@@ -11,9 +16,9 @@ From the navigation bar (located at the top of the application \[or bottom if yo
 
 > \[!NOTE] (You may be asked for your credentials and your approval to connect to the site if this is the first time you are entering with that wallet).
 
-![](../../05-tutorial/08-Bridge/images/Connect\_Button\_Stellar.png)
+![](08-Bridge/images/Connect_Button_Stellar.png)
 
-![](../../05-tutorial/08-Bridge/images/Connect\_Modal\_Stellar.png)
+![](08-Bridge/images/Connect_Modal_Stellar.png)
 
 **Connect your Pendulum wallet:**
 
@@ -21,9 +26,9 @@ From the navigation bar (located at the top of the application \[or bottom if yo
 * A window will appear showing you all the Pendulum wallets currently available on Soroswap.
 * Choose your preferred wallet and connect it to the application.
 
-![](../../05-tutorial/08-Bridge/images/Connect\_Button\_pendulum.png)
+![](08-Bridge/images/Connect_Button_pendulum.png)
 
-![](../../05-tutorial/08-Bridge/images/Connect\_Modal\_Pendulum.png)
+![](08-Bridge/images/Connect_Modal_Pendulum.png)
 
 **Select the asset and the type of operation:**
 
@@ -32,28 +37,28 @@ From the navigation bar (located at the top of the application \[or bottom if yo
 
 > \[!NOTE] Keep in mind that from Stellar it will create an "Issue" operation, while from Pendulum it will create a "Redeem" operation for the selected asset.
 
-![](../../05-tutorial/08-Bridge/images/Select\_token\_button.png)
+![](08-Bridge/images/Select_token_button.png)
 
-![](../../05-tutorial/08-Bridge/images/Select\_token\_modal\_Stellar.png)
+![](08-Bridge/images/Select_token_modal_Stellar.png)
 
 **Enter an amount:**
 
 * Back on the main Bridge view, you can enter an amount in the designated field.
 
-![](../../05-tutorial/08-Bridge/images/Ammount.png)
+![](08-Bridge/images/Ammount.png)
 
 **Create the transaction:**
 
 * Click on the button with the text "Send" to create the transaction and a window will open showing the details of the operation to be performed.
 
-![](../../05-tutorial/08-Bridge/images/Send\_Button.png)
+![](08-Bridge/images/Send_Button.png)
 
 **Review the transaction:**
 
 * In this new window you can review details such as the amount to "issue" / "claim", the associated fees and the networks between which the bridge will be made.
 * Once you have verified that the data is correct, click on the **"Confirm"** button.
 
-![](../../05-tutorial/08-Bridge/images/Review\_transaction.png)
+![](08-Bridge/images/Review_transaction.png)
 
 **Confirm the transaction in your Pendulum wallet:**
 
@@ -62,19 +67,19 @@ From the navigation bar (located at the top of the application \[or bottom if yo
 
 > \[!WARNING] Do not close this window or the transaction may fail.
 
-![](../../05-tutorial/08-Bridge/images/Approve\_Pendulum\_Modal.png)
+![](08-Bridge/images/Approve_Pendulum_Modal.png)
 
-![](../../05-tutorial/08-Bridge/images/Confirm\_Pendulum\_wallet.png)
+![](08-Bridge/images/Confirm_Pendulum_wallet.png)
 
 **(Optional) Make the payment with your Stellar wallet:**
 
 * If you are requesting to issue assets in Pendulum, you will have to deliver the equivalent value in Stellar assets, please make sure you have sufficient funds to perform the operation, otherwise it will fail.
 * Confirm the payment in your wallet and wait patiently for the information to be registered on the blockchain.
 
-![](../../05-tutorial/08-Bridge/images/Approve\_stellar\_modal.png)
+![](08-Bridge/images/Approve_stellar_modal.png)
 
-![](../../05-tutorial/08-Bridge/images/Sign\_with\_stellar.png)
+![](08-Bridge/images/Sign_with_stellar.png)
 
 > \[!TIP] After successfully completing these steps, the balances in your wallet should be updated. You can review the details of the operation directly by clicking on the **"view in explorer"** button.
 
-![](../../05-tutorial/08-Bridge/images/Transaction\_completed.png)
+![](08-Bridge/images/Transaction_completed.png)

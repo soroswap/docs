@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Installing Freighter
 
 In this section, we will guide you through the installation process of Freighter, a non-custodial Stellar wallet extension that will empower you to engage with Soroswap.Finance
@@ -13,7 +18,7 @@ Freighter works as a Extension in Chrome (Google Chrome, Brave) and Firefox:
 
 Upon creating your account, you will be presented with a secret recovery phrase. This phrase acts as a backup for your wallet's private key, allowing you to restore your wallet in case of loss, theft, or device damage.
 
-![](../../05-tutorial/02-installing-freighter/images/phrase.png)
+![](02-installing-freighter/images/phrase.png)
 
 Follow these important guidelines to protect your funds:
 
@@ -25,7 +30,7 @@ Follow these important guidelines to protect your funds:
 
 To ensure accuracy, you will be asked to confirm your seed phrase in the same order. This step guarantees that you have correctly noted down your recovery phrase.
 
-![](../../05-tutorial/02-installing-freighter/images/confirm-phrase.png)
+![](02-installing-freighter/images/confirm-phrase.png)
 
 ## Step 4: Accessing Your Wallet
 
@@ -33,7 +38,7 @@ Congratulations! You are now ready to use your Freighter wallet. Follow these fi
 
 1.  Open the Freighter extension in your browser.
 
-    ![](../../05-tutorial/02-installing-freighter/images/account.png)
+    ![](02-installing-freighter/images/account.png)
 2. Your account will be displayed, labeled as "Account 1," along with your unique account address. This address serves as an identifier for receiving funds or transactions from other users or entities on the blockchain network.
 
 ## Step 5: Access to Testnet with Soroban
@@ -42,19 +47,19 @@ Because Soroban is still in the "experimental" side of Tesnet, you first need to
 
 1.  Open the Settings menu, by clicking the gear in the botom right corner:
 
-    ![](../../05-tutorial/02-installing-freighter/images/gear.png)
+    ![](02-installing-freighter/images/gear.png)
 2.  Open the Preference menu
 
-    ![](../../05-tutorial/02-installing-freighter/images/preferences.png)
+    ![](02-installing-freighter/images/preferences.png)
 3.  Enable experimental mode
 
-    ![](../../05-tutorial/02-installing-freighter/images/experimental-mode.png)
+    ![](02-installing-freighter/images/experimental-mode.png)
 4. Finally, go back and click on the "Main Net" button located at the top right corner to explore the networks:
    * **Mainnet**: The live and fully operational blockchain network where real transactions occur.
    * **Testnet**: A simulated environment for testing and experimentation
 5.  Since Soroswap is currently in the Soroban Testnet environment, we will proceed with the tutorial using the Testnet setting. By utilizing the testnet, we can safely explore and demonstrate the functionalities of Soroswap without any concerns about real-world financial implications.
 
-    ![](../../05-tutorial/02-installing-freighter/images/testnet.png)
+    ![](02-installing-freighter/images/testnet.png)
 
 ## Step 6: Let's Dive into the Tutorial
 

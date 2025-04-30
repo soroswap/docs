@@ -1,6 +1,11 @@
-# SoroswapLibrary:
+---
+cover: ../../../.gitbook/assets/Component 94.png
+coverY: 0
+---
 
-The SoroswapLibrary is a rust crate that anyone can implement in their smart contracts. Check all the documentation here: [https://docs.rs/soroswap-library/latest/soroswap\_library/](https://docs.rs/soroswap-library/latest/soroswap\_library/)
+# SoroswapLibrary
+
+The SoroswapLibrary is a rust crate that anyone can implement in their smart contracts. Check all the documentation here: [https://docs.rs/soroswap-library/latest/soroswap\_library/](https://docs.rs/soroswap-library/latest/soroswap_library/)
 
 
 

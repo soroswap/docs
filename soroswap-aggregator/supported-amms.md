@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
 # Supported AMMs
 
 Automated Market Makers (AMMs) are essential to decentralized finance (DeFi), enabling the efficient exchange of assets without centralized intermediaries or traditional order books. The Stellar network supports several AMMs that each offer unique features to improve liquidity and decentralized trading. Below is an overview of key AMMs supported by Soroswap Finance:

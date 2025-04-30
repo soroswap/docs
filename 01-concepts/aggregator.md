@@ -2,6 +2,8 @@
 description: >-
   An aggregator aggregates several Soroban-based AMM (AMM based on Smart
   Contracts in the Stellar Blockchain)
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-28 a las 14.47.16.png
+coverY: 0
 ---
 
 # Aggregator
@@ -10,7 +12,7 @@ An **Aggregator** is a smart contract that allows users to execute asset swaps u
 
 ### Underlying Protocols (DEXES)
 
-The [**Soroswap.Finance Aggregator**](https://github.com/soroswap/aggregator/blob/main/audits/2024-08-31\_Soroswap\_Aggregator\_Audit\_Summary\_by\_RuntimeVerification.pdf) integrates with the best AMMs (Automated Market Makers) currently deployed on the Soroban-Stellar Mainnet. These protocols provide the necessary liquidity to execute token swaps, allowing users to achieve optimal pricing and efficiency.  Currently the Aggregator aggregates liqudity from:
+The [**Soroswap.Finance Aggregator**](https://github.com/soroswap/aggregator/blob/main/audits/2024-08-31_Soroswap_Aggregator_Audit_Summary_by_RuntimeVerification.pdf) integrates with the best AMMs (Automated Market Makers) currently deployed on the Soroban-Stellar Mainnet. These protocols provide the necessary liquidity to execute token swaps, allowing users to achieve optimal pricing and efficiency.  Currently the Aggregator aggregates liqudity from:
 
 * **Soroswap.Finance AMM**: The main protocol of Soroswap, fully deployed on the Soroban-Stellar Mainnet. This AMM offers fast, secure, and low-cost token swaps, enabling users to interact with a wide range of token pairs.
 * **Phoenix Protocol AMM** (currently on Testnet): Phoenix is in the testing phase and adds an additional layer of liquidity to the Soroban network. Once fully deployed on the mainnet, Phoenix will enhance the efficiency of token swaps.

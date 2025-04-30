@@ -1,3 +1,8 @@
+---
+cover: ../../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Wrapping Stellar Classic Assets
 
 ## Understanding the Importance of Wrapping Stellar Assets for Soroban
@@ -53,15 +58,15 @@ Soroswap's search modal allows you to find your desired token. If you enter a `C
 3. Upon confirming your choice, you will be prompted to sign the transaction with your wallet.
 4. Once signed, the transaction is submitted, and the asset is wrapped into a Soroban-compatible format.
 
-![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping\_process\_modal.png) ![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping-view.png)
+![](../07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping_process_modal.png) ![](../07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/wrapping-view.png)
 
 ### Post-Wrapping: What’s Next?
 
 After wrapping, the new Soroban-wrapped asset will appear in your Soroswap token list, ready to be traded or added to liquidity pools. You can now enjoy all the benefits of the Soroban network, including faster transaction speeds and reduced costs, with the added flexibility of engaging with the wider Stellar ecosystem.
 
-_You will probably be shown this warning view if it is an unknown asset for us_ ![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/warning.png)
+_You will probably be shown this warning view if it is an unknown asset for us_ ![](../07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/warning.png)
 
-_If everything goes as expected you should now have your token selected_ ![](../../../05-tutorial/07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/swap\_view.png)
+_If everything goes as expected you should now have your token selected_ ![](../07-using-stellar-classic-assets/01-wrapping-stellar-classic-assets/images/swap_view.png)
 
 By integrating asset wrapping into the swapping process, Soroswap ensures that users have a seamless experience, bridging the gap between Stellar Classic and Soroban networks. This feature not only enhances the usability of Soroswap but also enriches the overall ecosystem by fostering interoperability and ease of use.
 

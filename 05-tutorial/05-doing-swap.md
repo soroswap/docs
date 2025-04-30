@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Doing Swap
 
 Now that you have successfully added liquidity to a pool, let's move on to the next step: doing swaps. Swapping tokens on Soroswap allows you to exchange one token for another within the liquidity pool. Follow the steps below to perform a swap:

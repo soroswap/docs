@@ -1,3 +1,8 @@
+---
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
 # soroswap-router-sdk
 
 ## Providers Classes

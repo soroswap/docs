@@ -1,6 +1,8 @@
 ---
 id: smart-contracts
 title: Smart contracts
+cover: ../../../.gitbook/assets/Component 94.png
+coverY: 0
 ---
 
 # Smart contracts

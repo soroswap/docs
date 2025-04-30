@@ -1,3 +1,9 @@
+---
+hidden: true
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Soroswap Testnet Overview
 
 Soroswap is an Automated Market Maker (AMM) built on Soroban, designed to facilitate token trading and liquidity provision. With its user-friendly interface, Soroswap offers a seamless and intuitive experience for users to engage with decentralized finance (DeFi) on the Soroban and Stellar

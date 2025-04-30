@@ -1,3 +1,8 @@
+---
+cover: ../../../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
 # SoroswapFactory
 
 Creates one SoroswapPair (Liquidity Pool) smart contract per unique token pair. It does receive as initialization argument the WASM hash of a already installed SoroswapPair smart contract.

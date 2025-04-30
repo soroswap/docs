@@ -1,23 +1,17 @@
+---
+cover: >-
+  https://images.unsplash.com/photo-1528722828814-77b9b83aafb2?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHw3fHxzcGFjZXxlbnwwfHx8fDE3NDU4NTQwOTd8MA&ixlib=rb-4.0.3&q=85
+coverY: 0
+---
+
 # General FAQ
 
-### Technical Support and Reporting
+**What is Soroswap.Finance?**\
+Soroswap.Finance is a decentralized exchange (DEX) and AMM protocol built on Soroban . It allows permissionless token swaps and liquidity provision without intermediaries.\
 
-For technical support or to report issues, please use the following resources:
 
-* **Discord Support Channels:** Join our [Discord](https://discord.gg/W6u7FJ9VYQ) server and navigate to the **`#support`**` ``channel` for technical assistance. For issue reporting, use the **`#report-spam`**` ``channel`. These channels are monitored by our support team to address your concerns promptly.
-* **Reporting Process:** When reporting an issue, please provide detailed information including the steps to reproduce the problem, screenshots, and any relevant error messages. This will help us resolve the issue more efficiently.
+**Q2: How do I connect my wallet?**\
+A: Go to [soroswap.finance](https://soroswap.finance/), click **Launch App**, then select and approve your Stellar/Soroban-compatible wallet (e.g., Freighter, xBull, Lobstr).
 
-### Feedback and Suggestions
-
-To provide feedback or suggest improvements, utilize the following:
-
-* **Discord Feedback Channel:** Visit our [Discord](https://discord.gg/wVkaxxJtFm) server and go to the **`#soroswap-feedback`**` ``channel`.Here, you can submit your suggestions, feature requests, or any other comments about the platform. Our team reviews this channel regularly to consider user input for future updates.
-
-{% hint style="info" %}
-**Why doesn’t the Soroswap.Finance Aggregator include Stellar DEX in DexDistribution proposals?**\
-\
-Stellar DEX is not compatible with Soroban smart contracts, so the Aggregator only works with protocols that utilize Soroban technology.\
-
-{% endhint %}
-
-For additional information and resources, visit: [Website](https://www.soroswap.finance) | [GitHub](https://github.com/soroswap) | [Twitter](https://x.com/SoroswapFinance) | [Documentation](https://docs.soroswap.finance)
+For additional information and resources, visit:\
+&#x20;[Website](https://www.soroswap.finance) | [GitHub](https://github.com/soroswap) | [Twitter](https://x.com/SoroswapFinance) | [Documentation](https://docs.soroswap.finance)

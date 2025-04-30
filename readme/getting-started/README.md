@@ -12,7 +12,6 @@ coverY: 0
 
 * A **wallet compatible with Stellar/Soroban**
 * Access to the [Soroswap app](https://soroswap.finance/)
-* **Testnet XLM** — get it for free from Friendbot
 * Make your first **token swap** using the AMM
 * &#x20;To try the **Aggregator** it automatically finds the best price across multiple liquidity pools&#x20;
 

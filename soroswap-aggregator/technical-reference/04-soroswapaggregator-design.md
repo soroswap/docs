@@ -1,4 +1,9 @@
-# Designing the Soroswap-Aggregator for Optimized DEX Trading on Soroban
+---
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
+# Design
 
 ## Abstract
 
@@ -14,18 +19,18 @@ Amidst the burgeoning DeFi ecosystem, the dispersion of liquidity across numerou
 
 Central to the Soroswap-Aggregator is the `swap` function, designed with the following parameters for a user-centric trading experience:
 
-- `fromToken` and `destToken`: Specifies the trading pair for the swap.
-- `amount`: The volume of `fromToken` to be exchanged.
-- `amount_out_min`: Ensures the trade is executed only if the return in `destToken` meets or exceeds this threshold, guarding against undesirable slippage.
-- `distribution`: A strategic array dictating the apportionment of the trade across selected DEXs for optimal execution.
+* `fromToken` and `destToken`: Specifies the trading pair for the swap.
+* `amount`: The volume of `fromToken` to be exchanged.
+* `amount_out_min`: Ensures the trade is executed only if the return in `destToken` meets or exceeds this threshold, guarding against undesirable slippage.
+* `distribution`: A strategic array dictating the apportionment of the trade across selected DEXs for optimal execution.
 
 ### 2.2 Optimizing Trade Execution
 
 The underlying optimization algorithm is tasked with generating the `distribution` array. This process entails a comprehensive analysis incorporating:
 
-- **Gas Costs and DEX Fees**: Balancing the trade-off between transaction fees and optimal execution paths.
-- **Slippage Mitigation**: Estimating and minimizing the price impact of trades across various liquidity depths.
-- **Liquidity Analysis**: Assessing available liquidity to ensure the aggregator routes trades through the most efficient DEXs.
+* **Gas Costs and DEX Fees**: Balancing the trade-off between transaction fees and optimal execution paths.
+* **Slippage Mitigation**: Estimating and minimizing the price impact of trades across various liquidity depths.
+* **Liquidity Analysis**: Assessing available liquidity to ensure the aggregator routes trades through the most efficient DEXs.
 
 ## 3. Developmental Considerations
 

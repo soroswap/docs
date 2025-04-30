@@ -1,3 +1,8 @@
+---
+cover: ../../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
 # Technical Reference
 
 The Soroswap Protocol is inspired in [UniswapV2](https://github.com/Uniswap/v2-core/). Contracts are written in rust using the Soroban SDK, implementing all the functionalities of UniswapV2, with some limitations of rust (see further)

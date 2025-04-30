@@ -1,5 +1,8 @@
 ---
 icon: arrows-rotate
+cover: >-
+  https://images.unsplash.com/photo-1537420327992-d6e192287183?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHwxfHxzcGFjZXxlbnwwfHx8fDE3NDU4NTQwOTd8MA&ixlib=rb-4.0.3&q=85
+coverY: 0
 ---
 
 # How to Swap

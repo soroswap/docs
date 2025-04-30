@@ -2,6 +2,9 @@
 description: >-
   What is a bridge, Soroswap Implements the Spacewalk Bridge between Stellar and
   Polkadot
+hidden: true
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
 ---
 
 # Bridge

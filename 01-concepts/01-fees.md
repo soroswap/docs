@@ -1,6 +1,9 @@
 ---
 id: fees
 title: Fees
+cover: >-
+  https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?crop=entropy&cs=srgb&fm=jpg&ixid=M3wxOTcwMjR8MHwxfHNlYXJjaHw5fHxzcGFjZXxlbnwwfHx8fDE3NDU4NTQwOTd8MA&ixlib=rb-4.0.3&q=85
+coverY: 0
 ---
 
 # Fees

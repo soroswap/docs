@@ -1,10 +1,16 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Trustlines
 
 In **Soroswap Finance**, a _trustline_ is an essential mechanism that allows your account on the Stellar network to hold and exchange a specific asset. This process is crucial for interacting with the assets you wish to trade on the platform.&#x20;
 
 ### **What is a Trustline?**
 
-A _trustline_ is an explicit authorization that you establish between your account and an issuing account of an asset on the Stellar network. Essentially, it tells Stellar that you trust a specific issuer to allow your account to receive and handle that asset. Without an appropriate _trustline_, you cannot hold or trade that asset within your account.
+A [_trustline_ ](https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines)is an explicit authorization that you establish between your account and an issuing account of an asset on the Stellar network. Essentially, it tells Stellar that you trust a specific issuer to allow your account to receive and handle that asset. Without an appropriate _trustline_, you cannot hold or trade that asset within your account.\
+
 
 ### **How Trustlines Function**
 
@@ -13,6 +19,8 @@ A _trustline_ is an explicit authorization that you establish between your accou
 * [**Trustlines track**](https://developers.stellar.org/docs/learn/fundamentals/stellar-data-structures/accounts#trustlines) **liabilities for asset trades in two ways:** Buying Liabilities, which are the total amount of an asset an account offers to buy across all its offers, and Selling Liabilities, which are the total amount of an asset an account offers to sell across all its offers.
 
 _An account must maintain a balance that is large enough to cover its selling liabilities and sufficiently below its limit to handle its buying liabilities._
+
+<figure><img src="../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.07.00.png" alt=""><figcaption></figcaption></figure>
 
 ### &#x20;[**Trustlines**](https://developers.stellar.org/docs/learn/encyclopedia/sdex/liquidity-on-stellar-sdex-liquidity-pools#trustlines) **for Liquidity Pools**
 

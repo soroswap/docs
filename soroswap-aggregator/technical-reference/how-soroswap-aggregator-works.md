@@ -1,3 +1,8 @@
+---
+cover: ../../.gitbook/assets/Captura de pantalla 2025-04-28 a las 14.47.16.png
+coverY: 0
+---
+
 # How Soroswap Aggregator works
 
 The **Soroswap Aggregator** is a smart contract that enables users to swap assets across multiple protocols simultaneously, optimizing returns. Built on the [Soroban](https://developers.stellar.org) platform within the Stellar network, it allows users to split trades between different liquidity platforms.

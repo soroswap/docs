@@ -1,3 +1,8 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Adding Liquidity
 
 Now that we have our wallet set up correctly in the testnet, we are ready to use the [Soroswap app](https://soroswap.finance). Let's start by adding liquidity to a pool.
@@ -9,11 +14,11 @@ To begin adding liquidity, we need to first mint test tokens to interact with th
 1. Go to the Balances page.
 2. Click the "Mint test tokens" button.
 
-![](../../05-tutorial/04-adding-liquidity/images/balances.png)
+![](04-adding-liquidity/images/balances.png)
 
 After minting your test tokens, ensure that your wallet is funded with at least 1XLM in Stellar. To fund your wallet in the testnet, you can use the friendbot. Simply go to your wallet and click "Fund with Friendbot".
 
-![](../../05-tutorial/04-adding-liquidity/images/fund.png)
+![](04-adding-liquidity/images/fund.png)
 
 Verify that your account has been funded with XLM, and now we are ready to continue navigating the app.
 
@@ -24,7 +29,7 @@ Verify that your account has been funded with XLM, and now we are ready to conti
 
 This will take you to a page like this:
 
-![](../../05-tutorial/04-adding-liquidity/images/addliquidity.png)
+![](04-adding-liquidity/images/addliquidity.png)
 
 ## Step 3: Select the tokens and provide liquidity
 
@@ -35,19 +40,19 @@ This will take you to a page like this:
 
 This will open a modal where you can view information about the liquidity position, such as the amount of Liquidity Pool Tokens that will be created and your share percentage of the pool.
 
-![](../../05-tutorial/04-adding-liquidity/images/addliquiditymodal.png)
+![](04-adding-liquidity/images/addliquiditymodal.png)
 
 5. Click the "Add liquidity" button, and you will see a transaction in your Freighter wallet.
 
-![](../../05-tutorial/04-adding-liquidity/images/transaction.png)
+![](04-adding-liquidity/images/transaction.png)
 
 6. Click "Approve" and wait for the transaction to be confirmed.
 7. Once the transaction is complete, you will see a success message like this:
 
-![](../../05-tutorial/04-adding-liquidity/images/success.png)
+![](04-adding-liquidity/images/success.png)
 
 Congratulations! You have successfully added liquidity. Now you can view your liquidity position on the Liquidity page.
 
-![](../../05-tutorial/04-adding-liquidity/images/liquiditypage.png)
+![](04-adding-liquidity/images/liquiditypage.png)
 
 Now we can continue with the tutorial. The next steps will involve swapping tokens for the ones you have provided liquidity for.
