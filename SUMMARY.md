@@ -74,7 +74,6 @@
   * [Disclaimer](soroswap-aggregator/06-soroswapaggregatordisclaimer.md)
 * [Soroswap API](soroswap-api/README.md)
   * [Optimal Route](soroswap-api/07-optimal-route/README.md)
-    * [soroswap-router-sdk](soroswap-api/07-optimal-route/01-soroswap-router-sdk.md)
     * [Technical Documentation](https://soroswap-api.soroswap.finance/)
 * [Soroswap Info](https://info.soroswap.finance/?network=mainnet)
 * [Bridges](bridges.md)

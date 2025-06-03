@@ -1,30 +1,13 @@
-# Soroswap API
+# 🧩 Soroswap API
 
-A robust REST API built with NestJS that serves as the backend infrastructure for the Soroswap DEX (Decentralized Exchange) on the Stellar Network. The API provides essential services for:
+The **Soroswap API** is built for developers and teams who want to integrate decentralized swap functionality into their apps on the Stellar blockchain. Whether you're building a wallet, a frontend, or another kind of product, the API gives you access to Soroswap’s powerful aggregator and liquidity infrastructure.
 
-- **Authentication & Authorization**: Secure JWT-based authentication system with role-based access control
-- **Trading Operations**:
-  - Swap routing and execution
-  - Price discovery and quotes
-  - Multi-protocol support (Soroswap, Phoenix, etc.)
-- **Asset Management**:
-  - Comprehensive asset listing
-  - Pair information and liquidity data
-  - Token price tracking
-- **Network Integration**:
-  - Support for both Mainnet and Testnet
-  - Direct interaction with Stellar Soroban smart contracts
-  - Transaction building and submission
+You can use it to:
 
-The API is fully documented with Swagger/OpenAPI, available at [Soroswap API docs](https://api.soroswap.finance/docs) endpoint, and includes built-in request logging, monitoring, and health check capabilities.
+- 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Phoenix, Aqua, Comet)  
+- 📊 **Retrieve token and liquidity data**, including pool stats and available trading pairs  
+- 🧾 **Build XDR transactions** ready for signing and on-chain submission  
+- 🚀 **(Limited-time)** Enable **gasless transactions** via LaunchTube integration  
 
-## Key Features
-
-- RESTful architecture with NestJS framework
-- PostgreSQL database integration via Prisma ORM
-- Comprehensive JWT authentication
-- Role-based access control (RBAC)
-- Swagger API documentation
-- Docker containerization support
-- Request logging and monitoring
-- Health check system
+> 🔗 **Explore the full API reference here**:  
+👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
