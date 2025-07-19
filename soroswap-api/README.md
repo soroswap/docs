@@ -4,10 +4,23 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 
 ## Key features
 
-- 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Phoenix, Aqua, Comet)  
+- 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)  
 - 📊 **Retrieve token and liquidity data**, including pool stats and available trading pairs  
 - 🧾 **Build XDR transactions** for on-chain execution
 - 🚀 **(Limited-time)** Enable **gasless transactions** via LaunchTube integration  
 
 > 🔗 **Explore the full API reference here**:  
 👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
+
+### API Access
+
+For the hackathon, please use our latest staging version:
+
+**API**: [staging](https://soroswap-api-staging-436722401508.us-central1.run.app/)
+
+you can use this API key
+`sk_555cf339752c4efe09de45f9696332e83a8f83f02768796b11b3c055d0a667a8`
+
+📮 **Postman Collection**: [Download Staging Postman Collection](https://drive.google.com/drive/folders/1G-LQYE2EojPWP1CSuuS_tDb9vjYbFR6E?usp=sharing)
+
+> ⚠️ **Important**: Use the Staging Postman Collection for the hackathon.
