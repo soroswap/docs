@@ -14,6 +14,7 @@ Soroswap.Finance includes:
 
 * [**Soroswap AMM**:](https://docs.soroswap.finance/01-protocol-overview) An Automated Market Maker that facilitates token swaps and liquidity provision.
 * [**Soroswap Aggregator**:](https://docs.soroswap.finance/soroswap-aggregator) An AMM Aggregator that optimizes trading routes across various liquidity pools.
+* [**Soroswap API**](https://api.soroswap.finance/docs) The Soroswap API serves as the core interface to quote trades by aggregating liquidity from all available Stellar DEXs — including those on Soroban (Soroswap, Phoenix, Aqua) and the Stellar Classic DEX.
 
 ### How to Use Soroswap.Finance
 
