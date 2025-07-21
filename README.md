@@ -13,6 +13,7 @@ Soroswap operates as:
 
 * 🌀 **An Automated Market Maker (AMM)** via [**Soroswap AMM**](https://docs.soroswap.finance/01-protocol-overview) for direct token swaps and liquidity provisioning
 * 🧠 **An AMM Aggregator** via [**Soroswap Aggregator**](https://docs.soroswap.finance/soroswap-aggregator), optimizing trades across multiple protocols to secure the best execution
+* 🛠️ **An API** via [**Soroswap Swap Route API**](https://api.soroswap.finance/docs) The Soroswap API serves as the core interface to quote trades by aggregating liquidity from all available Stellar DEXs — including those on Soroban (Soroswap, Phoenix, Aqua) and the Stellar Classic DEX.
 
 Together, these components deliver a powerful, decentralized trading experience on the Soroban smart contract platform.\
 \
