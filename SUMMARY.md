@@ -76,7 +76,6 @@
 * [Soroswap API](soroswap-api/README.md)
   * [Quick Start Guide](soroswap-api/quickstart.md)
   * [Beginner Tutorial](soroswap-api/beginner-guide.md)
-  * [Interactive Example](soroswap-api/beginner-example.html)
   * [Registration](soroswap-api/README.md#registration-required)
   * [Optimal Route](soroswap-api/07-optimal-route/README.md)
     * [Technical Documentation](https://soroswap-api.soroswap.finance/)

@@ -1,4 +1,4 @@
-# 🚀 Soroswap Integration Guide for Beginners
+# Soroswap Integration Guide for Beginners
 
 ## 📖 What You'll Learn
 
