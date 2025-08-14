@@ -12,6 +12,14 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 > 🔗 **Explore the full API reference here**:  
 👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
 
+## 📚 Documentation & Guides
+
+Choose your learning path:
+
+- 🐶 **New to blockchain/Stellar?** → [`beginner-guide.md`](./beginner-guide.md) - Complete tutorial with explanations
+- 🎮 **Want to see it working?** → [`beginner-example.html`](./beginner-example.html) - Interactive browser example
+- ⚡ **Experienced developer?** → [`quickstart.md`](./quickstart.md) - Quick integration guide
+
 ### API Access
 
 For the hackathon, please use our latest staging version:
