@@ -14,16 +14,16 @@ Before starting, it is necessary to clarify that to understand what we are doing
 
 #### Installing Stellar SDK
 
-In this guide, we will be using the `^11.2.2` version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk). To do this, we will install it as follows:
+In this guide, we will be using the `latest` version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk). To do this, we will install it as follows:
 
 ```bash
-npm i @stellar/stellar-sdk@11.2.2
+npm i @stellar/stellar-sdk@latest
 ```
 
 or
 
 ```bash
-yarn add @stellar/stellar-sdk@11.2.2
+yarn add @stellar/stellar-sdk@latest
 ```
 
 ### Building the transaction:
