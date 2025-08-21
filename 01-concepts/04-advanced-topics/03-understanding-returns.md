@@ -1,6 +1,8 @@
 ---
 id: understanding-returns
 title: Understanding Returns
+cover: ../../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
 ---
 
 # Understanding Returns
@@ -46,7 +48,7 @@ To understand the risks associated with providing liquidity you can read [https:
 > "Of course, if the price were to return to the same value as when the liquidity provider added their liquidity, this loss would disappear. **For this reason, we can call it an impermanent loss.** Using the equations above, we can derive a formula for the size of the impermanent loss in terms of the price ratio between when liquidity was supplied and now. We get the following:"
 >
 > * "`impermanent_loss = 2 * sqrt(price_ratio) / (1+price_ratio) — 1`"
-> * "Which we can plot out to get a general sense of the scale of the impermanent loss at different price ratios:" ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fdnazarov%2FOscQ\_nmzbA.png?alt=media\&token=4dff866e-a740-4121-9da4-9c9105baa404)
+> * "Which we can plot out to get a general sense of the scale of the impermanent loss at different price ratios:" ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fdnazarov%2FOscQ_nmzbA.png?alt=media\&token=4dff866e-a740-4121-9da4-9c9105baa404)
 > * "Or to put it another way:"
 >   * "a 1.25x price change results in a 0.6% loss relative to HODL"
 >   * "a 1.50x price change results in a 2.0% loss relative to HODL"

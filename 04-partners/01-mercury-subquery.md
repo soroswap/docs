@@ -1,14 +1,21 @@
+---
+cover: ../.gitbook/assets/Captura de pantalla 2025-04-29 a las 15.01.53.png
+coverY: 0
+---
+
 # Collaboration with Mercury and SubQuery
 
 This article outlines the outcomes and walkthroughs of our collaborative projects with Mercury and SubQuery indexers. We aim to achieve two primary objectives:
+
 1. Introduce developers from the Stellar and Soroban ecosystems to the capabilities of indexer services.
 2. Assist indexers in refining their offerings by reporting bugs and providing documentation feedback we've uncovered through our usage.
 
 ## The Importance of Indexers in Blockchain Ecosystems
 
 Utilizing indexers is crucial for efficient data retrieval, thereby enabling developers to offer a seamless user experience. Although blockchains inherently ensure transactional integrity, extracting an entire history directly from a node is computationally intensive. Therefore, indexers serve as invaluable tools. This article serves two main goals:
-- Demonstrate practical uses of the indexer as an example or initial repository.
-- Test various indexer solutions, offering constructive feedback on bugs and documentation.
+
+* Demonstrate practical uses of the indexer as an example or initial repository.
+* Test various indexer solutions, offering constructive feedback on bugs and documentation.
 
 ## Mercury: Subscription-Based Indexing Solutions
 
@@ -27,7 +34,7 @@ In our repository, you'll find a Node.js client pre-configured with queries to i
 5. Update `CONTRACT_ADDRESS` if you are interested in a contract other than the Soroswap's Factory contract.
 6. Run the container (Node 18.8.2): `bash run.sh`
 7. Install dependencies: `yarn`
-8. Use predefined scripts to interact with the contract:
+8.  Use predefined scripts to interact with the contract:
 
     ```
     node scripts/subscribeToEntries.js
@@ -49,34 +56,34 @@ However, storing blockchain history requires access to an archive node, which ca
 Our setup incorporates Docker inside a Node.js image to manage the required Node.js version and to prevent the need for a global `subql` package installation. If you prefer to install node, docker and subql locally you can start from step 4.
 
 1. Run the container: `bash run.sh`
-2. Install Docker and SubQuery:
+2.  Install Docker and SubQuery:
 
     ```
     bash install_docker.sh
     bash setup_subquery.sh
     ```
-
-3. Navigate to `subql-starter` directory and execute:
+3.  Navigate to `subql-starter` directory and execute:
 
     ```
     yarn
     dockerd &
     ```
-4. In another terminal 
+4.  In another terminal
+
     ```
     bash connect.sh
     ```
+
     and (if you prefer to install node, docker and subql locally you can start from here)
+
     ```
     cd subql-starter
     yarn codegen
     yarn build
     yarn start:docker
     ```
-
 5. Begin querying by navigating to `http://localhost:3000/graphql`
-
-6. To publish your project to IPFS, run:
+6.  To publish your project to IPFS, run:
 
     ```
     cd subql-starter

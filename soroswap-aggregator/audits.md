@@ -1,0 +1,15 @@
+---
+description: >-
+  The Soroswap Aggregator Smart Contracts are being audited by Runtime
+  Verification
+cover: ../.gitbook/assets/Component 94.png
+coverY: 0
+---
+
+# Audits
+
+The **Soroswap Aggregator Smart Contracts** were audited by [**Runtime Verification**](https://runtimeverification.com), a renowned firm specializing in formal verification and smart contract security audits. The audit reviewed the business logic, code, and interactions between the system’s modules to identify potential security vulnerabilities, functional errors, and opportunities for optimization.
+
+[The audit](https://github.com/soroswap/aggregator/blob/main/audits/2024-08-31_Soroswap_Aggregator_Audit_by_RuntimeVerification.pdf) ensured that the Aggregator contracts operate securely and efficiently, protecting users' funds and ensuring the smooth execution of token swaps across the various protocols supported by the [Aggregator.](https://docs.soroswap.finance/01-concepts/aggregator)
+
+[Read the report here](https://github.com/soroswap/aggregator/blob/main/audits/2024-08-31_Soroswap_Aggregator_Audit_by_RuntimeVerification.pdf)
