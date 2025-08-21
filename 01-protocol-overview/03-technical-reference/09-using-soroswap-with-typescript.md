@@ -4,7 +4,7 @@ The Soroswap protocol allows you to interact with Stellar's smart contract platf
 
 ### Prerequisites:
 
-Before starting, it is necessary to clarify that to understand what we are doing here, you need to have a good understanding of TypeScript, smart contracts, and how a blockchain works. In addition, you need to know how to use [stellar-sdk](https://stellar.github.io/js-stellar-sdk/#usage) since we will use its [TransactionBuilder](https://stellar.github.io/js-stellar-sdk/TransactionBuilder.html) class to create operations, simulate, sign, and send transactions. Additionally, some types and functions for transforming values.
+Before starting, it is necessary to clarify that to understand what we are doing here, you need to have a good understanding of TypeScript, smart contracts, and how a blockchain works. In addition, you need to know how to use [@stellar/stellar-sdk](https://stellar.github.io/js-stellar-sdk/#usage) since we will use its [TransactionBuilder](https://stellar.github.io/js-stellar-sdk/TransactionBuilder.html) class to create operations, simulate, sign, and send transactions. Additionally, some types and functions for transforming values.
 
 > \[!Tip] If you need practical examples of how to create a transaction builder or how to use the SDK in general, you can guide yourself from our projects [soroswap/core](https://github.com/soroswap/core/tree/main/scripts) and [paltalabs/mercury-client.](https://github.com/paltalabs/mercury-client)
 
@@ -14,16 +14,16 @@ Before starting, it is necessary to clarify that to understand what we are doing
 
 #### Installing Stellar SDK
 
-In this guide, we will be using the `^11.2.2` version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk). To do this, we will install it as follows:
+In this guide, we will be using the `latest` version of Stellar SDK, available through npm or yarn as["@stellar/stellar-sdk"](https://www.npmjs.com/package/@stellar/stellar-sdk). To do this, we will install it as follows:
 
 ```bash
-npm i soroswap-router-sdk@11.2.2
+npm i @stellar/stellar-sdk@latest
 ```
 
 or
 
 ```bash
-yarn add soroswap-router-sdk@11.2.2
+yarn add @stellar/stellar-sdk@latest
 ```
 
 ### Building the transaction:
