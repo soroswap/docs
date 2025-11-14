@@ -102,9 +102,6 @@ Data requests summary:
 * Persistent storage of Factory Contract
 * Instance storage of all the pairs
 
-The backend plays a crucial role in the optimal routing process. It communicates with the `@mercury-sdk` to retrieve the necessary data required by the `@soroswap-router-sdk`. Specifically, the backend needs endpoints to fetch pools with reserves from the `mercury-sdk`.
-
-The difference between Mercury and subgraph is that Mercury give us the data we need in XDR. We just need to add a method to parse the data to use it in the `@soroswap-router-sdk`
 
 It will have the endpoints to be called by the `soroswap-router-sdk` It will have the following functions:
 
@@ -117,15 +114,6 @@ getPairsWithTokenAndReserves();
 
 `getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in **instance** storage. `getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **persistent** storage. `subscribeToNewPairs` will subscribe to the Factory's new pairs when pools are created. `getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **instance** storage.
 
-### Mercury-sdk
-
-[Github Repository](https://github.com/paltalabs/mercury-sdk.git)
-
-Mercury sdk is utilized to subscribe and query from mercury.
-
-Here we will need to create the queries to return data from the pools, and subscribe to the addresses we need to track.
-
-Subscribe to factory ledger entries, then query and get pair counter (Thus, get how many pairs exist) and their pair adresses. Subscribe to all pair ledger entries, then query to get token0, token1, reserve0, reserve1.
 
 ## Soroswap Aggregator
 

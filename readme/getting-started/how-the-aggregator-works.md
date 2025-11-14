@@ -26,7 +26,7 @@ Currently, the Soroswap Aggregator sources liquidity from:
 | ------------------------ | ----------- | --------------------------------------------------------------------------------------- |
 | **Soroswap.Finance AMM** | Mainnet     | Soroswap's primary protocol on Soroban, offering fast, secure, and low-cost swaps.      |
 | **Phoenix Protocol AMM** | Mainnet     | Providing additional liquidity and expanding swap route options.                        |
-| **Aqua AMM**             | Coming Soon | Currently in testing. Will add more depth and route diversity to Soroban once deployed. |
+| **Aqua AMM**             | Mainnet | Currently in testing. Will add more depth and route diversity to Soroban once deployed. |
 
 > **Note**:\
 > [Stellar SDEX ](https://docs.soroswap.finance/01-concepts/sdex)is not integrated as it is incompatible with Soroban smart contracts.\

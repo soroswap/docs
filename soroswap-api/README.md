@@ -31,3 +31,7 @@ Choose your learning path:
 **API_URL**: [staging](https://api.soroswap.finance)
 
 📮 **[Downnload the Postman Collection here](https://drive.google.com/drive/folders/1G-LQYE2EojPWP1CSuuS_tDb9vjYbFR6E?usp=drive_link)**
+
+### Support
+
+For any questions or support needs, please reach out to our developer support team at dev@paltalabs.io or join our Discord community.
