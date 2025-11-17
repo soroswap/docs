@@ -1,5 +1,7 @@
 # Soroswap API
 
+{% embed url="https://youtu.be/5KtXqx2I0A0?si=P8ecQEVXVr4pfI4c" %}
+
 The **Soroswap API** is built for developers and teams who want to integrate Soroswap's decentralized infrastucture into their apps. Whether you're building a wallet, a frontend, or another kind of product on Stellar, the API gives you access data from real-time pricing and routing to transaction generation.
 
 ## Key features
