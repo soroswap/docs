@@ -40,7 +40,7 @@ Useful links:
 
 They call an API called Pathfinder to get the best route across multiple protocols. However, the API is not open source and we don't know how it works.
 
-1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../soroswap-aggregator/technical-reference/inspirations/01-1inch.md)
+1inch also have their OneSplit smartcontract which serves as an agregator, the information can be found [here](../../smart-contracts/soroswap-aggregator/technical-reference/inspirations/01-1inch.md)
 
 ## Soroswap Optimal Routing
 
@@ -102,7 +102,6 @@ Data requests summary:
 * Persistent storage of Factory Contract
 * Instance storage of all the pairs
 
-
 It will have the endpoints to be called by the `soroswap-router-sdk` It will have the following functions:
 
 ```javascript
@@ -113,7 +112,6 @@ getPairsWithTokenAndReserves();
 ```
 
 `getPairCounter` will return the number of pairs stored in the Factory contract. This is stored in **instance** storage. `getPairAddresses` will return the addresses of the pairs stored in the Factory contract. It will use the `getPairCounter` to know how many pairs are stored in the Factory contract, this will help us to create all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **persistent** storage. `subscribeToNewPairs` will subscribe to the Factory's new pairs when pools are created. `getPairsWithTokenAndReserves` will return the pairs with the reserves of the tokens. It will use the `getPairAddresses` to get the addresses of the pairs. We will precompute all the needed `key_xdr` to get the data from Mercury in just one query. This is stored in **instance** storage.
-
 
 ## Soroswap Aggregator
 
