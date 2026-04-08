@@ -120,10 +120,9 @@ class SoroswapClient {
     }
 
     // 3. Submit signed transaction
-    async sendTransaction(signedXdr, launchtube = false) {
+    async sendTransaction(signedXdr) {
         return this.apiRequest('/send', {
-            xdr: signedXdr,
-            launchtube
+            xdr: signedXdr
         });
     }
 }
@@ -165,12 +164,6 @@ async function executeSwap() {
 
 ## 📤 Advanced Options
 
-### Gasless Transactions
-```javascript
-// For users without XLM for fees
-const result = await client.sendTransaction(signedXdr, true);
-```
-
 ### Custom Transaction Submission
 ```javascript
 // Submit through your own infrastructure
@@ -206,8 +199,7 @@ const result = await server.submitTransaction(signedTransaction);
 #### Send Request
 ```javascript
 {
-    xdr: signedXdr,         // Signed transaction XDR
-    launchtube: false       // Set true for gasless transactions
+    xdr: signedXdr          // Signed transaction XDR
 }
 ```
 
