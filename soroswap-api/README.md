@@ -9,7 +9,7 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 * 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)
 * 📊 **Retrieve token and liquidity data**, including pool stats and available trading pairs
 * 🧾 **Build XDR transactions** for on-chain execution
-* 🚀 **(Limited-time)** Enable **gasless transactions** via LaunchTube integration
+* 🚀 **Submit signed transactions** directly via Soroban RPC or Horizon
 
 > 🔗 **Explore the full API reference here**:\
 > 👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
