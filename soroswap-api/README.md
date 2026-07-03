@@ -10,6 +10,7 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 * 📊 **Retrieve token and liquidity data**, including pool stats and available trading pairs
 * 🧾 **Build XDR transactions** for on-chain execution
 * 🚀 **Submit signed transactions** directly via Soroban RPC or Horizon
+* ⚡ **[Gasless Trustline](gasless-trustline.md)** — let users receive a new asset without needing XLM or understanding trustlines, using a sponsor account
 
 > 🔗 **Explore the full API reference here**:\
 > 👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
