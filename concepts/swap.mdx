@@ -1,0 +1,45 @@
+---
+title: "Swap"
+description: "Swapping Stellar assets through Soroswap AMMs or the Aggregator, and the constant product formula behind pricing."
+---
+
+A **swap** is the process of exchanging one Stellar asset for another using liquidity from Soroban-based [**Automated Market Makers (AMMs**](/concepts/amm)**)**. Swaps can be executed directly through the [**Soroswap AMM** ](/amm)or routed via the [**Aggregator**,](/concepts/aggregator) which optimally resolves the operation by finding the **best available price at the time** through an **intelligent distribution** across supported AMMs.\
+\
+👉🏽 [How to Swap](/getting-started/how-to-swap)\
+Follow the [Swap Tutorial](/tutorials/doing-swap)
+
+![](/images/swap-1.png)
+
+### How does a swap work?
+
+**User selects two assets** – one to sell and one to receive.
+
+1. **Input amount is defined** – the app estimates the output based on current pool conditions.
+2. **Router SDK scans available pools** – if the Aggregator is enabled, it calculates the best distribution **`DexDistribution`**.
+3. **User confirms the swap** – the smart contract receives the input asset and performs the swap.
+4. **User receives the new asset** – if it's the first time, a **trustline** must be signed to accept the asset.
+
+### 📐 Constant Product Formula
+
+Each AMM in Soroswap follows this formula:
+
+```
+x * y = k
+```
+
+Where:
+
+* `x` = balance of asset A
+* `y` = balance of asset B
+* `k` = constant product (remains unchanged)
+
+When someone swaps A for B:
+
+* A is deposited into the pool
+* B is withdrawn
+* The price updates to maintain the balance
+
+This model ensures continuous liquidity.
+
+🔜 **Next:** [Fees](/concepts/fees)\
+🔙 **Previous:** [Liquidity Pools](/concepts/liquidity-pools)

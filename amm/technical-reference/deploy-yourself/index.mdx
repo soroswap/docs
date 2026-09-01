@@ -1,0 +1,89 @@
+---
+title: "Deploy Soroswap Yourself"
+description: "Running the Soroswap contracts yourself: the quickstart from soroswap/core, and where the deploy scripts put their output."
+---
+
+You can deploy the whole protocol yourself, on a local standalone network or on testnet.
+The deploy tooling lives in [soroswap/core](https://github.com/soroswap/core) and is the
+source of truth; the summary below mirrors that repository's README.
+
+<Warning>
+This page used to carry a long CLI walkthrough written against the old `soroban` CLI,
+Futurenet and the `soroban-preview` Docker images. All three are gone: the CLI is now
+`stellar`, and the deploy path is the scripted one below. The walkthrough was removed
+rather than left to mislead. Follow the repository README for anything not covered here.
+</Warning>
+
+## Prerequisites
+
+`jq`, `docker`, `docker-compose`, `node`, `yarn`.
+
+## Set up
+
+```bash
+git clone https://github.com/soroswap/core.git
+cd core
+cp .env.example .env
+```
+
+Fill in `SOROSWAP_ADMIN_SECRET_KEY`, `TEST_TOKENS_ADMIN_SECRET_KEY`,
+`TESTING_ACCOUNT_SECRET_KEY` and `MAINNET_RPC_URL`. These are the keys the deploy runs as.
+
+Start the network container in one terminal:
+
+```bash
+bash scripts/quickstart.sh standalone   # or testnet
+```
+
+And the workspace container in another:
+
+```bash
+bash scripts/run.sh
+yarn
+cd /workspace/contracts
+make build
+```
+
+## Deploy
+
+From the workspace container:
+
+```bash
+yarn build
+yarn deploy <network>
+```
+
+That one command installs the Pair, Factory and Router WASM, then deploys and initializes
+the Factory and the Router. On any network other than mainnet it also seeds the network so
+there is something to trade against: eight test tokens, liquidity across three paths, four
+Stellar test tokens, and eight random tokens. Native XLM is wrapped if it is not already.
+
+It writes three files:
+
+- `.soroban/tokens.json`
+- `.soroban/<NETWORK>.contracts.json`
+- `.soroban/random_tokens.json`
+
+## Serve the addresses locally
+
+```bash
+bash scripts/serve_with_docker.sh
+```
+
+| Endpoint | Serves |
+| --- | --- |
+| `http://localhost:8010/api/tokens` | The token list |
+| `http://localhost:8010/api/random_tokens` | The random tokens |
+| `http://localhost:8010/api/<network>/factory` | The factory address |
+| `http://localhost:8010/api/<network>/router` | The router address |
+
+These mirror the shape of the public API, so a frontend pointed at localhost behaves the
+same way it does against production.
+
+## The deployed contracts
+
+If you only want to talk to the contracts that are already live rather than run your own,
+you do not need any of the above. The mainnet addresses are on
+[Deployed Addresses](/amm/technical-reference/deployed-addresses), and the current values
+are always in
+[`public/mainnet.contracts.json`](https://github.com/soroswap/core/blob/main/public/mainnet.contracts.json).

@@ -1,0 +1,193 @@
+---
+title: "Using Soroswap with TypeScript"
+description: "Swapping and managing liquidity from TypeScript with the official @soroswap/sdk, from quote to signed transaction."
+---
+
+The supported way to use Soroswap from TypeScript is the official SDK,
+[`@soroswap/sdk`](https://www.npmjs.com/package/@soroswap/sdk). It wraps the Soroswap API,
+so you get routing across every supported protocol without assembling Soroban invocations
+by hand.
+
+<Info>
+If you need to call the contracts directly from another **contract**, that is a different
+job: see [Smart Contract Integration](/amm/technical-reference/smart-contract-integration).
+</Info>
+
+## Install
+
+```bash
+pnpm add @soroswap/sdk
+```
+
+You need an API key. Register at
+[api.soroswap.finance/register](https://api.soroswap.finance/register); keys start with
+`sk_`.
+
+<Warning>
+The API key is a secret. Keep it server side. Do not ship it in a browser bundle.
+</Warning>
+
+## Initialize
+
+```typescript
+import {
+  SoroswapSDK,
+  SupportedNetworks,
+  SupportedProtocols,
+  TradeType,
+} from '@soroswap/sdk';
+
+const soroswap = new SoroswapSDK({
+  apiKey: process.env.SOROSWAP_API_KEY!,
+  defaultNetwork: SupportedNetworks.MAINNET,
+});
+```
+
+| Option | Meaning |
+| --- | --- |
+| `apiKey` | Your key, starting with `sk_`. Required. |
+| `baseUrl` | Override the API host. Defaults to `https://api.soroswap.finance`. |
+| `defaultNetwork` | `SupportedNetworks.MAINNET` or `SupportedNetworks.TESTNET`. |
+| `timeout` | Request timeout in ms. Defaults to 30000. |
+
+Every method takes an optional trailing `network` argument that overrides
+`defaultNetwork` for that one call.
+
+## The swap flow
+
+A swap is four steps: quote, build, sign, send. The SDK does three of them; signing is
+yours, because the SDK never holds a key.
+
+### 1. Quote
+
+```typescript
+const quote = await soroswap.quote({
+  assetIn: 'CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA',
+  assetOut: 'CDTKPWPLOURQA2SGTKTUQOWRCBZEORB4BWBOMJ3D3ZTQQSGE5F6JBQLV',
+  amount: 10000000n,
+  tradeType: TradeType.EXACT_IN,
+  protocols: [
+    SupportedProtocols.SOROSWAP,
+    SupportedProtocols.AQUA,
+    SupportedProtocols.SDEX,
+  ],
+  slippageBps: 50,
+});
+```
+
+`amount` is a **BigInt**, in the asset's smallest unit. Passing a `number` will not work.
+
+`tradeType` is `TradeType.EXACT_IN` when you know what you are spending, or
+`TradeType.EXACT_OUT` when you know what you want to receive.
+
+Other fields on the request: `parts`, `maxHops`, `assetList`, `feeBps` and
+`gaslessTrustline`. `slippageBps` and `feeBps` are basis points, so 50 is 0.5%.
+
+To see which protocols a network currently supports:
+
+```typescript
+const protocols = await soroswap.getProtocols(SupportedNetworks.MAINNET);
+```
+
+### 2. Build
+
+```typescript
+const { xdr } = await soroswap.build({
+  quote,
+  from: userAddress,
+  to: userAddress, // optional, defaults to `from`
+});
+```
+
+If the quote carried a `feeBps`, `build` also requires `referralId`, the address the fee
+is paid to.
+
+### 3. Sign
+
+The SDK returns an unsigned XDR and stops there. Sign it with whatever the surrounding app
+already uses: a browser wallet through
+[`stellar-wallets-kit`](https://github.com/Creit-Tech/Stellar-Wallets-Kit), or a keypair
+server side.
+
+```typescript
+const signedXdr = await yourSigner.sign(xdr);
+```
+
+### 4. Send
+
+```typescript
+const result = await soroswap.send(signedXdr);
+```
+
+## Pools and prices
+
+```typescript
+// Every pool on the given protocols
+const pools = await soroswap.getPools(
+  SupportedNetworks.MAINNET,
+  [SupportedProtocols.SOROSWAP, SupportedProtocols.AQUA],
+);
+
+// One pair
+const pool = await soroswap.getPoolByTokens(
+  assetA,
+  assetB,
+  SupportedNetworks.MAINNET,
+  [SupportedProtocols.SOROSWAP],
+);
+
+const price = await soroswap.getPrice([assetA, assetB]);
+const balances = await soroswap.getBalances(userAddress);
+```
+
+## Liquidity
+
+`addLiquidity` and `removeLiquidity` return an XDR the same way `build` does: you sign and
+send it yourself.
+
+```typescript
+const { xdr } = await soroswap.addLiquidity({
+  assetA,
+  assetB,
+  amountA: 1000000n,
+  amountB: 2000000n,
+  to: userAddress,
+  slippageBps: '50',
+});
+```
+
+<Warning>
+Fetch the pool first and derive `amountA` and `amountB` from its current ratio. Amounts
+that do not match the pool's proportions fail during simulation.
+</Warning>
+
+```typescript
+const positions = await soroswap.getUserPositions(userAddress);
+```
+
+## Finding the router address
+
+If you need the deployed router address rather than the SDK:
+
+```bash
+curl https://api.soroswap.finance/api/mainnet/router
+# {"address":"C..."}
+```
+
+The addresses are also listed on
+[Deployed Addresses](/amm/technical-reference/deployed-addresses).
+
+## Understanding the route
+
+A swap walks the `path` array pair by pair, exchanging at each step
+(`0 <-> 1`, `1 <-> 2`, and so on to `n <-> n+1`) until the route completes. Every extra hop
+costs fees and slippage, which is why routing quality matters and why the API computes it
+for you rather than leaving you to guess a path.
+
+## Reference
+
+- SDK source and full type definitions:
+  [github.com/soroswap/sdk](https://github.com/soroswap/sdk)
+- REST reference, if you would rather call the API directly:
+  [api.soroswap.finance/docs](https://api.soroswap.finance/docs)
+- Getting started with the API: [Soroswap API](/api)

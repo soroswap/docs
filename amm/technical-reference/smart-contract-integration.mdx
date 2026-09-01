@@ -1,0 +1,89 @@
+---
+title: "Smart Contract Integration"
+description: "Calling the SoroswapRouter from your own Soroban contract, with the client import and authorization it needs."
+---
+
+How do you integrate Soroswap liquidity pools into your own DeFi protocol from a smart
+contract, rather than from a frontend or the API?
+
+You call the [SoroswapRouter](/amm/technical-reference/contracts/soroswap-router) from
+your contract using a generated client. This is exactly what the aggregator's Soroswap
+adapter does, and the pattern below is taken from
+[`contracts/adapters/soroswap/src/protocol_interface.rs`](https://github.com/soroswap/aggregator/blob/main/contracts/adapters/soroswap/src/protocol_interface.rs)
+in the aggregator repository.
+
+## Import the router client
+
+Generate a typed client from the router's WASM with `contractimport!`:
+
+```rust
+use soroban_sdk::{Address, Env, Vec};
+
+soroban_sdk::contractimport!(
+    file = "./soroswap_contracts/soroswap_router.wasm"
+);
+pub type SoroswapRouterClient<'a> = Client<'a>;
+```
+
+You need the router WASM in your build. Fetch it from
+[soroswap/core](https://github.com/soroswap/core) or from the deployed contract.
+
+## Call it
+
+```rust
+pub fn swap_through_soroswap(
+    e: &Env,
+    router: &Address,
+    amount_in: &i128,
+    amount_out_min: &i128,
+    path: &Vec<Address>,
+    to: &Address,
+    deadline: &u64,
+) -> Vec<i128> {
+    let router_client = SoroswapRouterClient::new(e, router);
+
+    router_client.swap_exact_tokens_for_tokens(
+        amount_in,
+        amount_out_min,
+        path,
+        to,
+        deadline,
+    )
+}
+```
+
+The call returns the amount at each hop of `path`, not just the final output amount.
+
+## Authorization
+
+The router calls `to.require_auth()` inside the swap. That means the address receiving the
+output has to authorize the call, so your contract cannot swap on a user's behalf unless
+that user authorized the invocation, or `to` is your own contract address and your
+contract authorizes it. Design your flow around one of those two, not around holding user
+keys.
+
+## Getting the router address
+
+Take it from [Deployed Addresses](/amm/technical-reference/deployed-addresses), or read it
+at runtime from the API:
+
+```bash
+curl https://api.soroswap.finance/api/mainnet/router
+# {"address":"C..."}
+```
+
+Store it as a constant or in contract storage rather than hardcoding it in several places.
+
+## The rest of the interface
+
+`swap_tokens_for_exact_tokens`, `add_liquidity` and `remove_liquidity` are called the same
+way through the same client. Their signatures are on the
+[SoroswapRouter](/amm/technical-reference/contracts/soroswap-router) page. If you only
+need a price and not an execution, `router_get_amounts_out` and `router_quote` are
+read-only and cost you no state.
+
+<Tip>
+If you are routing across more than just Soroswap, call the
+[aggregator](/aggregator/technical-reference/contracts/soroswap-aggregator) instead of the
+router. It has the same shape and splits the trade across every supported protocol.
+</Tip>

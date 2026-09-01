@@ -1,0 +1,24 @@
+---
+title: "Smart Contracts"
+description: "The two contracts behind the aggregator: the aggregator itself and the adapter each supported protocol is reached through."
+---
+
+The aggregator is two kinds of contract. One aggregator holds the adapter registry and
+splits a trade; one adapter per protocol knows how to actually talk to that protocol.
+
+<Columns cols={3}>
+  <Card title="SoroswapAggregator" icon="layer-group" href="/aggregator/technical-reference/contracts/soroswap-aggregator">
+    The entry point: registry, distribution, and the two swap functions.
+  </Card>
+  <Card title="Adapter Trait" icon="plug" href="/aggregator/technical-reference/contracts/adapter-trait">
+    The interface every adapter implements.
+  </Card>
+  <Card title="SoroswapAdapter" icon="arrows-rotate" href="/aggregator/technical-reference/contracts/soroswap-adapter">
+    The adapter that reaches the Soroswap AMM router.
+  </Card>
+</Columns>
+
+Adapters ship for Soroswap, Phoenix, Aqua and Comet. Adding a protocol means writing an
+adapter and registering it, not changing the aggregator.
+
+Source: [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).

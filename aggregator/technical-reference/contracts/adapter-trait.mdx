@@ -1,0 +1,75 @@
+---
+title: "Adapter Trait"
+description: "AdapterTrait, the interface every protocol adapter implements so the aggregator can route through it."
+---
+
+Every adapter implements `AdapterTrait`, defined in
+[`contracts/adapters/interface`](https://github.com/soroswap/aggregator/tree/main/contracts/adapters/interface).
+That single interface is what lets the aggregator treat Soroswap, Phoenix, Aqua and Comet
+the same way, and it is all you need to implement to add a protocol.
+
+## Interface
+
+```rust
+pub trait AdapterTrait {
+    fn initialize(
+        e: Env,
+        protocol_id: String,
+        protocol_address: Address,
+    ) -> Result<(), AdapterError>;
+
+    /// Swaps an exact amount of input tokens for as many output tokens as possible,
+    /// along the route given by `path`.
+    fn swap_exact_tokens_for_tokens(
+        env: Env,
+        amount_in: i128,
+        amount_out_min: i128,
+        path: Vec<Address>,
+        to: Address,
+        deadline: u64,
+        bytes: Option<Vec<BytesN<32>>>,
+    ) -> Result<Vec<i128>, AdapterError>;
+
+    /// Swaps as few input tokens as possible for an exact amount of output token.
+    fn swap_tokens_for_exact_tokens(
+        e: Env,
+        amount_out: i128,
+        amount_in_max: i128,
+        path: Vec<Address>,
+        to: Address,
+        deadline: u64,
+        bytes: Option<Vec<BytesN<32>>>,
+    ) -> Result<Vec<i128>, AdapterError>;
+
+    /*  *** Read only functions: *** */
+    fn get_protocol_id(e: &Env) -> Result<String, AdapterError>;
+    fn get_protocol_address(e: &Env) -> Result<Address, AdapterError>;
+}
+```
+
+## Notes on the parameters
+
+`path` is the route through the underlying protocol. The first element is the input
+token, the last is the output token, and anything between them is an intermediate hop to
+trade through when no direct pair exists.
+
+`bytes` is the escape hatch for protocols that need something the common interface does
+not carry. Aqua uses it for pool hashes, which is why `AdapterError` has
+`MissingPoolHashes` and `WrongPoolHashesLength`. Adapters that need nothing extra take
+`None`.
+
+Both swap functions return the amounts at each step of the route, not just the final
+amount.
+
+## Errors
+
+| Code | Variant | Meaning |
+| --- | --- | --- |
+| 401 | `NotInitialized` | The adapter has not been initialized. |
+| 402 | `AlreadyInitialized` | `initialize` was called twice. |
+| 403 | `NegativeNotAllowed` | An amount was negative. |
+| 404 | `ProtocolAddressNotFound` | No protocol address is stored. |
+| 405 | `DeadlineExpired` | The ledger passed `deadline`. |
+| 406 | `MissingPoolHashes` | Aqua: `bytes` was required and not supplied. |
+| 407 | `WrongMinimumPathLength` | `path` is shorter than the protocol needs. |
+| 408 | `WrongPoolHashesLength` | Aqua: the pool hash count does not match the path. |

@@ -1,2 +1,0 @@
-# Other AMMs in Soroban
-

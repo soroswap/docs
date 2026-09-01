@@ -1,0 +1,134 @@
+---
+title: "Technical Overview"
+description: "Aggregator contract structure, optimization algorithm, DEX management, and the DexDistribution struct explained."
+---
+
+## Smart Contract Structure and Operation
+
+The Soroswap-Aggregator smart contract is designed to optimize trade execution across multiple decentralized exchanges (DEXes) on the Soroban platform. It receives a trade request naming the tokens, the amount, and a distribution that dictates how the trade is split across the registered protocols.
+
+## Core Components
+
+1. **Adapter registry**: an on-chain list of the protocols the aggregator can reach, each with its router address and a paused flag. One adapter contract per protocol does the actual talking, so the aggregator itself holds no protocol-specific code.
+2. **Swap functions**: `swap_exact_tokens_for_tokens` and `swap_tokens_for_exact_tokens`, which process trades from these parameters:
+   * `token_in` and `token_out`: addresses of the trading pair.
+   * `amount_in` (exact in) or `amount_out` (exact out): the total amount being swapped.
+   * `amount_out_min` (exact in) or `amount_in_max` (exact out): the slippage bound.
+   * `distribution`: a `Vec<DexDistribution>` specifying how the trade is split across protocols.
+   * `to` and `deadline`: the recipient, and the ledger time after which the swap reverts.
+
+## Optimization Algorithm
+
+The optimization algorithm plays a pivotal role outside of the smart contract, typically running off-chain due to its computational complexity. It analyzes current market conditions, including liquidity depth, gas costs, slippage, and DEX fees, to generate the optimal `distribution` array for a given trade. This array is then passed to the smart contract along with the swap request.
+
+### How the Optimization Works:
+
+1. **Data Collection**: Gather real-time data from each DEX in the registry regarding prices, liquidity depths, and fees.
+2. **Scenario Analysis**: Calculate the potential outcome of distributing the trade across different combinations of DEXes.
+3. **Cost-Benefit Calculation**: Evaluate the trade-off between transaction costs (including gas fees and DEX fees) and the benefits (minimized slippage and maximized returns).
+4. **Distribution Generation**: Output the optimal distribution strategy that offers the best return after all costs.
+
+## Smart Contract Execution
+
+Upon receiving a trade request with the specified `distribution`, the smart contract performs the following steps:
+
+1. **Validation**: check the distribution is well formed and within `MAX_DISTRIBUTION_LENGTH`, that every named protocol is registered and not paused, and that `deadline` has not passed.
+2. **DEX Mapping**: Identify which DEXes correspond to each element of the distribution array using the DEX registry.
+3. **Trade Execution**: For each non-zero element in the distribution array, interact with the corresponding DEX's smart contract to execute the portion of the trade allocated to it.
+4. **Result aggregation**: collect the per-step amounts from each partial trade and check the total against `amount_out_min`, or `amount_in_max` for an exact-out swap. If the bound is not met the whole invocation reverts, so a user never ends up with a partially executed split.
+
+## Challenges and Considerations
+
+* **Fee efficiency**: Executing multiple trades across different DEXes can be gas-intensive. The smart contract and optimization algorithm must prioritize gas efficiency to ensure the benefits of aggregation outweigh the costs.
+* **Security and Risk Management**: Interacting with multiple DEXes increases exposure to smart contract vulnerabilities. Rigorous security audits and continuous monitoring of integrated DEXes are essential.
+
+## DEX Management
+
+### An on-chain adapter registry, managed by an admin
+
+The set of protocols the aggregator can reach is stored on chain as a `Vec<Adapter>`, not
+compiled into the contract. Each entry names a protocol, the router address to reach it
+at, and whether it is currently paused:
+
+```rust
+pub struct Adapter {
+    pub protocol_id: Protocol,
+    pub router: Address,
+    pub paused: bool,
+}
+```
+
+Three admin-only functions manage it:
+
+* `update_adapters(adapter_vec)` registers or replaces adapters, keyed by `protocol_id`.
+  This is how a protocol's router address is changed after a migration or an upgrade.
+* `remove_adapter(protocol_id)` drops one entirely.
+* `set_pause(protocol_id, paused)` closes a protocol to new swaps while leaving it
+  registered, which is the reversible option when an underlying protocol looks unhealthy.
+
+`set_admin` transfers the admin role, and `upgrade` replaces the aggregator's own code.
+The full interface is on the
+[SoroswapAggregator](/aggregator/technical-reference/contracts/soroswap-aggregator) page.
+
+### Key Considerations
+
+* **Security and Integrity**: The ability to update DEX addresses is a powerful feature that must be handled with the utmost care to maintain the aggregator's integrity and user trust. Measures such secure key management, and thorough testing of address updates are essential to mitigate risks.
+* **Transparency and Accountability**: Maintaining transparency regarding any changes made to DEX addresses is crucial. Detailed logs and justifications for each update should be readily available to users, ensuring accountability and maintaining confidence in the platform.
+* **Monitoring and Verification**: Continuous monitoring of integrated DEXes for updates or security advisories is critical. The admin team must have procedures in place to quickly verify and implement required changes to DEX addresses, ensuring the aggregator remains functional and secure against evolving threats.
+
+## Understanding the `DexDistribution` Struct
+
+The `DexDistribution` struct is designed to instruct the aggregator on how to split and execute a swap across multiple DEX protocols. Each `DexDistribution` object contains three key pieces of information:
+
+* **protocol_id**: which protocol executes this slice, as a `Protocol` enum value
+  (`Soroswap`, `Phoenix`, `Aqua` or `Comet`).
+* **path**: the token swap path that protocol needs, which matters for multi-hop swaps
+  where no direct pair exists.
+* **parts**: how many parts of the total swap amount are routed through this protocol.
+
+A distribution may hold at most `MAX_DISTRIBUTION_LENGTH`, currently 15, entries.
+
+## Example Explanation
+
+Consider a scenario where a user wants to swap Token A for Token B, but to optimize the swap, the trade is split across two different DEX protocols, each possibly requiring a different path for the swap. The distribution for this swap might look something like this:
+
+```rust
+let distribution = vec![
+    DexDistribution {
+        protocol_id: Protocol::Soroswap,
+        path: vec![TOKEN_A, TOKEN_B, TOKEN_C], // route Soroswap needs
+        parts: 3, // 3 parts of the trade go through Soroswap
+    },
+    DexDistribution {
+        protocol_id: Protocol::Phoenix,
+        path: vec![TOKEN_A, TOKEN_C], // route Phoenix needs
+        parts: 2, // 2 parts of the trade go through Phoenix
+    }
+];
+```
+
+In this distribution:
+
+* 3/5 of the total swap amount is routed through Soroswap, following the path `[TOKEN_A, TOKEN_B, TOKEN_C]`.
+* The remaining 2/5 is routed through Phoenix, following the path `[TOKEN_A, TOKEN_C]`.
+
+## Swap Execution Process
+
+When executing the swap, the aggregator:
+
+1. **Calculate the Total Parts**: Sum the `parts` from each `DexDistribution` object to determine the total number of parts the swap amount will be divided into. In this example, the total is 5 parts.
+2. **Determine Amount per Part**: Divide the total swap amount by the total number of parts to find out how much each part represents.
+3. **Execute Swaps Based on Distribution**: For each `DexDistribution` in the array:
+   * Calculate the specific amount to swap through each protocol by multiplying the amount per part by the `parts` specified in the `DexDistribution`.
+   * Execute the swap on the protocol named by `protocol_id`, using the determined amount and following the provided `path`.
+   * Ensure that each swap meets or exceeds any minimum output requirements and is completed before the specified `deadline`.
+
+## Key Points
+
+* The `path` allows for flexibility in handling swaps that require multiple hops, accommodating the specific requirements of different DEX protocols.
+* The `parts` attribute allows the aggregator to dynamically allocate the swap amount across different protocols, optimizing for factors like slippage, gas fees, or liquidity depth.
+* `protocol_id` names the protocol. The aggregator maps it to that protocol's adapter through the on-chain registry, so the caller never handles adapter addresses directly.
+
+## Conclusion
+
+The Soroswap-Aggregator smart contract represents a sophisticated tool for optimizing DEX trades on the Soroban platform, requiring a carefully crafted balance between on-chain efficiency and off-chain computational complexity. The success of the aggregator hinges on its ability to dynamically adapt to the DeFi marketplace's fluidity, ensuring secure, efficient, and optimal trade execution for users.
