@@ -1,0 +1,1220 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "Soroswap Finance",
+  "description": "Documentation for Soroswap Finance: the DEX, the AMM aggregator and the swap API on Stellar and Soroban.",
+  "colors": {
+    "primary": "#8866DD",
+    "light": "#A98BE8",
+    "dark": "#6F4FC7"
+  },
+  "favicon": "/favicon.png",
+  "logo": {
+    "light": "/logo/light.svg",
+    "dark": "/logo/dark.svg",
+    "href": "https://soroswap.finance"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "https://discord.gg/A2rQ3cm9XG"
+      }
+    ],
+    "primary": {
+      "type": "button",
+      "label": "Launch App",
+      "href": "https://app.soroswap.finance"
+    }
+  },
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Welcome",
+            "pages": [
+              "index",
+              "what-is-soroswap"
+            ]
+          },
+          {
+            "group": "Getting Started",
+            "root": "getting-started/index",
+            "pages": [
+              "getting-started/wallet-setup",
+              "getting-started/how-to-swap",
+              "getting-started/provide-liquidity",
+              "getting-started/how-the-aggregator-works",
+              "getting-started/soroswap-tokens",
+              "getting-started/adding-tokens-to-your-wallet",
+              "getting-started/liquidity-management",
+              "getting-started/bridging-tokens"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "root": "concepts/index",
+            "pages": [
+              "concepts/amm",
+              "concepts/liquidity-pools",
+              "concepts/swap",
+              "concepts/fees",
+              "concepts/slippage",
+              "concepts/router",
+              "concepts/sdex",
+              "concepts/aggregator",
+              "concepts/bridge",
+              "concepts/trustlines",
+              "concepts/oracles",
+              "concepts/flash-swaps",
+              {
+                "group": "Advanced Topics",
+                "root": "concepts/advanced/index",
+                "pages": [
+                  "concepts/advanced/pricing",
+                  "concepts/advanced/understanding-returns",
+                  "concepts/advanced/security",
+                  "concepts/advanced/research"
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Tutorials",
+            "root": "tutorials/index",
+            "pages": [
+              "tutorials/soroswap-testnet-overview",
+              "tutorials/installing-freighter",
+              "tutorials/soroswap-sections",
+              "tutorials/adding-liquidity",
+              "tutorials/doing-swap",
+              "tutorials/remove-liquidity",
+              {
+                "group": "Stellar Classic Assets",
+                "root": "tutorials/stellar-classic-assets/index",
+                "pages": [
+                  "tutorials/stellar-classic-assets/wrapping",
+                  "tutorials/stellar-classic-assets/swapping",
+                  "tutorials/stellar-classic-assets/testing",
+                  "tutorials/stellar-classic-assets/importing-testnet-tokens"
+                ]
+              },
+              "tutorials/bridge-with-pendulum",
+              "tutorials/conclusions"
+            ]
+          },
+          {
+            "group": "Resources",
+            "root": "resources/index",
+            "pages": [
+              "resources/about-us",
+              "resources/general-faq",
+              "resources/additional-resources",
+              {
+                "group": "Partnerships",
+                "root": "resources/partnerships/index",
+                "pages": [
+                  "resources/partnerships/mercury-subquery",
+                  "resources/partnerships/business-partnerships"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "API",
+        "groups": [
+          {
+            "group": "Soroswap API",
+            "root": "api/index",
+            "pages": [
+              "api/quickstart",
+              "api/beginner-guide",
+              "api/gasless-trustline",
+              "api/optimal-route"
+            ]
+          }
+        ]
+      },
+      {
+        "tab": "Smart Contracts",
+        "groups": [
+          {
+            "group": "Soroswap AMM",
+            "root": "amm/index",
+            "pages": [
+              "amm/how-it-works",
+              "amm/ecosystem-participants",
+              "amm/glossary",
+              "amm/audits",
+              {
+                "group": "Technical Reference",
+                "root": "amm/technical-reference/index",
+                "pages": [
+                  {
+                    "group": "Contracts",
+                    "root": "amm/technical-reference/contracts/index",
+                    "pages": [
+                      "amm/technical-reference/contracts/soroswap-pair",
+                      "amm/technical-reference/contracts/soroswap-factory",
+                      "amm/technical-reference/contracts/soroswap-router",
+                      "amm/technical-reference/contracts/soroswap-library"
+                    ]
+                  },
+                  "amm/technical-reference/deployed-addresses",
+                  "amm/technical-reference/error-codes",
+                  "amm/technical-reference/design-decisions",
+                  "amm/technical-reference/using-soroswap-with-typescript",
+                  {
+                    "group": "Soroswap vs UniswapV2",
+                    "root": "amm/technical-reference/vs-uniswap-v2/index",
+                    "pages": [
+                      "amm/technical-reference/vs-uniswap-v2/pair",
+                      "amm/technical-reference/vs-uniswap-v2/router",
+                      "amm/technical-reference/vs-uniswap-v2/library"
+                    ]
+                  },
+                  {
+                    "group": "Deploy Soroswap Yourself",
+                    "root": "amm/technical-reference/deploy-yourself/index",
+                    "pages": [
+                      "amm/technical-reference/deploy-yourself/setup",
+                      "amm/technical-reference/deploy-yourself/pair",
+                      "amm/technical-reference/deploy-yourself/factory",
+                      "amm/technical-reference/deploy-yourself/deployments"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "group": "Soroswap Aggregator",
+            "root": "aggregator/index",
+            "pages": [
+              "aggregator/supported-amms",
+              "aggregator/audits",
+              {
+                "group": "Technical Reference",
+                "root": "aggregator/technical-reference/index",
+                "pages": [
+                  "aggregator/technical-reference/how-it-works",
+                  "aggregator/technical-reference/design",
+                  "aggregator/technical-reference/technical-overview",
+                  "aggregator/technical-reference/operation",
+                  {
+                    "group": "Inspirations",
+                    "root": "aggregator/technical-reference/inspirations/index",
+                    "pages": [
+                      "aggregator/technical-reference/inspirations/1inch"
+                    ]
+                  },
+                  {
+                    "group": "Other AMMs in Soroban",
+                    "root": "aggregator/technical-reference/other-amms/index",
+                    "pages": [
+                      "aggregator/technical-reference/other-amms/phoenix"
+                    ]
+                  }
+                ]
+              },
+              "aggregator/disclaimer"
+            ]
+          }
+        ]
+      }
+    ],
+    "global": {
+      "anchors": [
+        {
+          "anchor": "API Reference",
+          "href": "https://api.soroswap.finance/docs",
+          "icon": "code"
+        },
+        {
+          "anchor": "Dune Dashboard",
+          "href": "https://dune.com/paltalabs/soroswap",
+          "icon": "chart-line"
+        },
+        {
+          "anchor": "GitHub",
+          "href": "https://github.com/soroswap",
+          "icon": "github"
+        },
+        {
+          "anchor": "Discord",
+          "href": "https://discord.gg/A2rQ3cm9XG",
+          "icon": "discord"
+        }
+      ]
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/SoroswapFinance",
+      "discord": "https://discord.gg/A2rQ3cm9XG",
+      "github": "https://github.com/soroswap"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/readme/getting-started",
+      "destination": "/getting-started"
+    },
+    {
+      "source": "/readme/what-is-soroswap-finance",
+      "destination": "/what-is-soroswap"
+    },
+    {
+      "source": "/what-is-soroswap-finance",
+      "destination": "/what-is-soroswap"
+    },
+    {
+      "source": "/readme/getting-started/choosing-a-wallet",
+      "destination": "/getting-started/wallet-setup"
+    },
+    {
+      "source": "/getting-started/choosing-a-wallet",
+      "destination": "/getting-started/wallet-setup"
+    },
+    {
+      "source": "/readme/getting-started/how-to-swap",
+      "destination": "/getting-started/how-to-swap"
+    },
+    {
+      "source": "/readme/getting-started/provide-liquidity",
+      "destination": "/getting-started/provide-liquidity"
+    },
+    {
+      "source": "/readme/getting-started/how-the-aggregator-works",
+      "destination": "/getting-started/how-the-aggregator-works"
+    },
+    {
+      "source": "/readme/getting-started/introduction-to-soroswap-tokens",
+      "destination": "/getting-started/soroswap-tokens"
+    },
+    {
+      "source": "/getting-started/introduction-to-soroswap-tokens",
+      "destination": "/getting-started/soroswap-tokens"
+    },
+    {
+      "source": "/readme/getting-started/adding-tokens-to-your-wallet",
+      "destination": "/getting-started/adding-tokens-to-your-wallet"
+    },
+    {
+      "source": "/readme/getting-started/liquidity-management-on-soroswap",
+      "destination": "/getting-started/liquidity-management"
+    },
+    {
+      "source": "/getting-started/liquidity-management-on-soroswap",
+      "destination": "/getting-started/liquidity-management"
+    },
+    {
+      "source": "/readme/getting-started/bridging-tokens-to-stellar-blockchain",
+      "destination": "/getting-started/bridging-tokens"
+    },
+    {
+      "source": "/getting-started/bridging-tokens-to-stellar-blockchain",
+      "destination": "/getting-started/bridging-tokens"
+    },
+    {
+      "source": "/soroswap-api",
+      "destination": "/api"
+    },
+    {
+      "source": "/soroswap-api/quickstart",
+      "destination": "/api/quickstart"
+    },
+    {
+      "source": "/soroswap-api/beginner-guide",
+      "destination": "/api/beginner-guide"
+    },
+    {
+      "source": "/soroswap-api/gasless-trustline",
+      "destination": "/api/gasless-trustline"
+    },
+    {
+      "source": "/soroswap-api/07-optimal-route",
+      "destination": "/api/optimal-route"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview",
+      "destination": "/amm"
+    },
+    {
+      "source": "/01-protocol-overview",
+      "destination": "/amm"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/01-how-soroswap-works",
+      "destination": "/amm/how-it-works"
+    },
+    {
+      "source": "/01-protocol-overview/01-how-soroswap-works",
+      "destination": "/amm/how-it-works"
+    },
+    {
+      "source": "/01-how-soroswap-works",
+      "destination": "/amm/how-it-works"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/02-ecosystem-participants",
+      "destination": "/amm/ecosystem-participants"
+    },
+    {
+      "source": "/01-protocol-overview/02-ecosystem-participants",
+      "destination": "/amm/ecosystem-participants"
+    },
+    {
+      "source": "/02-ecosystem-participants",
+      "destination": "/amm/ecosystem-participants"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/audits",
+      "destination": "/amm/audits"
+    },
+    {
+      "source": "/01-protocol-overview/audits",
+      "destination": "/amm/audits"
+    },
+    {
+      "source": "/audits",
+      "destination": "/amm/audits"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/04-glossary",
+      "destination": "/amm/glossary"
+    },
+    {
+      "source": "/01-protocol-overview/04-glossary",
+      "destination": "/amm/glossary"
+    },
+    {
+      "source": "/04-glossary",
+      "destination": "/amm/glossary"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference",
+      "destination": "/amm/technical-reference"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference",
+      "destination": "/amm/technical-reference"
+    },
+    {
+      "source": "/03-technical-reference",
+      "destination": "/amm/technical-reference"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/02-design-decisions",
+      "destination": "/amm/technical-reference/design-decisions"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/02-design-decisions",
+      "destination": "/amm/technical-reference/design-decisions"
+    },
+    {
+      "source": "/03-technical-reference/02-design-decisions",
+      "destination": "/amm/technical-reference/design-decisions"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deployed-addresses",
+      "destination": "/amm/technical-reference/deployed-addresses"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deployed-addresses",
+      "destination": "/amm/technical-reference/deployed-addresses"
+    },
+    {
+      "source": "/03-technical-reference/deployed-addresses",
+      "destination": "/amm/technical-reference/deployed-addresses"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/error-codes",
+      "destination": "/amm/technical-reference/error-codes"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/error-codes",
+      "destination": "/amm/technical-reference/error-codes"
+    },
+    {
+      "source": "/03-technical-reference/error-codes",
+      "destination": "/amm/technical-reference/error-codes"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/smart-contract-integration",
+      "destination": "/amm/technical-reference/smart-contract-integration"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/smart-contract-integration",
+      "destination": "/amm/technical-reference/smart-contract-integration"
+    },
+    {
+      "source": "/03-technical-reference/smart-contract-integration",
+      "destination": "/amm/technical-reference/smart-contract-integration"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/09-using-soroswap-with-typescript",
+      "destination": "/amm/technical-reference/using-soroswap-with-typescript"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/09-using-soroswap-with-typescript",
+      "destination": "/amm/technical-reference/using-soroswap-with-typescript"
+    },
+    {
+      "source": "/03-technical-reference/09-using-soroswap-with-typescript",
+      "destination": "/amm/technical-reference/using-soroswap-with-typescript"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/03-smart-contracts",
+      "destination": "/amm/technical-reference/contracts"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/03-smart-contracts",
+      "destination": "/amm/technical-reference/contracts"
+    },
+    {
+      "source": "/03-technical-reference/03-smart-contracts",
+      "destination": "/amm/technical-reference/contracts"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair",
+      "destination": "/amm/technical-reference/contracts/soroswap-pair"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/03-smart-contracts/01-soroswappair",
+      "destination": "/amm/technical-reference/contracts/soroswap-pair"
+    },
+    {
+      "source": "/03-technical-reference/03-smart-contracts/01-soroswappair",
+      "destination": "/amm/technical-reference/contracts/soroswap-pair"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/03-smart-contracts/02-soroswapfactory",
+      "destination": "/amm/technical-reference/contracts/soroswap-factory"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/03-smart-contracts/02-soroswapfactory",
+      "destination": "/amm/technical-reference/contracts/soroswap-factory"
+    },
+    {
+      "source": "/03-technical-reference/03-smart-contracts/02-soroswapfactory",
+      "destination": "/amm/technical-reference/contracts/soroswap-factory"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/03-smart-contracts/03-soroswaplibrary",
+      "destination": "/amm/technical-reference/contracts/soroswap-library"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/03-smart-contracts/03-soroswaplibrary",
+      "destination": "/amm/technical-reference/contracts/soroswap-library"
+    },
+    {
+      "source": "/03-technical-reference/03-smart-contracts/03-soroswaplibrary",
+      "destination": "/amm/technical-reference/contracts/soroswap-library"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter",
+      "destination": "/amm/technical-reference/contracts/soroswap-router"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/03-smart-contracts/04-soroswaprouter",
+      "destination": "/amm/technical-reference/contracts/soroswap-router"
+    },
+    {
+      "source": "/03-technical-reference/03-smart-contracts/04-soroswaprouter",
+      "destination": "/amm/technical-reference/contracts/soroswap-router"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2",
+      "destination": "/amm/technical-reference/vs-uniswap-v2"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2",
+      "destination": "/amm/technical-reference/vs-uniswap-v2"
+    },
+    {
+      "source": "/03-technical-reference/06-soroswap-vs-uniswapv2",
+      "destination": "/amm/technical-reference/vs-uniswap-v2"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/01-soroswappair-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/pair"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/01-soroswappair-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/pair"
+    },
+    {
+      "source": "/03-technical-reference/06-soroswap-vs-uniswapv2/01-soroswappair-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/pair"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/02-soroswaprouter-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/router"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/02-soroswaprouter-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/router"
+    },
+    {
+      "source": "/03-technical-reference/06-soroswap-vs-uniswapv2/02-soroswaprouter-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/router"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/03-soroswaplibrary-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/library"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/06-soroswap-vs-uniswapv2/03-soroswaplibrary-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/library"
+    },
+    {
+      "source": "/03-technical-reference/06-soroswap-vs-uniswapv2/03-soroswaplibrary-comparison",
+      "destination": "/amm/technical-reference/vs-uniswap-v2/library"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself",
+      "destination": "/amm/technical-reference/deploy-yourself"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself",
+      "destination": "/amm/technical-reference/deploy-yourself"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself",
+      "destination": "/amm/technical-reference/deploy-yourself"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/01-setup",
+      "destination": "/amm/technical-reference/deploy-yourself/setup"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/01-setup",
+      "destination": "/amm/technical-reference/deploy-yourself/setup"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself/01-setup",
+      "destination": "/amm/technical-reference/deploy-yourself/setup"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/02-pair",
+      "destination": "/amm/technical-reference/deploy-yourself/pair"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/02-pair",
+      "destination": "/amm/technical-reference/deploy-yourself/pair"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself/02-pair",
+      "destination": "/amm/technical-reference/deploy-yourself/pair"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/03-factory",
+      "destination": "/amm/technical-reference/deploy-yourself/factory"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/03-factory",
+      "destination": "/amm/technical-reference/deploy-yourself/factory"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself/03-factory",
+      "destination": "/amm/technical-reference/deploy-yourself/factory"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/04-deployments",
+      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/04-deployments",
+      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself/04-deployments",
+      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+    },
+    {
+      "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
+      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+    },
+    {
+      "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
+      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+    },
+    {
+      "source": "/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
+      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator",
+      "destination": "/aggregator"
+    },
+    {
+      "source": "/soroswap-aggregator",
+      "destination": "/aggregator"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/supported-amms",
+      "destination": "/aggregator/supported-amms"
+    },
+    {
+      "source": "/soroswap-aggregator/supported-amms",
+      "destination": "/aggregator/supported-amms"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/audits",
+      "destination": "/aggregator/audits"
+    },
+    {
+      "source": "/soroswap-aggregator/audits",
+      "destination": "/aggregator/audits"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/06-soroswapaggregatordisclaimer",
+      "destination": "/aggregator/disclaimer"
+    },
+    {
+      "source": "/soroswap-aggregator/06-soroswapaggregatordisclaimer",
+      "destination": "/aggregator/disclaimer"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference",
+      "destination": "/aggregator/technical-reference"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference",
+      "destination": "/aggregator/technical-reference"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/how-soroswap-aggregator-works",
+      "destination": "/aggregator/technical-reference/how-it-works"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/how-soroswap-aggregator-works",
+      "destination": "/aggregator/technical-reference/how-it-works"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/04-soroswapaggregator-design",
+      "destination": "/aggregator/technical-reference/design"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/04-soroswapaggregator-design",
+      "destination": "/aggregator/technical-reference/design"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/05-soroswapaggregator-technical-overview",
+      "destination": "/aggregator/technical-reference/technical-overview"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/05-soroswapaggregator-technical-overview",
+      "destination": "/aggregator/technical-reference/technical-overview"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/aggregator-operation",
+      "destination": "/aggregator/technical-reference/operation"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/aggregator-operation",
+      "destination": "/aggregator/technical-reference/operation"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/cross-contract-integration",
+      "destination": "/aggregator/technical-reference/cross-contract-integration"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/cross-contract-integration",
+      "destination": "/aggregator/technical-reference/cross-contract-integration"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/smart-contracts",
+      "destination": "/aggregator/technical-reference/contracts"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/smart-contracts",
+      "destination": "/aggregator/technical-reference/contracts"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/smart-contracts/soroswapaggregator",
+      "destination": "/aggregator/technical-reference/contracts/soroswap-aggregator"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/smart-contracts/soroswapaggregator",
+      "destination": "/aggregator/technical-reference/contracts/soroswap-aggregator"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/smart-contracts/adapter-trait",
+      "destination": "/aggregator/technical-reference/contracts/adapter-trait"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/smart-contracts/adapter-trait",
+      "destination": "/aggregator/technical-reference/contracts/adapter-trait"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/smart-contracts/soroswapadapter",
+      "destination": "/aggregator/technical-reference/contracts/soroswap-adapter"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/smart-contracts/soroswapadapter",
+      "destination": "/aggregator/technical-reference/contracts/soroswap-adapter"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/inspirations",
+      "destination": "/aggregator/technical-reference/inspirations"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/inspirations",
+      "destination": "/aggregator/technical-reference/inspirations"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/inspirations/01-1inch",
+      "destination": "/aggregator/technical-reference/inspirations/1inch"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/inspirations/01-1inch",
+      "destination": "/aggregator/technical-reference/inspirations/1inch"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/other-amms-in-soroban",
+      "destination": "/aggregator/technical-reference/other-amms"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/other-amms-in-soroban",
+      "destination": "/aggregator/technical-reference/other-amms"
+    },
+    {
+      "source": "/smart-contracts/soroswap-aggregator/technical-reference/other-amms-in-soroban/02-phoenix",
+      "destination": "/aggregator/technical-reference/other-amms/phoenix"
+    },
+    {
+      "source": "/soroswap-aggregator/technical-reference/other-amms-in-soroban/02-phoenix",
+      "destination": "/aggregator/technical-reference/other-amms/phoenix"
+    },
+    {
+      "source": "/additional-resources/01-concepts",
+      "destination": "/concepts"
+    },
+    {
+      "source": "/01-concepts",
+      "destination": "/concepts"
+    },
+    {
+      "source": "/additional-resources/01-concepts/amm",
+      "destination": "/concepts/amm"
+    },
+    {
+      "source": "/01-concepts/amm",
+      "destination": "/concepts/amm"
+    },
+    {
+      "source": "/additional-resources/01-concepts/02-pools",
+      "destination": "/concepts/liquidity-pools"
+    },
+    {
+      "source": "/01-concepts/02-pools",
+      "destination": "/concepts/liquidity-pools"
+    },
+    {
+      "source": "/02-pools",
+      "destination": "/concepts/liquidity-pools"
+    },
+    {
+      "source": "/additional-resources/01-concepts/swap",
+      "destination": "/concepts/swap"
+    },
+    {
+      "source": "/01-concepts/swap",
+      "destination": "/concepts/swap"
+    },
+    {
+      "source": "/swap",
+      "destination": "/concepts/swap"
+    },
+    {
+      "source": "/additional-resources/01-concepts/01-fees",
+      "destination": "/concepts/fees"
+    },
+    {
+      "source": "/01-concepts/01-fees",
+      "destination": "/concepts/fees"
+    },
+    {
+      "source": "/01-fees",
+      "destination": "/concepts/fees"
+    },
+    {
+      "source": "/additional-resources/01-concepts/slippage",
+      "destination": "/concepts/slippage"
+    },
+    {
+      "source": "/01-concepts/slippage",
+      "destination": "/concepts/slippage"
+    },
+    {
+      "source": "/slippage",
+      "destination": "/concepts/slippage"
+    },
+    {
+      "source": "/additional-resources/01-concepts/router",
+      "destination": "/concepts/router"
+    },
+    {
+      "source": "/01-concepts/router",
+      "destination": "/concepts/router"
+    },
+    {
+      "source": "/router",
+      "destination": "/concepts/router"
+    },
+    {
+      "source": "/additional-resources/01-concepts/sdex",
+      "destination": "/concepts/sdex"
+    },
+    {
+      "source": "/01-concepts/sdex",
+      "destination": "/concepts/sdex"
+    },
+    {
+      "source": "/sdex",
+      "destination": "/concepts/sdex"
+    },
+    {
+      "source": "/additional-resources/01-concepts/aggregator",
+      "destination": "/concepts/aggregator"
+    },
+    {
+      "source": "/01-concepts/aggregator",
+      "destination": "/concepts/aggregator"
+    },
+    {
+      "source": "/additional-resources/01-concepts/bridge",
+      "destination": "/concepts/bridge"
+    },
+    {
+      "source": "/01-concepts/bridge",
+      "destination": "/concepts/bridge"
+    },
+    {
+      "source": "/bridge",
+      "destination": "/concepts/bridge"
+    },
+    {
+      "source": "/additional-resources/01-concepts/trustlines",
+      "destination": "/concepts/trustlines"
+    },
+    {
+      "source": "/01-concepts/trustlines",
+      "destination": "/concepts/trustlines"
+    },
+    {
+      "source": "/trustlines",
+      "destination": "/concepts/trustlines"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-oracles",
+      "destination": "/concepts/oracles"
+    },
+    {
+      "source": "/01-concepts/04-oracles",
+      "destination": "/concepts/oracles"
+    },
+    {
+      "source": "/04-oracles",
+      "destination": "/concepts/oracles"
+    },
+    {
+      "source": "/additional-resources/01-concepts/03-flash-swaps",
+      "destination": "/concepts/flash-swaps"
+    },
+    {
+      "source": "/01-concepts/03-flash-swaps",
+      "destination": "/concepts/flash-swaps"
+    },
+    {
+      "source": "/03-flash-swaps",
+      "destination": "/concepts/flash-swaps"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-advanced-topics",
+      "destination": "/concepts/advanced"
+    },
+    {
+      "source": "/01-concepts/04-advanced-topics",
+      "destination": "/concepts/advanced"
+    },
+    {
+      "source": "/04-advanced-topics",
+      "destination": "/concepts/advanced"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-advanced-topics/02-pricing",
+      "destination": "/concepts/advanced/pricing"
+    },
+    {
+      "source": "/01-concepts/04-advanced-topics/02-pricing",
+      "destination": "/concepts/advanced/pricing"
+    },
+    {
+      "source": "/04-advanced-topics/02-pricing",
+      "destination": "/concepts/advanced/pricing"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-advanced-topics/03-understanding-returns",
+      "destination": "/concepts/advanced/understanding-returns"
+    },
+    {
+      "source": "/01-concepts/04-advanced-topics/03-understanding-returns",
+      "destination": "/concepts/advanced/understanding-returns"
+    },
+    {
+      "source": "/04-advanced-topics/03-understanding-returns",
+      "destination": "/concepts/advanced/understanding-returns"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-advanced-topics/04-security",
+      "destination": "/concepts/advanced/security"
+    },
+    {
+      "source": "/01-concepts/04-advanced-topics/04-security",
+      "destination": "/concepts/advanced/security"
+    },
+    {
+      "source": "/04-advanced-topics/04-security",
+      "destination": "/concepts/advanced/security"
+    },
+    {
+      "source": "/additional-resources/01-concepts/04-advanced-topics/06-research",
+      "destination": "/concepts/advanced/research"
+    },
+    {
+      "source": "/01-concepts/04-advanced-topics/06-research",
+      "destination": "/concepts/advanced/research"
+    },
+    {
+      "source": "/04-advanced-topics/06-research",
+      "destination": "/concepts/advanced/research"
+    },
+    {
+      "source": "/additional-resources/05-tutorial",
+      "destination": "/tutorials"
+    },
+    {
+      "source": "/05-tutorial",
+      "destination": "/tutorials"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/01-soroswap-testnet-overviews",
+      "destination": "/tutorials/soroswap-testnet-overview"
+    },
+    {
+      "source": "/05-tutorial/01-soroswap-testnet-overviews",
+      "destination": "/tutorials/soroswap-testnet-overview"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/02-installing-freighter",
+      "destination": "/tutorials/installing-freighter"
+    },
+    {
+      "source": "/05-tutorial/02-installing-freighter",
+      "destination": "/tutorials/installing-freighter"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/03-soroswap-sections",
+      "destination": "/tutorials/soroswap-sections"
+    },
+    {
+      "source": "/05-tutorial/03-soroswap-sections",
+      "destination": "/tutorials/soroswap-sections"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/04-adding-liquidity",
+      "destination": "/tutorials/adding-liquidity"
+    },
+    {
+      "source": "/05-tutorial/04-adding-liquidity",
+      "destination": "/tutorials/adding-liquidity"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/05-doing-swap",
+      "destination": "/tutorials/doing-swap"
+    },
+    {
+      "source": "/05-tutorial/05-doing-swap",
+      "destination": "/tutorials/doing-swap"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/06-remove-liquidity",
+      "destination": "/tutorials/remove-liquidity"
+    },
+    {
+      "source": "/05-tutorial/06-remove-liquidity",
+      "destination": "/tutorials/remove-liquidity"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/summary",
+      "destination": "/tutorials/stellar-classic-assets"
+    },
+    {
+      "source": "/05-tutorial/summary",
+      "destination": "/tutorials/stellar-classic-assets"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/summary/01-wrapping-stellar-classic-assets",
+      "destination": "/tutorials/stellar-classic-assets/wrapping"
+    },
+    {
+      "source": "/05-tutorial/summary/01-wrapping-stellar-classic-assets",
+      "destination": "/tutorials/stellar-classic-assets/wrapping"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/summary/02-swap-stellar-classic-assets",
+      "destination": "/tutorials/stellar-classic-assets/swapping"
+    },
+    {
+      "source": "/05-tutorial/summary/02-swap-stellar-classic-assets",
+      "destination": "/tutorials/stellar-classic-assets/swapping"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/summary/03-test-stellar-assets-in-testnet",
+      "destination": "/tutorials/stellar-classic-assets/testing"
+    },
+    {
+      "source": "/05-tutorial/summary/03-test-stellar-assets-in-testnet",
+      "destination": "/tutorials/stellar-classic-assets/testing"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/09-conclusions",
+      "destination": "/tutorials/conclusions"
+    },
+    {
+      "source": "/05-tutorial/09-conclusions",
+      "destination": "/tutorials/conclusions"
+    },
+    {
+      "source": "/05-tutorial/08-bridge",
+      "destination": "/tutorials/bridge-with-pendulum"
+    },
+    {
+      "source": "/03-technical-reference/01-import-stellar-classic-assets",
+      "destination": "/tutorials/stellar-classic-assets/importing-testnet-tokens"
+    },
+    {
+      "source": "/additional-resources/support-and-resources",
+      "destination": "/resources"
+    },
+    {
+      "source": "/support-and-resources",
+      "destination": "/resources"
+    },
+    {
+      "source": "/additional-resources/support-and-resources/about-us",
+      "destination": "/resources/about-us"
+    },
+    {
+      "source": "/support-and-resources/about-us",
+      "destination": "/resources/about-us"
+    },
+    {
+      "source": "/additional-resources/support-and-resources/general-faq",
+      "destination": "/resources/general-faq"
+    },
+    {
+      "source": "/support-and-resources/general-faq",
+      "destination": "/resources/general-faq"
+    },
+    {
+      "source": "/additional-resources/support-and-resources/additional-resources",
+      "destination": "/resources/additional-resources"
+    },
+    {
+      "source": "/support-and-resources/additional-resources",
+      "destination": "/resources/additional-resources"
+    },
+    {
+      "source": "/additional-resources/04-partners",
+      "destination": "/resources/partnerships"
+    },
+    {
+      "source": "/04-partners",
+      "destination": "/resources/partnerships"
+    },
+    {
+      "source": "/additional-resources/04-partners/01-mercury-subquery",
+      "destination": "/resources/partnerships/mercury-subquery"
+    },
+    {
+      "source": "/04-partners/01-mercury-subquery",
+      "destination": "/resources/partnerships/mercury-subquery"
+    },
+    {
+      "source": "/additional-resources/04-partners/business-partnerships",
+      "destination": "/resources/partnerships/business-partnerships"
+    },
+    {
+      "source": "/04-partners/business-partnerships",
+      "destination": "/resources/partnerships/business-partnerships"
+    },
+    {
+      "source": "/readme/:slug*",
+      "destination": "/getting-started/:slug*"
+    },
+    {
+      "source": "/additional-resources/01-concepts/:slug*",
+      "destination": "/concepts/:slug*"
+    },
+    {
+      "source": "/additional-resources/05-tutorial/:slug*",
+      "destination": "/tutorials/:slug*"
+    },
+    {
+      "source": "/additional-resources/04-partners/:slug*",
+      "destination": "/resources/partnerships/:slug*"
+    },
+    {
+      "source": "/additional-resources/support-and-resources/:slug*",
+      "destination": "/resources/:slug*"
+    },
+    {
+      "source": "/soroswap-api/:slug*",
+      "destination": "/api/:slug*"
+    },
+    {
+      "source": "/01-concepts/:slug*",
+      "destination": "/concepts/:slug*"
+    },
+    {
+      "source": "/05-tutorial/:slug*",
+      "destination": "/tutorials/:slug*"
+    },
+    {
+      "source": "/04-partners/:slug*",
+      "destination": "/resources/partnerships/:slug*"
+    },
+    {
+      "source": "/bridges",
+      "destination": "/concepts/bridge"
+    },
+    {
+      "source": "/soroswap-router-sdk",
+      "destination": "/api/optimal-route"
+    },
+    {
+      "source": "/soroswap-router-sdk/:slug*",
+      "destination": "/api/optimal-route"
+    }
+  ]
+}

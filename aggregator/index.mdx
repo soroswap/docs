@@ -1,0 +1,23 @@
+---
+title: "Soroswap Aggregator"
+description: "The Soroswap Aggregator splits a single trade across several Soroban AMMs to get the best execution."
+---
+
+An aggregator routes one trade across several Soroban-based AMMs, splitting it so the user gets a better price than any single protocol would give. Soroswap's aggregator talks to each supported AMM through an adapter contract, so adding a protocol means writing an adapter rather than changing the aggregator.
+
+<Columns cols={2}>
+  <Card title="Supported AMMs" icon="list" href="/aggregator/supported-amms">
+    Which protocols the aggregator currently routes through.
+  </Card>
+  <Card title="Technical Reference" icon="code" href="/aggregator/technical-reference">
+    How the aggregator works, its design, and the adapter model.
+  </Card>
+  <Card title="Audits" icon="shield-check" href="/aggregator/audits">
+    The Runtime Verification audit of the aggregator contracts.
+  </Card>
+  <Card title="Disclaimer" icon="triangle-exclamation" href="/aggregator/disclaimer">
+    What using the aggregator does and does not guarantee.
+  </Card>
+</Columns>
+
+The full source lives at [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).
