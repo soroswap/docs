@@ -97,7 +97,7 @@ pub trait SoroswapPairTrait{
     /// The value of the last product of reserves (`K`).
     fn k_last(e: Env) -> i128;
 
-    /// Returns the current reserves and the last block timestamp.
+    /// Returns the current reserves of both tokens.
     ///
     /// # Arguments
     /// * `e` - The runtime environment.
@@ -122,8 +122,8 @@ impl token::Interface for SoroswapPairToken {
 
     fn allowance(e: Env, from: Address, spender: Address) -> i128;
 
-    fn approve(e: Env, from: Address, spender: Address, amount: i128, expiration_ledger: u32)
-    
+    fn approve(e: Env, from: Address, spender: Address, amount: i128, expiration_ledger: u32);
+
     fn balance(e: Env, id: Address) -> i128;
 
     fn transfer(e: Env, from: Address, to: Address, amount: i128);
@@ -136,9 +136,9 @@ impl token::Interface for SoroswapPairToken {
 
     fn decimals(e: Env) -> u32;
 
-    fn name(e: Env) -> Bytes;
+    fn name(e: Env) -> String;
 
-    fn symbol(e: Env) -> Bytes;
+    fn symbol(e: Env) -> String;
 }
 
 ```

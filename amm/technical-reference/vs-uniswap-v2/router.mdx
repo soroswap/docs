@@ -31,22 +31,28 @@ This is because it's very common that in Blockchains, the native token (in this 
 
 **What about in Soroban?**
 
-Well, in Soroban, we won't need to have all these extra functions! This is because the native XML token has its own token contract address and can be treated as any other token complying with the token interface.
+Well, in Soroban, we won't need to have all these extra functions! This is because the native XLM token has its own token contract address and can be treated as any other token complying with the token interface.
 
 You can find more information about this in the Soroban Token Playground Chapter 8, 9, 10, and 11.
 
-**Conclusion:** Only the following functions will be written:
-
-```javascript
-function addLiquidity
-function removeLiquidityWithPermit
-function swapExactTokensForTokens
-function swapTokensForExactTokens
-function swapExactTokensForTokensSupportingFeeOnTransferTokens
+**Conclusion:** none of the ETH-specific variants were needed. SoroswapRouter was written, and it is deployed on mainnet with the following public functions:
 
 ```
+initialize
+add_liquidity
+remove_liquidity
+swap_exact_tokens_for_tokens
+swap_tokens_for_exact_tokens
+get_factory
+router_pair_for
+router_quote
+router_get_amount_out
+router_get_amount_in
+router_get_amounts_out
+router_get_amounts_in
+```
 
-The following functions won't be written:
+None of the following UniswapV2Router02 functions were written:
 
 ```javascript
 function addLiquidityETH
@@ -60,7 +66,7 @@ function swapExactETHForTokensSupportingFeeOnTransferTokens
 function swapExactTokensForETHSupportingFeeOnTransferTokens
 ```
 
-Also, because we will treat XML as any other token, we won't need to define its address. We won't need to write something like:
+Also, because we will treat XLM as any other token, we won't need to define its address. We won't need to write something like:
 
 ```javascript
 address public immutable override WETH;
@@ -74,27 +80,11 @@ receive() external payable {
     }
 ```
 
-as XML can only be sent using the native contract.
+as XLM can only be sent using the native contract.
 
 ## SafeMath
 
-In Solidity, the SafeMath library is used to validate arithmetic operations and prevent integer overflow/underflow. Should such a situation arise, the library throws an exception, which effectively reverts the transaction.
-
-In Rust, we can achieve similar functionality by activating the overflow check flag during the compilation process with the following code:
-
-```toml
-[profile.release]
-overflow-checks = true
-
-```
-
-Additionally, we use an overflow-safe implementation of functions `checked_add`, `checked_mul`, `checked_div`, and `checked_sub`. You can explore these functions and test their functionality in this repository: [Overflow Soroban Repository](https://github.com/esteblock/overflow-soroban/)
-
-Also, we have overflow-safe functions `checked_add`, `checked_mul`, `checked_div` and `checked_sub`
-
-You can check and test these techniques in the following repository: [Overflow Soroban Repository](https://github.com/esteblock/overflow-soroban/)
-
-In conclusion, Soroswap prevents overflows by leveraging these techniques.
+The Router relies on the same overflow and underflow protections as the rest of Soroswap, described in the [SoroswapLibrary comparison](/amm/technical-reference/vs-uniswap-v2/library).
 
 ## Deadlines
 
@@ -155,12 +145,12 @@ But in fact there is only two functions that do all the work: `_swapSupportingFe
 
 These functions work equal to `_swap` and `removeLiquidityETH` but succeeds for tokens that take a fee on transfer.
 
-Because in Soroswap we want to support all types of tokens, we will implement these logics in the SoroswapRouter contract!
+Because Soroswap wanted to support all types of tokens, the plan at the time was to carry this logic into the SoroswapRouter contract.
 
 ## library UniswapV2Library
 
-UniswapV2Router uses the UniswapV2Library. This is something that Soroswap will also develop
+UniswapV2Router uses the UniswapV2Library. Soroswap developed its own equivalent, compared function by function in the [SoroswapLibrary comparison](/amm/technical-reference/vs-uniswap-v2/library).
 
-## What's next?
+## Where this landed
 
-Write rust!
+The Rust was written. SoroswapRouter is deployed on mainnet, and its current interface is documented under [Contracts](/amm/technical-reference/contracts).

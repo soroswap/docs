@@ -1,10 +1,106 @@
 ---
 title: "SoroswapAggregator"
-description: "Reference for the SoroswapAggregator contract."
-hidden: true
+description: "The aggregator contract: its adapter registry, admin functions and the two swap entry points that split a trade."
 ---
 
+`SoroswapAggregator` is the contract a caller actually swaps against. It holds the
+registry of adapters, and it splits one trade across them according to a distribution the
+caller supplies.
 
-<Warning>
-This page has not been written yet. Until it is, the source of truth is the contract code itself.
-</Warning>
+Source:
+[`contracts/aggregator`](https://github.com/soroswap/aggregator/tree/main/contracts/aggregator).
+
+## Interface
+
+```rust
+pub trait SoroswapAggregatorTrait {
+    fn initialize(e: Env, admin: Address, adapter_vec: Vec<Adapter>);
+
+    /*  *** Admin functions: *** */
+    fn update_adapters(e: Env, adapter_vec: Vec<Adapter>) -> Result<(), AggregatorError>;
+    fn remove_adapter(e: Env, protocol_id: Protocol) -> Result<(), AggregatorError>;
+    fn set_pause(e: Env, protocol_id: Protocol, paused: bool) -> Result<(), AggregatorError>;
+    fn upgrade(e: Env, new_wasm_hash: BytesN<32>) -> Result<(), AggregatorError>;
+    fn set_admin(e: Env, new_admin: Address) -> Result<(), AggregatorError>;
+
+    /*  *** Swap functions: *** */
+    fn swap_exact_tokens_for_tokens(
+        env: Env,
+        token_in: Address,
+        token_out: Address,
+        amount_in: i128,
+        amount_out_min: i128,
+        distribution: Vec<DexDistribution>,
+        to: Address,
+        deadline: u64,
+    ) -> Result<Vec<Vec<i128>>, AggregatorError>;
+
+    fn swap_tokens_for_exact_tokens(
+        e: Env,
+        token_in: Address,
+        token_out: Address,
+        amount_out: i128,
+        amount_in_max: i128,
+        distribution: Vec<DexDistribution>,
+        to: Address,
+        deadline: u64,
+    ) -> Result<Vec<Vec<i128>>, AggregatorError>;
+
+    /*  *** Read only functions: *** */
+    fn get_admin(e: &Env) -> Result<Address, AggregatorError>;
+    fn get_adapters(e: &Env) -> Result<Vec<Adapter>, AggregatorError>;
+    fn get_paused(e: &Env, protocol_id: Protocol) -> Result<bool, AggregatorError>;
+    fn get_version() -> u32;
+}
+```
+
+Both swap functions return `Vec<Vec<i128>>`: one inner vector of step amounts per
+protocol the trade was split across, in distribution order.
+
+## Types
+
+```rust
+pub enum Protocol {
+    Soroswap = 0,
+    Phoenix  = 1,
+    Aqua     = 2,
+    Comet    = 3,
+}
+
+pub struct Adapter {
+    pub protocol_id: Protocol,
+    pub router: Address,
+    pub paused: bool,
+}
+
+pub struct DexDistribution {
+    pub protocol_id: Protocol,
+    pub path: Vec<Address>,
+    pub parts: u32,
+}
+
+pub const MAX_DISTRIBUTION_LENGTH: u32 = 15;
+```
+
+`DexDistribution` is how the caller says "send this fraction of the trade through that
+protocol". `parts` is a weight, not a percentage: each protocol receives
+`amount * parts / total_parts`. See
+[Aggregator Operation](/aggregator/technical-reference/operation) for the exact formula
+and how the remainder is handled.
+
+A distribution may name at most `MAX_DISTRIBUTION_LENGTH` entries.
+
+## The adapter registry
+
+The set of protocols the aggregator can reach is stored on chain and managed by the admin,
+not hardcoded:
+
+- `update_adapters` registers or replaces adapters, keyed by `protocol_id`.
+- `remove_adapter` drops one.
+- `set_pause` closes a protocol to new swaps without removing its registration, which is
+  the reversible option when an underlying protocol looks unhealthy.
+
+<Note>
+Every one of these is admin only. `set_admin` transfers that role, and `upgrade` replaces
+the aggregator's own code with a new WASM hash.
+</Note>

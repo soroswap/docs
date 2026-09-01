@@ -8,9 +8,9 @@ The sources for the following two sections are:
 * [https://blog.uniswap.org/uniswap-v2](https://blog.uniswap.org/uniswap-v2)  
 * [https://rskswap.com/audit.html](https://rskswap.com/audit.html)
 
-  The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in Solidity. However, in its first version (0.0.1), the SoroswapPairV0.0.1 does not currently implement many functions, variables, events, and other features that are present in the UniswapV2Pair contract.
+  The Pair contract for Soroswap, written in Rust, is inspired by the UniswapV2Pair contract, which is written in Solidity. At the time this comparison was written, SoroswapPair was in its first version (0.0.1) and did not yet implement many of the functions, variables, events, and other features present in the UniswapV2Pair contract.
 
-In the next two sections, we will compare the Soroswap pair contract with the UniswapV2 pair contract, using the latter as a reference point. This allows us to discuss why certain features are implemented or not implemented in the Soroswap pair contract.
+The sections below compare that early Soroswap pair contract with the UniswapV2 pair contract, using the latter as a reference point. This lets us discuss why certain features were implemented or left out at the time. For the contract as it stands today, see [Contracts](/amm/technical-reference/contracts).
 
 ## Events: Included!
 
@@ -118,7 +118,7 @@ In UniswapV2, the reserves function returns the reserves of token0 and token1, a
  }
 ```
 
-Soroswap adopts a similar approach, implementing this functionality in the get\_reserves function.
+Soroswap adopted a similar approach, implementing this functionality in the `get_reserves` function. Note that the SoroswapPair contract as deployed today returns exactly two values from `get_reserves`, the reserve of `token_0` and the reserve of `token_1`. No block timestamp is returned. The snippet below is from the early version.
 
 ```rust
   fn get_reserves(e: Env) -> (i128, i128, i128) {
@@ -134,7 +134,7 @@ fn get_reserve_1(e: &Env) -> i128 {
 }
 ```
 
-Additionally, the `get_block_timestamp_last` function in Soroswap returns the timestamp of the last block, defaulting to 0 if it doesn't exist.
+That early version also carried a `get_block_timestamp_last` function, which returned the timestamp of the last block, defaulting to 0 if it did not exist.
 
 ```rust
 fn get_block_timestamp_last(e: &Env) -> u64 {
@@ -213,7 +213,7 @@ In UniswapV2, the mint function is invoked when a user adds liquidity to the poo
 * This function in UniswapV2 employs a reentrancy guard. Since reentrancy is not currently possible in Soroban, we have not implemented this guard.
 * In UniswapV2, the router contract sends (with approval) tokens from the user to the Pair contract before executing the mint function. This design isn't necessary in Soroban (read [https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum](https://stellar.org/developers-blog/sorobans-technical-design-decisions-learnings-from-ethereum)) because tokens can be sent using from.require\_auth();, which is checked in the token contract itself.
 * However, we need to consider tokens that do not implement require\_auth. In such cases, we can follow Uniswap's design and implement a `Router` with a `addLiquidity_with_transfer_from` and a standard `addLiquidity` with `require_auth`.
-* For now, our objective is simply to implement the UniswapV2 Pair and Factory contracts, so we'll maintain the current design:
+* At the time of writing, the objective was simply to implement the UniswapV2 Pair and Factory contracts, so the design was:
 
 ```rust
  fn deposit(e: Env, to: Address, desired_a: i128, min_a: i128, desired_b: i128, min_b: i128) {
@@ -225,7 +225,7 @@ In UniswapV2, the mint function is invoked when a user adds liquidity to the poo
         token_b_client.transfer(&to, &e.current_contract_address(), &amounts.1);
 ```
 
-In the next iteration, when Periphery contracts will be implemented (see [https://github.com/Uniswap/v2-periphery](https://github.com/Uniswap/v2-periphery)) this function will change and will require the tokens to be sent before executing the  `deposit` function.
+That changed in a later iteration. The Periphery contracts were implemented (see [https://github.com/Uniswap/v2-periphery](https://github.com/Uniswap/v2-periphery) for the Uniswap equivalent), SoroswapRouter shipped and is deployed on mainnet, and `deposit` now takes only the `to` address and requires the tokens to be sent to the pair before it is called.
 
 *  We've implemented bool feeOn = \_mintFee(\_reserve0, \_reserve1);.
 *  As there's no `totalSupply` in the Soroban token interface, we've implemented a `get_total_shares` and a `put_total_shares` function.
@@ -280,7 +280,7 @@ This function is invoked when a user swaps tokens. Emits Swap and Sync events.
 
 ```
 
-The equivalent function in Soroswap is as follows:
+The equivalent function in Soroswap at the time was as follows. The comment inside the snippet anticipated the Router: SoroswapRouter was later written and deployed on mainnet, and the amount calculation and routing logic moved there. The pair `swap` function now takes `amount_0_out`, `amount_1_out` and `to`, matching the UniswapV2 shape shown above.
 
 ```rust
    fn swap(e: Env, to: Address, buy_0: bool, amount_out: i128, amount_in_max: i128) {
@@ -404,7 +404,7 @@ This function is invoked when a user withdraws liquidity from the pool. Emits Bu
 
 ```
 
-The equivalent function in Soroswap is as follows:
+The equivalent function in Soroswap at the time was as follows. The comments inside the snippet point at work that has since been done: SoroswapRouter shipped, the minimum-amount checks live there, and the pair `withdraw` function now takes only the `to` address and returns the two withdrawn amounts.
 
 ```rust
 fn withdraw(e: Env, to: Address, share_amount: i128, min_a: i128, min_b: i128) -> (i128, i128) {

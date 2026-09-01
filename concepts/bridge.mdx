@@ -1,6 +1,6 @@
 ---
 title: "Bridge"
-description: "What is a bridge, Soroswap Implements the Spacewalk Bridge between Stellar and Polkadot"
+description: "What a blockchain bridge is, and how assets from other chains reach Stellar so Soroswap can trade them."
 ---
 
 ### What is a Bridge?
@@ -21,19 +21,18 @@ In blockchain technology, a **bridge** is a protocol that connects two or more b
 2. **Verification:** The bridge verifies transactions and ensures that assets are securely locked on the source blockchain before issuing the equivalent assets on the destination blockchain.
 3. **Reverse Transfers:** Bridges also handle the process of transferring assets back to the original blockchain, ensuring that assets are locked on the destination chain before unlocking or issuing them on the source chain.
 
-### Soroswap Implements the Spacewalk Bridge between Stellar and Polkadot
+### Bridging into Stellar for Soroswap
 
-Soroswap Finance has developed the [**Spacewalk Bridge**](https://pendulumchain.org/spacewalk) to enable interoperability between the Stellar and Polkadot blockchains. This bridge facilitates seamless transfers of assets and data between these two distinct blockchain networks.
+Soroswap itself is not a bridge. It trades assets that are already on Stellar, so anything
+issued elsewhere has to be bridged in first, and then given a
+[Stellar Asset Contract](/tutorials/stellar-classic-assets/wrapping) if you want to use it
+with Soroban contracts.
 
-### How the Spacewalk Bridge Works
+The app has a **Bridge** tab for this, at
+[app.soroswap.finance/bridge](https://app.soroswap.finance/bridge). The provider behind it
+has changed over time, so the tab in the app is the accurate answer to which route is
+available today rather than anything written here.
 
-1. **Asset Locking and Minting:**
-   * **On Stellar:** When a user initiates a transfer from Stellar to Polkadot, the [Spacewalk Bridge](https://pendulumchain.org/spacewalk) locks the assets on the Stellar network.
-   * **On Polkadot:** After assets are locked on Stellar, the bridge mints or issues an equivalent amount of assets on Polkadot, enabling their use within the Polkadot ecosystem.
-2. **Transfer Process:**
-   * **Initiation:** Users request to transfer assets through the Spacewalk Bridge interface.
-   * **Verification:** The bridge verifies the transaction, ensuring that the assets are securely locked on Stellar.
-   * **Issuance:** The bridge then issues the equivalent assets on Polkadot, making them available for use on the Polkadot network.
-3. **Reverse Transfers:**
-   * **On Polkadot:** To transfer assets back to Stellar, the bridge locks the assets on Polkadot.
-   * **On Stellar:** The equivalent assets are then unlocked or issued back on Stellar, completing the transfer process.
+Once the asset is on Stellar, your account still needs a [trustline](/concepts/trustlines)
+before it can hold it. The Soroswap API can open that trustline as part of the swap, see
+[Gasless Trustline](/api/gasless-trustline).

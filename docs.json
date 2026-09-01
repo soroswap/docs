@@ -101,7 +101,6 @@
                   "tutorials/stellar-classic-assets/importing-testnet-tokens"
                 ]
               },
-              "tutorials/bridge-with-pendulum",
               "tutorials/conclusions"
             ]
           },
@@ -167,6 +166,7 @@
                   "amm/technical-reference/deployed-addresses",
                   "amm/technical-reference/error-codes",
                   "amm/technical-reference/design-decisions",
+                  "amm/technical-reference/smart-contract-integration",
                   "amm/technical-reference/using-soroswap-with-typescript",
                   {
                     "group": "Soroswap vs UniswapV2",
@@ -177,16 +177,7 @@
                       "amm/technical-reference/vs-uniswap-v2/library"
                     ]
                   },
-                  {
-                    "group": "Deploy Soroswap Yourself",
-                    "root": "amm/technical-reference/deploy-yourself/index",
-                    "pages": [
-                      "amm/technical-reference/deploy-yourself/setup",
-                      "amm/technical-reference/deploy-yourself/pair",
-                      "amm/technical-reference/deploy-yourself/factory",
-                      "amm/technical-reference/deploy-yourself/deployments"
-                    ]
-                  }
+                  "amm/technical-reference/deploy-yourself/index"
                 ]
               }
             ]
@@ -205,6 +196,16 @@
                   "aggregator/technical-reference/design",
                   "aggregator/technical-reference/technical-overview",
                   "aggregator/technical-reference/operation",
+                  {
+                    "group": "Contracts",
+                    "root": "aggregator/technical-reference/contracts/index",
+                    "pages": [
+                      "aggregator/technical-reference/contracts/soroswap-aggregator",
+                      "aggregator/technical-reference/contracts/adapter-trait",
+                      "aggregator/technical-reference/contracts/soroswap-adapter"
+                    ]
+                  },
+                  "aggregator/technical-reference/cross-contract-integration",
                   {
                     "group": "Inspirations",
                     "root": "aggregator/technical-reference/inspirations/index",
@@ -602,63 +603,63 @@
     },
     {
       "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/01-setup",
-      "destination": "/amm/technical-reference/deploy-yourself/setup"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/01-setup",
-      "destination": "/amm/technical-reference/deploy-yourself/setup"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/03-technical-reference/deploy-soroswap-yourself/01-setup",
-      "destination": "/amm/technical-reference/deploy-yourself/setup"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/02-pair",
-      "destination": "/amm/technical-reference/deploy-yourself/pair"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/02-pair",
-      "destination": "/amm/technical-reference/deploy-yourself/pair"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/03-technical-reference/deploy-soroswap-yourself/02-pair",
-      "destination": "/amm/technical-reference/deploy-yourself/pair"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/03-factory",
-      "destination": "/amm/technical-reference/deploy-yourself/factory"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/03-factory",
-      "destination": "/amm/technical-reference/deploy-yourself/factory"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/03-technical-reference/deploy-soroswap-yourself/03-factory",
-      "destination": "/amm/technical-reference/deploy-yourself/factory"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/04-deployments",
-      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/04-deployments",
-      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/03-technical-reference/deploy-soroswap-yourself/04-deployments",
-      "destination": "/amm/technical-reference/deploy-yourself/deployments"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/smart-contracts/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
-      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/01-protocol-overview/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
-      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/03-technical-reference/deploy-soroswap-yourself/using-the-soroswap-testnet",
-      "destination": "/amm/technical-reference/deploy-yourself/soroswap-testnet"
+      "destination": "/amm/technical-reference/deploy-yourself"
     },
     {
       "source": "/smart-contracts/soroswap-aggregator",
@@ -1106,7 +1107,7 @@
     },
     {
       "source": "/05-tutorial/08-bridge",
-      "destination": "/tutorials/bridge-with-pendulum"
+      "destination": "/concepts/bridge"
     },
     {
       "source": "/03-technical-reference/01-import-stellar-classic-assets",

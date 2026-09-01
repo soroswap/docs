@@ -5,11 +5,11 @@ description: "SoroswapLibrary crate: how to add it, and reference for its pricin
 
 The SoroswapLibrary is a rust crate that anyone can implement in their smart contracts. Check all the documentation here: [https://docs.rs/soroswap-library/latest/soroswap\_library/](https://docs.rs/soroswap-library/latest/soroswap_library/)
 
-### Code
+## Code
 
 You can find the Soroswap library code on the [Soroswap GitHub repository](https://github.com/soroswap/core/tree/main/contracts/library). in [https://github.com/soroswap/core/tree/main/contracts/library](https://github.com/soroswap/core/tree/main/contracts/library)
 
-### Usage as a crate
+## Usage as a crate
 
 1.- Add this to your Cargo.toml:
 
@@ -33,79 +33,106 @@ let quote = soroswap_library::quote(amount_a, reserve_a, reserve_b)
 
 ```
 
-### Internal Functions
+## Public functions
 
-#### sort\_tokens
+Every function below is `pub` in the crate and returns a `Result`, with
+`SoroswapLibraryError` as the error type. Signatures are from version 2.0.0.
 
-```rust
-fn sort_tokens(token_a: Address, token_b: Address) -> (Address, Address);
-```
-
-Sorts token addresses.
-
-#### pair\_for
+### sort_tokens
 
 ```rust
-fn pair_for(e: Env, factory: Address, token_a: Address, token_b: Address) -> Address;
+pub fn sort_tokens(token_a: Address, token_b: Address)
+    -> Result<(Address, Address), SoroswapLibraryError>;
 ```
 
-Calculates the address for a pair without making any external calls.
+Sorts two token addresses into the canonical order a pair uses. Errors if the two
+addresses are identical.
 
-#### get\_reserves
+### pair_for
 
 ```rust
-fn get_reserves(e: Env, factory: Address, token_a: Address, token_b: Address) -> (i128, i128);
+pub fn pair_for(e: Env, factory: Address, token_a: Address, token_b: Address)
+    -> Result<Address, SoroswapLibraryError>;
 ```
 
-Fetches and sorts the reserves for a pair.
+Returns the address of the pair for two tokens.
 
-#### quote
+### get_reserves_with_factory
 
 ```rust
-fn quote(amount_a: i128, reserve_a: i128, reserve_b: i128) -> i128;
+pub fn get_reserves_with_factory(e: Env, factory: Address, token_a: Address, token_b: Address)
+    -> Result<(i128, i128), SoroswapLibraryError>;
 ```
 
-Given some asset amount and reserves, returns an amount of the other asset representing an equivalent value.
+Fetches the reserves for a pair, looking the pair up through the factory, and returns
+them in the order the caller asked for rather than the pair's internal order.
+
+### get_reserves_with_pair
+
+```rust
+pub fn get_reserves_with_pair(e: Env, pair: Address, token_a: Address, token_b: Address)
+    -> Result<(i128, i128), SoroswapLibraryError>;
+```
+
+The same, for a pair address you already have. Saves the factory lookup.
+
+### quote
+
+```rust
+pub fn quote(amount_a: i128, reserve_a: i128, reserve_b: i128)
+    -> Result<i128, SoroswapLibraryError>;
+```
+
+Given an amount of one asset and the two reserves, returns the amount of the other
+asset representing an equivalent value.
 
 * Useful for calculating optimal token amounts before calling `deposit`.
 
-#### get\_amount\_out
+### get_amount_out
 
 ```rust
-fn get_amount_out(amount_in: i128, reserve_in: i128, reserve_out: i128) -> i128;
+pub fn get_amount_out(amount_in: i128, reserve_in: i128, reserve_out: i128)
+    -> Result<i128, SoroswapLibraryError>;
 ```
 
-Given an input asset amount, returns the maximum output amount of the other asset (accounting for fees) given reserves.
+Given an input amount and the reserves, returns the maximum output amount of the other
+asset, fees accounted for.
 
 * Used in `get_amounts_out`.
 
-#### get\_amount\_in
+### get_amount_in
 
 ```rust
-fn get_amount_in(amount_out: i128, reserve_in: i128, reserve_out: i128) -> i128;
+pub fn get_amount_in(amount_out: i128, reserve_in: i128, reserve_out: i128)
+    -> Result<i128, SoroswapLibraryError>;
 ```
 
-Returns the minimum input asset amount required to buy the given output asset amount (accounting for fees) given reserves.
+Returns the minimum input amount required to buy a given output amount, fees accounted
+for.
 
 * Used in `get_amounts_in`.
 
-#### get\_amounts\_out
+### get_amounts_out
 
 ```rust
-fn get_amounts_out(e: Env, factory: Address, amount_in: i128, path: Vec<Address>) -> Vec<i128>;
+pub fn get_amounts_out(e: Env, factory: Address, amount_in: i128, path: Vec<Address>)
+    -> Result<Vec<i128>, SoroswapLibraryError>;
 ```
 
-Given an input asset amount and an array of token addresses, calculates all subsequent maximum output token amounts by calling `get_reserves` for each pair of token addresses in the path in turn and using these to call `get_amount_out`.
+Walks a path of token addresses, calling `get_reserves_with_factory` and then
+`get_amount_out` for each hop, and returns every intermediate amount.
 
 * Useful for calculating optimal token amounts before calling `swap`.
 
-#### get\_amounts\_in
+### get_amounts_in
 
 ```rust
-fn get_amounts_in(e: Env, factory: Address, amount_out: i128, path: Vec<Address>) -> Vec<i128>;
+pub fn get_amounts_in(e: Env, factory: Address, amount_out: i128, path: Vec<Address>)
+    -> Result<Vec<i128>, SoroswapLibraryError>;
 ```
 
-Given an output asset amount and an array of token addresses, calculates all preceding minimum input token amounts by calling `get_reserves` for each pair of token addresses in the path in turn and using these to call `get_amount_in`.
+The same walk in reverse, using `get_amount_in`, returning every preceding minimum
+input amount.
 
 * Useful for calculating optimal token amounts before calling `swap`.
 

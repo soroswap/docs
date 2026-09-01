@@ -1,10 +1,76 @@
 ---
 title: "Cross-Contract Integration"
-description: "Reference for integrating other contracts with the Soroswap Aggregator."
-hidden: true
+description: "Calling the Soroswap Aggregator from another Soroban contract, and what the distribution argument has to contain."
 ---
 
+The aggregator is a normal Soroban contract, so another contract can call it the same way
+the aggregator calls its own adapters: generate a client from the WASM and invoke it.
+
+## Import the client
+
+```rust
+use soroban_sdk::{Address, Env, Vec};
+
+soroban_sdk::contractimport!(
+    file = "./soroswap_contracts/soroswap_aggregator.wasm"
+);
+pub type SoroswapAggregatorClient<'a> = Client<'a>;
+```
+
+## Call a swap
+
+```rust
+let aggregator = SoroswapAggregatorClient::new(&e, &aggregator_address);
+
+let amounts = aggregator.swap_exact_tokens_for_tokens(
+    &token_in,
+    &token_out,
+    &amount_in,
+    &amount_out_min,
+    &distribution,
+    &to,
+    &deadline,
+);
+```
+
+The return is `Vec<Vec<i128>>`: one inner vector of step amounts per protocol the trade was
+split across, in the same order as `distribution`.
+
+## You have to supply the distribution
+
+This is the part that differs from calling the router. The aggregator does not decide how
+to split the trade, the caller does, by passing `Vec<DexDistribution>`:
+
+```rust
+pub struct DexDistribution {
+    pub protocol_id: Protocol,
+    pub path: Vec<Address>,
+    pub parts: u32,
+}
+```
+
+`parts` is a weight, not a percentage. Each entry receives
+`amount * parts / total_parts`. A distribution may hold at most `MAX_DISTRIBUTION_LENGTH`
+(15) entries. See [Aggregator Operation](/aggregator/technical-reference/operation) for
+the exact arithmetic.
 
 <Warning>
-This page has not been written yet. Until it is, the source of truth is the contract code itself.
+Computing a good distribution on chain is expensive and needs reserve data from every
+protocol. In practice callers get the distribution off chain, from
+[the Soroswap API](/api), and pass it in. A contract that builds its own distribution is
+responsible for the routing quality of the result.
 </Warning>
+
+## Authorization
+
+As with the router, the receiving address authorizes the swap. Your contract can only
+swap for a user inside an invocation that user authorized, or for itself.
+
+## Read-only calls
+
+`get_adapters` tells you which protocols are registered, and `get_paused` whether a given
+one is currently closed to new swaps. Both are cheap, and checking `get_paused` before
+including a protocol in a distribution avoids a failed swap.
+
+Full interface on the
+[SoroswapAggregator](/aggregator/technical-reference/contracts/soroswap-aggregator) page.

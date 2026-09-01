@@ -1,10 +1,40 @@
 ---
 title: "SoroswapAdapter"
-description: "Reference for the SoroswapAdapter contract."
-hidden: true
+description: "The adapter that lets the aggregator route a trade through the Soroswap AMM router."
 ---
 
+`SoroswapAggregatorAdapter` is the adapter for the Soroswap AMM itself. It implements
+[`AdapterTrait`](/aggregator/technical-reference/contracts/adapter-trait) and forwards
+each swap to the [SoroswapRouter](/amm/technical-reference/contracts/soroswap-router).
 
-<Warning>
-This page has not been written yet. Until it is, the source of truth is the contract code itself.
-</Warning>
+Source:
+[`contracts/adapters/soroswap`](https://github.com/soroswap/aggregator/tree/main/contracts/adapters/soroswap).
+
+## What it does
+
+The adapter stores two things at initialization: a `protocol_id` string and the
+`protocol_address` of the protocol it fronts, which for this adapter is the Soroswap
+router.
+
+```rust
+fn initialize(
+    e: Env,
+    protocol_id: String,
+    protocol_address: Address,
+) -> Result<(), AdapterError>;
+```
+
+Calling `initialize` twice fails with `AlreadyInitialized`. Calling any other function
+before it fails with `NotInitialized`.
+
+From then on, `swap_exact_tokens_for_tokens` and `swap_tokens_for_exact_tokens` translate
+the aggregator's call into the router's equivalent and return the per-step amounts. This
+adapter needs no protocol-specific extras, so it ignores the trait's optional `bytes`
+parameter, which exists for protocols like Aqua that require pool hashes.
+
+## Sibling adapters
+
+The same trait is implemented for Phoenix, Aqua and Comet, each in its own crate under
+[`contracts/adapters`](https://github.com/soroswap/aggregator/tree/main/contracts/adapters).
+Because they share the interface, the aggregator treats all four identically and adding a
+protocol means writing a fifth adapter rather than changing the aggregator.

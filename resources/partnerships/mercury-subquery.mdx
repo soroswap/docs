@@ -30,7 +30,7 @@ In our repository, you'll find a Node.js client pre-configured with queries to i
 3. Request Mercury access [here](https://developers.mercurydata.app/requesting-access)
 4. Populate the `MERCURY_ACCESS_TOKEN` in `.env`. For usage exceeding 7 days, also complete `MERCURY_TESTER_EMAIL` and `MERCURY_TESTER_PASSWORD`.
 5. Update `CONTRACT_ADDRESS` if you are interested in a contract other than the Soroswap's Factory contract.
-6. Run the container (Node 18.8.2): `bash run.sh`
+6. Run the container: `bash run.sh`
 7. Install dependencies: `yarn`
 8.  Use predefined scripts to interact with the contract:
 
@@ -45,7 +45,7 @@ In our repository, you'll find a Node.js client pre-configured with queries to i
 
 SubQuery is a comprehensive indexer that interfaces seamlessly with multiple blockchain platforms, including Stellar and Soroban. We've developed a customized SubQuery project capable of IPFS deployment and management through SubQuery's Managed Service.
 
-However, storing blockchain history requires access to an archive node, which can be a limitation. While several projects are developing Soroban-compatible archive nodes, none are publicly available yet.
+However, storing blockchain history requires access to an archive node, which adds an operational dependency: you either run one yourself or rely on a provider that does. This is the main trade-off to weigh against a fully managed indexing service.
 
 ### Getting Started with SubQuery
 
