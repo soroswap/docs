@@ -55,7 +55,7 @@ When gasless trustline is enabled, `/quote/build` assembles a single SDEX transa
 
 1. **`beginSponsoringFutureReserves`** — sponsor starts sponsoring the user's future reserves.
 2. **`changeTrust`** — the user opens the trustline for the output asset (reserve paid by the sponsor).
-3. *(optional)* **Platform-fee payments** — if `feeBps` / `referralId` are set.
+3. **Fee payment** (mainnet): one payment of the swap fee (the 10 bps protocol fee, or your partner rate) to Soroswap's fee receiver. See [Fees](/api#fees).
 4. **`pathPaymentStrictSend`** — the user performs the actual swap (`assetIn` → `assetOut`).
 5. **`pathPaymentStrictReceive`** — the user buys **0.5 XLM** using the output asset and sends it to the sponsor, **repaying** the reserve.
 6. **`endSponsoringFutureReserves`** — the sponsorship window closes.
@@ -242,7 +242,7 @@ const result = await fetch(`${BASE}/send?network=mainnet`, {
   body: JSON.stringify({ xdr: fullySignedXdr }),
 }).then(r => r.json());
 
-console.log('Done! tx hash:', result.hash);
+console.log('Done! tx hash:', result.txHash);
 ```
 
 ## When to use it
@@ -255,7 +255,7 @@ console.log('Done! tx hash:', result.hash);
 ❌ **Don't use it when:**
 - The user **already has** a trustline for the output asset (use a regular quote — it will be cheaper and can route across all protocols, not just SDEX).
 - You need to send the output to a **different recipient** than the swapper (`from` ≠ `to` is not yet supported).
-- You want routing across Soroswap / Phoenix / Aqua — gasless trustline is **SDEX-only**.
+- You want routing across Soroswap / Aqua / Sushi / Comet — gasless trustline is **SDEX-only**.
 
 ## Related
 

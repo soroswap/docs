@@ -16,7 +16,7 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 
 ## Key features
 
-* 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Phoenix, Aqua and SDEX)
+* 🔁 **Fetch quotes and optimal routes** for token swaps across multiple protocols (Soroswap, Aqua, Sushi, Comet and SDEX), including split routes that combine several of them
 * 📊 **Retrieve token and liquidity data**, including pool stats and available trading pairs
 * 🧾 **Build XDR transactions** for on-chain execution
 * 🚀 **Submit signed transactions** directly via Soroban RPC or Horizon
@@ -24,6 +24,29 @@ The **Soroswap API** is built for developers and teams who want to integrate Sor
 
 > 🔗 **Explore the full API reference here**:\
 > 👉 [https://api.soroswap.finance/docs](https://api.soroswap.finance/docs)
+
+## Fees
+
+On mainnet, every swap goes through the Soroswap Aggregator, which charges a **protocol fee of 0.10% (10 bps)** on the input amount. The fee is already reflected in the amounts `/quote` returns, the same way a pool's own fee is, so there is nothing extra to compute. Testnet charges no protocol fee.
+
+### Partner fees
+
+If you integrate the API and want to earn a fee on your users' swaps, your **partner rate is configured on your account**, not sent per request:
+
+* The partner rate is the **total fee your users pay**, from **0.25% (25 bps)** to **10% (1000 bps)**. It replaces the 10 bps protocol fee; it does not add to it.
+* When a partner rate applies, the quote includes a `platformFee` object with `feeBps` and `feeAmount`.
+* Your share of the fees is paid **monthly in USDC** to the Stellar address (`G...`) set as your payout address.
+* The `feeBps` and `referralId` request fields are still accepted but **no longer change the price**.
+
+To set up a partner rate, contact dev@paltalabs.io.
+
+<Note>
+**EXACT_OUT on Soroban venues.** The aggregator runs exact-out swaps as a fixed spend: the user pays the quoted `amountIn` and receives **at least** the requested `amountOut`. Anything the slippage budget did not need is delivered as extra output token. SDEX routes stay true exact-out.
+</Note>
+
+<Note>
+If the quote's fee no longer matches the rate in force when you call `/quote/build`, the API answers **409** instead of re-pricing silently. Request a new quote and build again.
+</Note>
 
 ## 📚 Documentation & Guides
 
@@ -36,10 +59,10 @@ Choose your learning path:
 
 * **Registration Required**:
   * To use the Soroswap API, you need to [register](https://api.soroswap.finance/register) and obtain an API key 
-  * After you register, visit [api.soroswap.finance/login](https://api.soroswap.finance/register) and generate an API\_KEY
+  * After you register, visit [api.soroswap.finance/login](https://api.soroswap.finance/login) and generate an API\_KEY
   * Registration is free and provides access to the full API functionality
 
-**API\_URL**: [staging](https://api.soroswap.finance)
+**API\_URL**: [https://api.soroswap.finance](https://api.soroswap.finance)
 
 📮 [**Downnload the Postman Collection here**](https://drive.google.com/drive/folders/1G-LQYE2EojPWP1CSuuS_tDb9vjYbFR6E?usp=drive_link)
 

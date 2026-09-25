@@ -41,6 +41,10 @@ They call an API called Pathfinder to get the best route across multiple protoco
 
 ## Soroswap Optimal Routing
 
+<Note>
+This section describes the original routing design. Today, mainnet routes are computed by Soroswap's routing service across Soroswap, Aqua, Sushi, Comet and SDEX, and Soroban routes execute through the Soroswap Aggregator in a single contract call. Phoenix is not currently routed. The [API](/api) is the supported way to get routes.
+</Note>
+
 The technical architecture for Soroswap Optimal Routing involves several interconnected parts. At the core, we have the Soroswap-router-sdk, responsible for managing all the logic related to the optimal route swap. This component utilizes a similar algorithm to Uniswap and PancakeSwap, enabling it to compute the best route for a given swap.
 
 ![](/images/api/optimal-route/draw.png)
@@ -112,4 +116,4 @@ getPairsWithTokenAndReserves();
 
 ## Soroswap Aggregator
 
-Additionally, Soroswap Aggregator extends the optimal routing capabilities by incorporating pools from other protocols, such as Comet, Phoenix and SDEX. Subscription methods are created to fetch pools from these protocols, and the same logic as Soroswap is applied.
+Additionally, Soroswap Aggregator extends the optimal routing capabilities by incorporating pools from other protocols, such as Aqua, Sushi, Comet and SDEX. Subscription methods are created to fetch pools from these protocols, and the same logic as Soroswap is applied.

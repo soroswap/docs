@@ -5,7 +5,7 @@
 
 **Source:** `docs.json`, `.mintignore`, `index.mdx`, `what-is-soroswap.mdx`, `images/`, `logo/`,
 `favicon.png`
-· **Last verified:** 2026-09-06
+· **Last verified:** 2026-09-25
 
 ## Purpose
 
@@ -55,6 +55,8 @@ Reference (`docs.json:192`) with Contracts (`docs.json:200`), Inspirations
 - Navigation and filesystem are currently in exact agreement: 93 MDX files, 93 nav
   entries, no orphans and no dangling nav entries. Keep it that way. Adding a page
   without adding it to `docs.json` makes it unreachable from the nav.
+- `index.mdx` and `what-is-soroswap.mdx` each name the Soroban venues the API routes
+  through (Soroswap, Aqua, Sushi, Comet). Update both when the venue set changes.
 - Section index pages are `index.mdx` and are referenced as a group `root`, never as a
   regular page.
 - Redirects start at `docs.json:275`. `/amm` and `/aggregator` are deliberately not

@@ -109,7 +109,7 @@ class SoroswapClient {
             assetOut,
             amount,
             tradeType,
-            protocols: ['soroswap', 'phoenix', 'aqua']
+            protocols: ['soroswap', 'aqua', 'sushi', 'comet', 'sdex']
         });
     }
 
@@ -183,7 +183,7 @@ const result = await server.submitTransaction(signedTransaction);
     assetOut: 'CBBHRKEP5M3NUDRISGLJKGHDHX3DA2CN2AZBQY6WLVUJ7VNLGSKBDUCM', // Token buying
     amount: '10000000',      // Amount (7 decimals for XLM)
     tradeType: 'EXACT_IN',   // Fixed input amount (most common)
-    protocols: ['soroswap', 'phoenix', 'aqua'], // Exclude 'sdex' for smart wallets
+    protocols: ['soroswap', 'aqua', 'sushi', 'comet', 'sdex'], // Drop 'sdex' for smart wallets
     slippageBps: 50         // 0.5% slippage (optional)
 }
 ```

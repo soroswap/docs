@@ -3,7 +3,7 @@
 > **Living document.** Read this before editing `api/`. Update it in the same change.
 
 **Source:** `api/` (5 MDX pages plus `api/beginner-example.html`) ·
-**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-09-06
+**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-09-25
 
 ## Purpose
 
@@ -42,17 +42,22 @@ the live OpenAPI page at `https://api.soroswap.finance/docs`, linked from
 
 - Never document individual endpoints exhaustively here. That reference is generated from
   the live service. These pages exist to teach the flow, not to mirror the schema.
-- Hosts are inconsistent across pages. `api/index.mdx:42` labels
-  `https://api.soroswap.finance` as **staging**, while `api/quickstart.mdx:50` labels the
-  same host **production** and gives `https://staging-api.soroswap.finance` as staging.
-  One of the two is wrong. Do not copy either into a new page without checking the service.
+- `https://api.soroswap.finance` is production (`api/index.mdx:65`, `api/quickstart.mdx:50`).
+- Mainnet venues are Soroswap, Aqua, Sushi, Comet and SDEX; Phoenix is gated off
+  (`AGGREGATOR_PROTOCOLS`, `soroswap/api` `src/helpers/constants.ts:34`). The API still
+  accepts `phoenix` in `protocols` and silently drops it (`src/swap/swap.service.ts:422-425`),
+  so an example listing it still runs but misleads. Testnet routes only Soroswap and SDEX.
+- Fees are set on the account, not per request (`api/index.mdx:28-49`): 10 bps protocol
+  fee on mainnet (`src/helpers/constants.ts:26`), partner rate 25 to 1000 bps, testnet 0
+  (`src/swap/swap.service.ts:139`). `feeBps` and `referralId` no longer change the price.
+  Any page that tells callers to send them for a fee is stale.
 - `api/beginner-example.html` is not MDX and is not in the navigation. It is reachable
   only through the link at `api/quickstart.mdx:12`. If it moves, that link and the
   redirect list at `docs.json:275` both need attention.
 - API keys appear as placeholders only. Keep real keys out of every page, including the
   HTML demo.
 - `api/optimal-route.mdx` is largely competitor research, not a spec of what ships today.
-  Read it as background.
+  A `<Note>` at the top of its "Soroswap Optimal Routing" section says so. Read it as background.
 
 ## Testing
 

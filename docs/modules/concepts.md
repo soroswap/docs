@@ -3,7 +3,7 @@
 > **Living document.** Read this before editing `concepts/`. Update it in the same change.
 
 **Source:** `concepts/` (13 pages) plus `concepts/advanced/` (5 pages) ·
-**Nav group:** `docs.json:57`, advanced subgroup `docs.json:73` · **Last verified:** 2026-09-06
+**Nav group:** `docs.json:57`, advanced subgroup `docs.json:73` · **Last verified:** 2026-09-25
 
 ## Purpose
 
@@ -37,6 +37,8 @@ mostly protocol theory, so it is the section least coupled to any Soroswap relea
   They still talk about Uniswap and ERC20 tokens rather than Soroban and SAC tokens. Treat
   their claims as describing Uniswap V2, not as statements about deployed Soroswap
   behavior, until someone rewrites them.
+- `concepts/aggregator.mdx` lists the venues routed today (Soroswap, Aqua, Sushi, Comet;
+  Phoenix not routed). Keep it in step with `aggregator/supported-amms.mdx`.
 - Concept pages should stay implementation-free. Addresses, function signatures and error
   codes belong in `amm/` and `aggregator/`.
 - Cross-links from other sections point here for definitions, for example

@@ -4,7 +4,7 @@
 > change.
 
 **Source:** `getting-started/` (9 pages) · **Nav group:** `docs.json:43` ·
-**Last verified:** 2026-09-06
+**Last verified:** 2026-09-25
 
 ## Purpose
 
@@ -46,6 +46,8 @@ in screenshot depth.
 - This section overlaps `tutorials/` on purpose: Getting Started is the short version,
   Tutorials is the screenshot version. Fixing a workflow here usually means fixing the
   matching tutorial too.
+- `how-the-aggregator-works.mdx` has a supported-AMM table (Soroswap, Aqua, Sushi, Comet;
+  Phoenix not routed). Keep it in step with `aggregator/supported-amms.mdx`.
 - Contract addresses do not belong here. They live in
   `amm/technical-reference/deployed-addresses.mdx`.
 

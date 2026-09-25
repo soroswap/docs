@@ -4,7 +4,7 @@
 > change.
 
 **Source:** `aggregator/` (18 pages) · **Nav tab:** Smart Contracts (`docs.json:142`),
-group `docs.json:186` · **Last verified:** 2026-09-06
+group `docs.json:186` · **Last verified:** 2026-09-25
 
 ## Purpose
 
@@ -52,20 +52,14 @@ stale when the contracts move.
 
 ## Gotchas and invariants
 
-- **`supported-amms.mdx` contradicts the rest of the site, in two ways.** It marks
-  Aquarius "Coming Soon" (`aggregator/supported-amms.mdx:12`), while the repo-root landing
-  page (`/index.mdx:25`) and `api/index.mdx:19` both list Aqua as a live source of quotes
-  and `Aqua = 2` sits in the shipped protocol enum
-  (`aggregator/technical-reference/contracts/soroswap-aggregator.mdx:66`). It also omits
-  **Comet** entirely, though `Comet = 3` is in that same enum
-  (`aggregator/technical-reference/contracts/soroswap-aggregator.mdx:67`) and four
-  reference pages document a Comet adapter
-  (`aggregator/technical-reference/contracts/index.mdx:21`,
-  `aggregator/technical-reference/technical-overview.mdx:84`,
-  `aggregator/technical-reference/contracts/adapter-trait.mdx:8`,
-  `aggregator/technical-reference/contracts/soroswap-adapter.mdx:37`). Check the deployed
-  adapter set in `soroswap/aggregator` before trusting any of them, and fix the whole set,
-  not just the page you are on.
+- **Venues routed today (verified 2026-09-25):** Soroswap, Aqua, Sushi and Comet through
+  the aggregator, plus SDEX quoted by the API as an alternative route
+  (`soroswap/api` `src/helpers/constants.ts:34`). Phoenix is gated off.
+  `supported-amms.mdx`, `concepts/aggregator.mdx`, `getting-started/how-the-aggregator-works.mdx`
+  and the Phoenix reference page say so. The technical-reference pages (adapter trait,
+  `Protocol` enum, technical overview) still describe the pre-v3 `soroswap/aggregator`
+  contract, which does list Phoenix: they are accurate for that contract, not for what
+  the API routes today.
 - Adding a protocol means an adapter in `soroswap/aggregator` plus, here, a row in
   `supported-amms.mdx` and usually a page under `technical-reference/other-amms/`.
 - `inspirations/1inch.mdx` is background reading on someone else's design, not a
