@@ -1,6 +1,2 @@
 node_modules/
-.mintlify/
-.next/
-.playwright-mcp/
-*.log
 .DS_Store
