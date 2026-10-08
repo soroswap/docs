@@ -3,6 +3,11 @@ title: "Technical Overview"
 description: "Aggregator contract structure, optimization algorithm, DEX management, and the DexDistribution struct explained."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 ## Smart Contract Structure and Operation
 
 The Soroswap-Aggregator smart contract is designed to optimize trade execution across multiple decentralized exchanges (DEXes) on the Soroban platform. It receives a trade request naming the tokens, the amount, and a distribution that dictates how the trade is split across the registered protocols.

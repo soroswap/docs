@@ -1,0 +1,159 @@
+---
+title: "Aggregator v3"
+description: "Reference for the Soroswap Aggregator v3 contract on mainnet: entrypoints, route and hop types, fees, errors and events."
+---
+
+Aggregator v3 is the contract that executes every Soroban swap built by the [Soroswap API](/api) on mainnet.
+The caller passes typed routes, and the contract runs them hop by hop across Soroswap, Aquarius, SushiSwap V3, Comet and Phoenix in one atomic transaction.
+It then takes the fee and pays the user out of a single balance-difference check.
+
+| | Mainnet |
+|---|---|
+| Aggregator v3 | `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4` |
+| Fee treasury | `CCIGFRCEKN33YOGN37URMPPCWLJ43U2BXNHCLKH7LKUXJJAUTJMFVASK` |
+
+<Warning>
+  The previous aggregator, `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO` (`swap_exact_tokens_for_tokens` with a `DexDistribution` vector), is deprecated.
+  Since 2026-09-24 the Soroswap API neither quotes for it nor accepts transactions against it on `/send`.
+  It has no SushiSwap or Comet support and will not get any. Integrations that call it should migrate to v3.
+</Warning>
+
+The contract's interface is on chain. To generate bindings or a Rust client, fetch the WASM:
+
+```bash
+stellar contract fetch --id CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 \
+  --network mainnet -o aggregator_v3.wasm
+```
+
+## Entrypoints
+
+### `swap_exact_in`
+
+```rust
+fn swap_exact_in(
+    user: Address,
+    token_in: Address,
+    amount_in: i128,          // gross input, fee included
+    token_out: Address,
+    min_out: i128,
+    routes: Vec<Route>,
+    partner: Option<Partner>,
+) -> i128                     // token_out delivered to `user`
+```
+
+1. `user.require_auth()`. The aggregator then pulls `amount_in` of `token_in` from `user` with `transfer`.
+2. The fee is taken from the input and sent to the treasury (see [Fees](#fees)).
+3. Each route runs its hops in order, with the aggregator as the caller of every venue. Each hop's output becomes the next hop's input.
+4. The aggregator compares its own `token_out` balance before and after the routes. That difference is what `user` receives, and it must be at least `min_out`, or the whole transaction reverts with `InsufficientOutput`.
+
+**The routes must add up to the post-fee amount:** `Σ routes[i].amount_in == amount_in - fee`. If they do not, the call fails with `BadRoute`.
+
+### `swap_exact_out`
+
+```rust
+fn swap_exact_out(
+    user: Address,
+    token_in: Address,
+    max_in: i128,             // ceiling on input, fee included
+    token_out: Address,
+    amount_out: i128,         // minimum to receive
+    routes: Vec<Route>,
+    partner: Option<Partner>,
+) -> i128                     // input spent, fee included
+```
+
+The routes are exact-in hops sized from a forward quote, and their `amount_in` values may not exceed `max_in`.
+The fee is charged on the input the routes actually consumed.
+`user` receives everything delivered (at least `amount_out`), and any unspent input is refunded.
+
+There is no separate recipient: both entrypoints pay `user`.
+
+## Types
+
+```rust
+pub struct Route {
+    pub amount_in: i128,      // this route's share of the post-fee input
+    pub hops: Vec<Hop>,
+}
+
+pub enum Hop {
+    Soroswap(SoroswapHop),
+    Aqua(AquaHop),
+    Sushi(SushiHop),
+    Phoenix(PhoenixHop),
+    Comet(CometHop),
+}
+
+pub struct SoroswapHop { pub pair: Address, pub token_in: Address, pub token_out: Address }
+pub struct SushiHop    { pub pool: Address, pub token_in: Address, pub token_out: Address, pub zero_for_one: bool }
+pub struct PhoenixHop  { pub pool: Address, pub token_in: Address, pub token_out: Address }
+pub struct CometHop    { pub pool: Address, pub token_in: Address, pub token_out: Address }
+
+/// One `swap_chained` call on the Aquarius router, over one or more pools.
+pub struct AquaHop {
+    pub token_in: Address,
+    /// (pool's full token set sorted by Address, pool hash, token out of this step)
+    pub steps: Vec<(Vec<Address>, BytesN<32>, Address)>,
+}
+
+pub struct Partner { pub id: Symbol, pub bps: u32 }
+```
+
+Rules the contract checks before it asks for authorization (each failure is `BadRoute`):
+
+- Every route has at least one hop and `amount_in > 0`.
+- The first hop consumes `token_in`, each hop consumes what the previous one produced, and the last hop produces `token_out`.
+- Exact-in: the route amounts add up to exactly `amount_in - fee`. Exact-out: they add up to at most `max_in`.
+
+Per venue:
+
+| Venue | What to pass |
+|---|---|
+| Soroswap | `pair` is the Soroswap pair contract for `token_in`/`token_out`. |
+| Aquarius | `steps[i].0` is the pool's **full** token set, sorted by binary `ScAddress` order. This is not string order: base32 encodes the digits `2` to `7` above every letter. `steps[i].1` is the pool hash from the Aquarius router (`get_pools`). Consecutive Aquarius pools go in one `AquaHop`. |
+| SushiSwap V3 | `zero_for_one` is `token_in == pool.token0()`. A wrong value makes the pool pull a token the aggregator did not grant, and the swap fails. |
+| Comet, Phoenix | The pool contract. Phoenix is supported by the contract, but the API does not route through it today. |
+
+## Fees
+
+Every swap pays **either** the protocol fee **or** a partner fee, never both.
+
+- `partner = None`: the rate is `protocol_bps`, which is 10 bps today. Read it from `config()`.
+- `partner = Some(Partner { id, bps })`: the rate is `bps`. It must sit between `min_partner_bps` (25 today) and 1,000. `id` is at most 9 characters. The fee is booked to `id` in the treasury.
+- `fee = floor(amount_in * bps / 10000)`. A fee that rounds to zero is zero.
+
+The contract accepts any `id` and books the fee under it. That fee is only paid out to you if the `id` is the partner id Soroswap assigned you. API partners read their `id` and rate from `GET /partner`. If you call the contract without the API and want a partner fee, ask the Soroswap team for your partner id first.
+
+When a quote was priced with a partner rate, the on-chain call has to pass the same `Partner`, or the route amounts will not add up.
+
+## Authorization
+
+`user` authorizes `swap_exact_in` (or `swap_exact_out`) and, below it, the `transfer` of `token_in` from `user` to the aggregator.
+
+- **`user` is an account (G...):** simulation records both entries in one authorization tree, and the user signs it as usual.
+- **`user` is your contract:** your contract's direct call to the aggregator is authorized implicitly, but the token `transfer` one level below is not. Authorize it with `env.authorize_as_current_contract` right before the call. See [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+
+## Errors
+
+| Code | Name | Meaning |
+|---|---|---|
+| 1 | `Paused` | Swaps are paused by the admin. |
+| 2 | `InvalidAmount` | `amount_in`, `min_out`, `max_in` or `amount_out` is not positive. |
+| 3 | `SameToken` | `token_in == token_out`. |
+| 4 | `PartnerBpsOutOfRange` | The partner `bps` is below `min_partner_bps` or above 1,000. |
+| 5 | `BadRoute` | A route breaks the continuity or amount rules above. |
+| 6 | `AllowanceLeft` | A venue left an allowance standing after its hop. |
+| 7 | `InsufficientOutput` | Delivered less than `min_out` / `amount_out`, or a hop returned nothing. |
+| 8 | `InsufficientInput` | Exact-out spent more than `max_in`. |
+| 11 | `PartnerIdTooLong` | The partner `id` is longer than 9 characters. |
+
+Codes 9, 10 and 12 are admin-only (`NoPendingAdmin`, `BpsOutOfRange`, `NotInitialized`).
+
+## Events
+
+Each swap emits one `swap` event:
+
+- Topics: `["swap", token_in, token_out, user]`.
+- Data: `{ amount_in, amount_out, fee, partner: Option<Symbol> }`.
+
+For exact-out, `amount_in` is the consumed input plus the fee.

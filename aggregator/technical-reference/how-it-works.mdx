@@ -3,6 +3,11 @@ title: "How Soroswap Aggregator works"
 description: "Aggregator architecture, adapters, DexDistribution calculation, and the operational flow of a swap."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 The **Soroswap Aggregator** is a smart contract that enables users to swap assets across multiple protocols simultaneously, optimizing returns. Built on the [Soroban](https://developers.stellar.org) platform within the Stellar network, it allows users to split trades between different liquidity platforms.
 
 ### Aggregator Architecture

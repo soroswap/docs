@@ -3,7 +3,7 @@
 > **Living document.** Read this before editing `api/`. Update it in the same change.
 
 **Source:** `api/` (5 MDX pages plus `api/beginner-example.html`) ·
-**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-09-06
+**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-10-08
 
 ## Purpose
 
@@ -42,10 +42,8 @@ the live OpenAPI page at `https://api.soroswap.finance/docs`, linked from
 
 - Never document individual endpoints exhaustively here. That reference is generated from
   the live service. These pages exist to teach the flow, not to mirror the schema.
-- Hosts are inconsistent across pages. `api/index.mdx:42` labels
-  `https://api.soroswap.finance` as **staging**, while `api/quickstart.mdx:50` labels the
-  same host **production** and gives `https://staging-api.soroswap.finance` as staging.
-  One of the two is wrong. Do not copy either into a new page without checking the service.
+- `https://api.soroswap.finance` is production (`api/CLAUDE.md`, public base URL). `api/index.mdx`
+  said staging until 2026-10-08 and was fixed.
 - `api/beginner-example.html` is not MDX and is not in the navigation. It is reachable
   only through the link at `api/quickstart.mdx:12`. If it moves, that link and the
   redirect list at `docs.json:275` both need attention.
