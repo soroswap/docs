@@ -122,7 +122,9 @@ Every swap pays **either** the protocol fee **or** a partner fee, never both.
 - `partner = Some(Partner { id, bps })`: the rate is `bps`. It must sit between `min_partner_bps` (25 today) and 1,000. `id` is at most 9 characters. The fee is booked to `id` in the treasury.
 - `fee = floor(amount_in * bps / 10000)`. A fee that rounds to zero is zero.
 
-API partners get their `id` and rate from `GET /partner`. When a quote was priced with a partner rate, the on-chain call has to pass the same `Partner`, or the route amounts will not add up.
+The contract accepts any `id` and books the fee under it. That fee is only paid out to you if the `id` is the partner id Soroswap assigned you. API partners read their `id` and rate from `GET /partner`. If you call the contract without the API and want a partner fee, ask the Soroswap team for your partner id first.
+
+When a quote was priced with a partner rate, the on-chain call has to pass the same `Partner`, or the route amounts will not add up.
 
 ## Authorization
 
