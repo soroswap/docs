@@ -18,9 +18,8 @@ stale when the contracts move.
 - **`soroswap/aggregator-v3`** (private repo), the contract the API uses since 2026-09-24:
   `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4`. Documented in
   `aggregator/technical-reference/contracts/aggregator-v3.mdx` and
-  `aggregator/technical-reference/cross-contract-integration.mdx`. The source is private and
-  unaudited, so public pages never link to it or claim an audit; integrators get the
-  interface with `stellar contract fetch`. Signatures, error codes and the `swap` event were
+  `aggregator/technical-reference/cross-contract-integration.mdx`. The source is private, so
+  public pages never link to it; integrators get the interface with `stellar contract fetch`. Signatures, error codes and the `swap` event were
   copied from `aggregator-v3/contracts/aggregator/src/{lib,errors,events}.rs` and
   `contracts/common/src/lib.rs` on 2026-10-08.
 
