@@ -28,12 +28,9 @@ use aggregator::{Hop, Route, SushiHop};
 
 ## 2. Build the routes
 
-You can get routes in two ways:
+A route names the pools, in order, that take `token_in` to `token_out`, like the single-pool example below.
 
-- **From the Soroswap API.** Call `POST /quote` and turn `rawTrade.distribution` into `Vec<Route>`, following [Execute Quotes From Your Contract](/api/execute-quotes-onchain). This is the normal path, and it gives you the best split across every venue.
-- **By hand**, for a single known pool, like the example below.
-
-Whichever way you build them, the route amounts must add up to `amount_in - fee`, with `fee = floor(amount_in * bps / 10000)`.
+The route amounts must add up to `amount_in - fee`, with `fee = floor(amount_in * bps / 10000)`.
 
 ## 3. Authorize the token pull, then call
 

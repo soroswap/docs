@@ -71,8 +71,7 @@ stale when the contracts move.
   what the API routes today (`AGGREGATOR_PROTOCOLS` in `api/src/helpers/constants.ts`).
   Phoenix is in the first and not the second.
 - Adding a venue means a v3 contract upgrade plus an API encoder, then, here, a row in
-  `supported-amms.mdx`, a `Hop` variant in `aggregator-v3.mdx` and a case in the converter
-  in `api/execute-quotes-onchain.mdx`.
+  `supported-amms.mdx` and a `Hop` variant in `aggregator-v3.mdx`.
 - `inspirations/1inch.mdx` is background reading on someone else's design, not a
   description of what Soroswap ships.
 - The aggregator addresses are listed in `amm/technical-reference/deployed-addresses.mdx`

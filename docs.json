@@ -133,7 +133,6 @@
               "api/quickstart",
               "api/beginner-guide",
               "api/gasless-trustline",
-              "api/execute-quotes-onchain",
               "api/optimal-route"
             ]
           }

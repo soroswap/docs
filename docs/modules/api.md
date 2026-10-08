@@ -2,7 +2,7 @@
 
 > **Living document.** Read this before editing `api/`. Update it in the same change.
 
-**Source:** `api/` (6 MDX pages plus `api/beginner-example.html`) ·
+**Source:** `api/` (5 MDX pages plus `api/beginner-example.html`) ·
 **Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-10-08
 
 ## Purpose
@@ -35,7 +35,6 @@ the live OpenAPI page at `https://api.soroswap.finance/docs`, linked from
 | `quickstart.mdx` | Five-minute path for experienced developers. |
 | `beginner-guide.mdx` | Long-form Freighter plus API tutorial with full code. |
 | `gasless-trustline.mdx` | Sponsored trustline creation bundled into one SDEX swap. |
-| `execute-quotes-onchain.mdx` | Turning a `/quote` into Aggregator v3 `routes` for integrators who build the transaction themselves. |
 | `optimal-route.mdx` | Routing architecture, with Uniswap, PancakeSwap and 1inch background. |
 | `beginner-example.html` | Runnable single-file demo, served as a static asset. |
 
@@ -45,11 +44,6 @@ the live OpenAPI page at `https://api.soroswap.finance/docs`, linked from
   the live service. These pages exist to teach the flow, not to mirror the schema.
 - `https://api.soroswap.finance` is production (`api/CLAUDE.md`, public base URL). `api/index.mdx`
   said staging until 2026-10-08 and was fixed.
-- **`execute-quotes-onchain.mdx` mirrors the API's quote shape.** The field mapping
-  (`amountIn`, `otherAmountThreshold`, `distribution[].share`, `distribution[].hops`) comes from
-  `api/src/swap/soroban-sizing.ts` (`applyExactInSizing`) and `api/src/grapho/quote.mapper.ts`.
-  The converter was simulated on mainnet on 2026-10-08 (Sushi, Aquarius constant-product and
-  concentrated, mixed routes, splits). A change to those API files is a change to this page.
 - `api/beginner-example.html` is not MDX and is not in the navigation. It is reachable
   only through the link at `api/quickstart.mdx:12`. If it moves, that link and the
   redirect list at `docs.json:275` both need attention.
