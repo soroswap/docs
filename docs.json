@@ -133,6 +133,7 @@
               "api/quickstart",
               "api/beginner-guide",
               "api/gasless-trustline",
+              "api/execute-quotes-onchain",
               "api/optimal-route"
             ]
           }
@@ -200,6 +201,7 @@
                     "group": "Contracts",
                     "root": "aggregator/technical-reference/contracts/index",
                     "pages": [
+                      "aggregator/technical-reference/contracts/aggregator-v3",
                       "aggregator/technical-reference/contracts/soroswap-aggregator",
                       "aggregator/technical-reference/contracts/adapter-trait",
                       "aggregator/technical-reference/contracts/soroswap-adapter"

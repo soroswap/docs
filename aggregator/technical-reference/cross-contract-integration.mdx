@@ -1,76 +1,164 @@
 ---
 title: "Cross-Contract Integration"
-description: "Calling the Soroswap Aggregator from another Soroban contract, and what the distribution argument has to contain."
+description: "Call Soroswap Aggregator v3 from your own Soroban contract: client import, route building, the token authorization, and a verified mainnet example."
 ---
 
-The aggregator is a normal Soroban contract, so another contract can call it the same way
-the aggregator calls its own adapters: generate a client from the WASM and invoke it.
+Use this when **your contract** calls the aggregator: a router, a vault or an intent settler.
+If your backend just needs a transaction for a user to sign, use the API's `/quote/build` instead and skip this page.
 
-## Import the client
+The full contract reference is in [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3).
 
-```rust
-use soroban_sdk::{Address, Env, Vec};
+## 1. Import the client
 
-soroban_sdk::contractimport!(
-    file = "./soroswap_contracts/soroswap_aggregator.wasm"
-);
-pub type SoroswapAggregatorClient<'a> = Client<'a>;
+The WASM on chain is the interface. Fetch it once and import it:
+
+```bash
+stellar contract fetch --id CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4 \
+  --network mainnet -o aggregator_v3.wasm
 ```
 
-## Call a swap
+```rust
+mod aggregator {
+    soroban_sdk::contractimport!(file = "aggregator_v3.wasm");
+}
+use aggregator::{Hop, Route, SushiHop};
+```
+
+`contractimport!` generates `aggregator::Client` and every wire type (`Route`, `Hop`, `SoroswapHop`, `AquaHop`, `SushiHop`, `CometHop`, `PhoenixHop`, `Partner`).
+
+## 2. Build the routes
+
+You can get routes in two ways:
+
+- **From the Soroswap API.** Call `POST /quote` and turn `rawTrade.distribution` into `Vec<Route>`, following [Execute Quotes From Your Contract](/api/execute-quotes-onchain). This is the normal path, and it gives you the best split across every venue.
+- **By hand**, for a single known pool, like the example below.
+
+Whichever way you build them, the route amounts must add up to `amount_in - fee`, with `fee = floor(amount_in * bps / 10000)`.
+
+## 3. Authorize the token pull, then call
+
+The aggregator pulls `token_in` from `user` with `transfer`. When `user` is your contract, that `transfer` happens one call below your own, so your contract must authorize it explicitly:
 
 ```rust
-let aggregator = SoroswapAggregatorClient::new(&e, &aggregator_address);
+use soroban_sdk::{
+    auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
+    vec, Address, Env, IntoVal, Symbol,
+};
 
-let amounts = aggregator.swap_exact_tokens_for_tokens(
+let me = env.current_contract_address();
+
+env.authorize_as_current_contract(vec![
+    &env,
+    InvokerContractAuthEntry::Contract(SubContractInvocation {
+        context: ContractContext {
+            contract: token_in.clone(),
+            fn_name: Symbol::new(&env, "transfer"),
+            args: (me.clone(), aggregator_id.clone(), amount_in).into_val(&env),
+        },
+        sub_invocations: vec![&env],
+    }),
+]);
+
+let delivered: i128 = aggregator::Client::new(&env, &aggregator_id).swap_exact_in(
+    &me,          // user: the tokens come from, and go back to, this contract
     &token_in,
+    &amount_in,   // gross, fee included
     &token_out,
-    &amount_in,
-    &amount_out_min,
-    &distribution,
-    &to,
-    &deadline,
+    &min_out,
+    &routes,
+    &None,        // or Some(Partner { id, bps }) if you have a partner rate
 );
 ```
 
-The return is `Vec<Vec<i128>>`: one inner vector of step amounts per protocol the trade was
-split across, in the same order as `distribution`.
+`delivered` is credited to `me`. Forward it wherever your contract needs it.
 
-## You have to supply the distribution
+## Example: USDC to deJTRSY through a SushiSwap V3 pool
 
-This is the part that differs from calling the router. The aggregator does not decide how
-to split the trade, the caller does, by passing `Vec<DexDistribution>`:
+This contract was deployed and run on mainnet on 2026-10-08:
 
 ```rust
-pub struct DexDistribution {
-    pub protocol_id: Protocol,
-    pub path: Vec<Address>,
-    pub parts: u32,
+#![no_std]
+use soroban_sdk::{
+    auth::{ContractContext, InvokerContractAuthEntry, SubContractInvocation},
+    contract, contractimpl, vec, Address, Env, IntoVal, Symbol,
+};
+
+mod aggregator {
+    soroban_sdk::contractimport!(file = "aggregator_v3.wasm");
+}
+use aggregator::{Hop, Route, SushiHop};
+
+#[contract]
+pub struct MyRouter;
+
+#[contractimpl]
+impl MyRouter {
+    pub fn swap_via_sushi(
+        e: Env,
+        aggregator_id: Address,
+        pool: Address,
+        token_in: Address,
+        token_out: Address,
+        zero_for_one: bool,
+        amount_in: i128,
+        share: i128, // amount_in - fee
+        min_out: i128,
+    ) -> i128 {
+        let me = e.current_contract_address();
+        let routes = vec![
+            &e,
+            Route {
+                amount_in: share,
+                hops: vec![
+                    &e,
+                    Hop::Sushi(SushiHop {
+                        pool,
+                        token_in: token_in.clone(),
+                        token_out: token_out.clone(),
+                        zero_for_one,
+                    }),
+                ],
+            },
+        ];
+        e.authorize_as_current_contract(vec![
+            &e,
+            InvokerContractAuthEntry::Contract(SubContractInvocation {
+                context: ContractContext {
+                    contract: token_in.clone(),
+                    fn_name: Symbol::new(&e, "transfer"),
+                    args: (me.clone(), aggregator_id.clone(), amount_in).into_val(&e),
+                },
+                sub_invocations: vec![&e],
+            }),
+        ]);
+        aggregator::Client::new(&e, &aggregator_id).swap_exact_in(
+            &me, &token_in, &amount_in, &token_out, &min_out, &routes, &None,
+        )
+    }
 }
 ```
 
-`parts` is a weight, not a percentage. Each entry receives
-`amount * parts / total_parts`. A distribution may hold at most `MAX_DISTRIBUTION_LENGTH`
-(15) entries. See [Aggregator Operation](/aggregator/technical-reference/operation) for
-the exact arithmetic.
+The call used these values:
 
-<Warning>
-Computing a good distribution on chain is expensive and needs reserve data from every
-protocol. In practice callers get the distribution off chain, from
-[the Soroswap API](/api), and pass it in. A contract that builds its own distribution is
-responsible for the routing quality of the result.
-</Warning>
+| Argument | Value |
+|---|---|
+| `pool` | `CDMJRRH5MAJLB7T5SQAWQOOL7UJ3BABGTURSVKIE6AEDSXESDDJIBVCT` (deJTRSY/USDC, fee tier 500) |
+| `token_in` | USDC `CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75` (token1) |
+| `token_out` | deJTRSY `CBI7UCH5KGSVQRO5H4SUCZUTZABCITZLRHQQZTWL2TK4RZ72TAR6IHRV` (token0) |
+| `zero_for_one` | `false`, because USDC is not `token0` |
+| `amount_in` / `share` | `5000000` / `4995000` (0.5 USDC, minus the 10 bps fee) |
 
-## Authorization
+The swap delivered 0.4865 deJTRSY to the contract. See [the transaction](https://stellar.expert/explorer/public/tx/95ad366282a9ee0ac9adcbe6c55a617dcc458dd4c9742b985143be92891dbc15).
 
-As with the router, the receiving address authorizes the swap. Your contract can only
-swap for a user inside an invocation that user authorized, or for itself.
+The same swap from an account, with the user signing (no `authorize_as_current_contract` needed), in both directions:
+[USDC → deJTRSY](https://stellar.expert/explorer/public/tx/2e90c3d95b1d3ac5dd1cabaae4838e6a93473e74c49218a6598f01a6d602325e) and
+[deJTRSY → USDC](https://stellar.expert/explorer/public/tx/83b710e9e24a5a7ce9b9937f61c5126aa23a68aa480bf9d85b1e334101a0a132).
 
-## Read-only calls
+## Checklist
 
-`get_adapters` tells you which protocols are registered, and `get_paused` whether a given
-one is currently closed to new swaps. Both are cheap, and checking `get_paused` before
-including a protocol in a distribution avoids a failed swap.
-
-Full interface on the
-[SoroswapAggregator](/aggregator/technical-reference/contracts/soroswap-aggregator) page.
+- Call `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4`, not the deprecated `CAYP3U…` aggregator.
+- Make the route amounts add up to `amount_in - fee`, with the same `partner` the quote was priced with.
+- Set `zero_for_one = (token_in == pool.token0())` on every Sushi hop.
+- Sort each Aquarius step's token set by `Address` order, not string order.
+- When `user` is a contract, authorize `token_in.transfer(user, aggregator, amount_in)`.
+- Set `min_out` from your own slippage tolerance. It is the only price guarantee: the aggregator calls each venue with a token minimum (0 or 1) and checks the total at the end.

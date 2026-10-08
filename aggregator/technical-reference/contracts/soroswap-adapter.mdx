@@ -3,6 +3,11 @@ title: "SoroswapAdapter"
 description: "The adapter that lets the aggregator route a trade through the Soroswap AMM router."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 `SoroswapAggregatorAdapter` is the adapter for the Soroswap AMM itself. It implements
 [`AdapterTrait`](/aggregator/technical-reference/contracts/adapter-trait) and forwards
 each swap to the [SoroswapRouter](/amm/technical-reference/contracts/soroswap-router).

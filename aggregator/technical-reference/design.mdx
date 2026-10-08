@@ -3,6 +3,11 @@ title: "Design"
 description: "Design paper for the Soroswap Aggregator: swap function, optimization algorithm, and development considerations."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 ## Abstract
 
 In the dynamic and fragmented landscape of decentralized finance (DeFi), achieving optimal trade execution across various decentralized exchanges (DEXs) presents a significant challenge. The Soroswap-Aggregator, proposed for development on the Soroban platform, aims to address this challenge by intelligently aggregating liquidity from multiple DEXs. This paper revisits the conceptual underpinnings and developmental strategies for the Soroswap-Aggregator smart contract. It emphasizes an optimization algorithm designed to minimize slippage and gas costs while maximizing trade efficiency. Through a blend of technical rigor and strategic foresight, this investigation outlines the functions, optimization processes, and key considerations essential for the smart contract's successful implementation.

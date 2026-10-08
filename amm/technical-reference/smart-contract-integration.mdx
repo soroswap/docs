@@ -83,7 +83,8 @@ need a price and not an execution, `router_get_amounts_out` and `router_quote` a
 read-only and cost you no state.
 
 <Tip>
-If you are routing across more than just Soroswap, call the
-[aggregator](/aggregator/technical-reference/contracts/soroswap-aggregator) instead of the
-router. It has the same shape and splits the trade across every supported protocol.
+If you are routing across more than just Soroswap, call
+[Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) instead of the
+router. It runs typed routes across Soroswap, Aquarius, SushiSwap V3 and Comet in one call.
+See [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
 </Tip>

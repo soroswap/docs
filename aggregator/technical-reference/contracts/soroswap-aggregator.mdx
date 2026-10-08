@@ -3,6 +3,11 @@ title: "SoroswapAggregator"
 description: "The aggregator contract: its adapter registry, admin functions and the two swap entry points that split a trade."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 `SoroswapAggregator` is the contract a caller actually swaps against. It holds the
 registry of adapters, and it splits one trade across them according to a distribution the
 caller supplies.

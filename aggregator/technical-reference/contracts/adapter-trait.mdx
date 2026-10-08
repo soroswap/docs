@@ -3,6 +3,11 @@ title: "Adapter Trait"
 description: "AdapterTrait, the interface every protocol adapter implements so the aggregator can route through it."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 Every adapter implements `AdapterTrait`, defined in
 [`contracts/adapters/interface`](https://github.com/soroswap/aggregator/tree/main/contracts/adapters/interface).
 That single interface is what lets the aggregator treat Soroswap, Phoenix, Aqua and Comet

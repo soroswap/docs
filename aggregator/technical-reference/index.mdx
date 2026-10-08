@@ -1,7 +1,18 @@
 ---
 title: "Technical Reference"
-description: "How the Soroswap Aggregator is built: its operation, design, adapter model and the protocols it draws on."
+description: "How the Soroswap Aggregator is built: the v3 contract, calling it from another contract, and the deprecated adapter-based design."
 ---
+
+<Columns cols={2}>
+  <Card title="Aggregator v3" icon="layer-group" href="/aggregator/technical-reference/contracts/aggregator-v3">
+    The contract the API uses today: entrypoints, types, fees and errors.
+  </Card>
+  <Card title="Cross-Contract Integration" icon="code" href="/aggregator/technical-reference/cross-contract-integration">
+    Call v3 from your own contract.
+  </Card>
+</Columns>
+
+The pages below describe the deprecated adapter-based aggregator.
 
 <Columns cols={2}>
   <Card title="How it works" icon="gears" href="/aggregator/technical-reference/how-it-works">

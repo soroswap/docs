@@ -3,6 +3,11 @@ title: "Aggregator Operation"
 description: "Aggregator initialization, swap functions, distribution math, administrative functions, and the adapter interface."
 ---
 
+<Warning>
+  This page describes the **deprecated** pre-v3 aggregator (`CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, `DexDistribution` and adapters). The Soroswap API stopped using it on 2026-09-24.
+  For new integrations, see [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) and [Cross-Contract Integration](/aggregator/technical-reference/cross-contract-integration).
+</Warning>
+
 ### **Aggregator Initialization**
 
 When the [Aggregator](https://github.com/soroswap/aggregator/) contract is deployed, the user who initializes it becomes the protocol administrator. During initialization, compatible underlying protocols are registered in the contract's storage, as shown in Figure 1.

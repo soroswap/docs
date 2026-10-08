@@ -3,8 +3,8 @@
 > **Living document.** Read this before editing `aggregator/`. Update it in the same
 > change.
 
-**Source:** `aggregator/` (18 pages) · **Nav tab:** Smart Contracts (`docs.json:142`),
-group `docs.json:186` · **Last verified:** 2026-09-06
+**Source:** `aggregator/` (19 pages) · **Nav tab:** Smart Contracts (`docs.json:142`),
+group `docs.json:186` · **Last verified:** 2026-10-08
 
 ## Purpose
 
@@ -15,7 +15,17 @@ stale when the contracts move.
 
 ## Product repos it describes
 
-- **`soroswap/aggregator`**, the only product repo this section covers.
+- **`soroswap/aggregator-v3`** (private repo), the contract the API uses since 2026-09-24:
+  `CARVQXFP4JF5ELLXUMQ6DALR346YVGBMQOHB4ENA7SSVXAYABXLBDDC4`. Documented in
+  `aggregator/technical-reference/contracts/aggregator-v3.mdx` and
+  `aggregator/technical-reference/cross-contract-integration.mdx`. The source is private and
+  unaudited, so public pages never link to it or claim an audit; integrators get the
+  interface with `stellar contract fetch`. Signatures, error codes and the `swap` event were
+  copied from `aggregator-v3/contracts/aggregator/src/{lib,errors,events}.rs` and
+  `contracts/common/src/lib.rs` on 2026-10-08.
+
+- **`soroswap/aggregator`**, the deprecated pre-v3 aggregator (`CAYP3U…`). Every page about
+  it carries a `<Warning>` banner pointing at v3.
   - Section root and contracts index point at the repo (`aggregator/index.mdx:23`,
     `aggregator/technical-reference/contracts/index.mdx:24`).
   - Per-contract pages point at specific source trees: `contracts/aggregator`
@@ -45,33 +55,29 @@ stale when the contracts move.
 | `technical-reference/how-it-works.mdx` | `DexDistribution` and route splitting. |
 | `technical-reference/design.mdx`, `technical-overview.mdx` | Architecture. |
 | `technical-reference/operation.mdx` | Admin, initialization, day-to-day operation. |
-| `technical-reference/contracts/` | Aggregator contract, adapter trait, Soroswap adapter (`docs.json:200`). |
-| `technical-reference/cross-contract-integration.mdx` | Calling the aggregator from another contract. |
+| `technical-reference/contracts/aggregator-v3.mdx` | **Aggregator v3** reference: entrypoints, types, fees, auth, errors, events. |
+| `technical-reference/contracts/` (others) | Deprecated: aggregator contract, adapter trait, Soroswap adapter. |
+| `technical-reference/cross-contract-integration.mdx` | Calling v3 from another contract, with the mainnet example verified on 2026-10-08. |
 | `technical-reference/inspirations/1inch.mdx` | Prior art (`docs.json:210`). |
 | `technical-reference/other-amms/phoenix.mdx` | Notes on Phoenix (`docs.json:217`). |
 
 ## Gotchas and invariants
 
-- **`supported-amms.mdx` contradicts the rest of the site, in two ways.** It marks
-  Aquarius "Coming Soon" (`aggregator/supported-amms.mdx:12`), while the repo-root landing
-  page (`/index.mdx:25`) and `api/index.mdx:19` both list Aqua as a live source of quotes
-  and `Aqua = 2` sits in the shipped protocol enum
-  (`aggregator/technical-reference/contracts/soroswap-aggregator.mdx:66`). It also omits
-  **Comet** entirely, though `Comet = 3` is in that same enum
-  (`aggregator/technical-reference/contracts/soroswap-aggregator.mdx:67`) and four
-  reference pages document a Comet adapter
-  (`aggregator/technical-reference/contracts/index.mdx:21`,
-  `aggregator/technical-reference/technical-overview.mdx:84`,
-  `aggregator/technical-reference/contracts/adapter-trait.mdx:8`,
-  `aggregator/technical-reference/contracts/soroswap-adapter.mdx:37`). Check the deployed
-  adapter set in `soroswap/aggregator` before trusting any of them, and fix the whole set,
-  not just the page you are on.
-- Adding a protocol means an adapter in `soroswap/aggregator` plus, here, a row in
-  `supported-amms.mdx` and usually a page under `technical-reference/other-amms/`.
+- **The mainnet examples are real transactions.** `cross-contract-integration.mdx` cites a
+  contract-as-user swap (`95ad3662…`) and an account round trip (`2e90c3d9…`, `83b710e9…`),
+  run on mainnet on 2026-10-08 from exactly the snippets on the page. If you change a snippet,
+  run it again on mainnet before publishing.
+- **`supported-amms.mdx` has two columns on purpose**: what the v3 contract can execute and
+  what the API routes today (`AGGREGATOR_PROTOCOLS` in `api/src/helpers/constants.ts`).
+  Phoenix is in the first and not the second.
+- Adding a venue means a v3 contract upgrade plus an API encoder, then, here, a row in
+  `supported-amms.mdx`, a `Hop` variant in `aggregator-v3.mdx` and a case in the converter
+  in `api/execute-quotes-onchain.mdx`.
 - `inspirations/1inch.mdx` is background reading on someone else's design, not a
   description of what Soroswap ships.
-- Contract addresses are not listed in this section. Keep it that way, and let
-  `amm/technical-reference/deployed-addresses.mdx` stay the single address page.
+- The aggregator addresses are listed in `amm/technical-reference/deployed-addresses.mdx`
+  and repeated in the v3 pages, where an integrator needs them inline. Change all of them
+  together.
 
 ## Testing
 
