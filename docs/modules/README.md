@@ -28,6 +28,7 @@ is in each module doc and in the "Cross-repo dependencies" section of `CLAUDE.md
 |---|---|
 | `soroswap/core` | [amm.md](amm.md), [tutorials.md](tutorials.md) |
 | `soroswap/aggregator` | [aggregator.md](aggregator.md), [amm.md](amm.md), [concepts.md](concepts.md) |
+| `soroswap/aggregator-v3` | [api.md](api.md) |
 | Soroswap API service | [api.md](api.md), [amm.md](amm.md), [tutorials.md](tutorials.md) |
 | `soroswap/sdk` (`@soroswap/sdk`) | [amm.md](amm.md) |
 | `soroswap/token-list` | [getting-started.md](getting-started.md), [api.md](api.md) |
