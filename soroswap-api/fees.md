@@ -1,0 +1,97 @@
+---
+id: fees
+title: Fees and revenue share
+description: How the Soroswap aggregator charges fees, how integrators monetize swaps, and how the share is settled.
+---
+
+# Fees and revenue share
+
+Soroswap charges one fee per aggregated swap, taken from the input token before routing. Who
+sets it and who keeps it depends on whether the swap carries a partner.
+
+## The two modes
+
+| Mode | Who sets the rate | Rate today | Who keeps it |
+|---|---|---|---|
+| **No partner** | Soroswap | 10 bps (`protocol_bps`) | Soroswap |
+| **Partner** | The integrator, within a range | from 25 bps (`min_partner_bps`) up to 1,000 bps | Shared between the integrator and Soroswap |
+
+A swap pays **either** the protocol fee **or** the partner fee, never both. When you pass a
+partner, the protocol fee is replaced by your fee, and Soroswap's share comes out of it. The
+floor on the partner fee exists so that Soroswap's share stays at or above what it would have
+earned without a partner.
+
+Read it the way other aggregators express it: a 10 bps base plus your fee, shared. At the
+25 bps floor with the standard 50/50 share, you keep 12.5 bps and Soroswap keeps 12.5 bps.
+
+Both dials, `protocol_bps` and `min_partner_bps`, are set on the aggregator contract by its
+admin and can change. The current values are readable on-chain from the contract's `config()`.
+The 1,000 bps cap is fixed.
+
+## Pool fees are separate
+
+Each liquidity source charges its own pool fee (for example, 0.3% on Soroswap AMM pools, paid
+to liquidity providers; other venues have their own). The aggregator fee described here is
+charged on top of the pool fees of the route and is the only fee Soroswap itself collects on an
+aggregated swap. The [Fees](../additional-resources/01-concepts/01-fees.md) page under
+Concepts describes the AMM pool fee.
+
+## How to pass a partner
+
+**Through the API.** Add `feeBps` and `referralId` to `/quote`. The quote response includes
+`platformFee` with the amount taken, so you can show it to your user before they sign. The fee
+is always charged on the input token.
+
+```json
+{
+  "assetIn": "CAS3J7GYLGXMF6TDJBBYYSE3HQ6BBSMLNUQ34T6TZMYMW2EVH34XOWMA",
+  "assetOut": "CCW67TSZV3SSS2HXMBQ5JFGCKJNXKZM7UQUWUZPUTHXSTZLEO7SJMI75",
+  "amount": "100000000",
+  "tradeType": "EXACT_IN",
+  "protocols": ["soroswap", "aqua", "sushi", "sdex"],
+  "feeBps": 25,
+  "referralId": "G...YOURWALLET"
+}
+```
+
+**Calling the aggregator contract directly.** Pass a `Partner { id, bps }` in `swap_exact_in`
+or `swap_exact_out`. `id` is the partner identifier Soroswap assigns to you (at most 9
+characters); `bps` is your fee. Without a partner struct the swap pays the protocol fee and
+nothing is attributed to you.
+
+Your partner identifier is issued when you register for the API. Ask in your integration
+channel if you do not have it yet.
+
+**Exact-out swaps.** The fee is always taken in the input token. On `swap_exact_out` the
+contract charges it on the input the routes actually consumed and pays it from whatever is
+left of `max_in`, so size `max_in` as the quoted input, plus your slippage tolerance, plus the
+fee on that amount. If `max_in` only covers the slippage, a price move that uses the headroom
+leaves nothing for the fee and the swap reverts with `InsufficientInput`.
+
+## Settlement
+
+Partner fees are collected on-chain in the token of each swap and booked under your partner
+identifier in the Soroswap fee treasury. At the end of each calendar month Soroswap converts
+them to USDC at market rate, pays your share to the wallet you designate on Stellar, and sends
+a statement listing, per token, the fees collected, the conversion rate and time, and the
+resulting allocation. Everything is verifiable on-chain against your partner identifier.
+
+Positive slippage (output above the quoted amount) is passed to the user today and is not
+captured as a fee.
+
+## API plans
+
+API access is priced by request rate, independently of swap fees:
+
+| Plan | Rate limit | Price |
+|---|---|---|
+| Free | 1 request/s | US$0 |
+| Starter | 10 requests/s | US$25 / month |
+| Professional | 50 requests/s | US$100 / month |
+| Business | 100 requests/s | US$350 / month |
+
+Partners with a signed integration agreement get the Starter plan included.
+
+## Questions
+
+Write to dev@paltalabs.io or ask in your integration channel.

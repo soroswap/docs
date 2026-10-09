@@ -20,7 +20,11 @@ There are many community-developed tools to determine returns. You can also read
 
 ### Protocol Fees
 
-At the moment there are no protocol fees. However, it is possible for a 0.05% fee to be turned on in the future.
+{% hint style="info" %}
+This section describes the Soroswap AMM pools. Swaps executed through the **Soroswap aggregator** (the API and the aggregator contract) pay a separate aggregator fee, 10 bps today, or a partner fee when an integrator monetizes the swap. See [Fees and revenue share](../../soroswap-api/fees.md).
+{% endhint %}
+
+At the moment there are no protocol fees on the AMM pools. However, it is possible for a 0.05% fee to be turned on in the future.
 
 More information about a potential future protocol fee can be found [here](https://uniswap.org/blog/uniswap-v2/#path-to-sustainability).
 

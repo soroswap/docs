@@ -17,6 +17,7 @@
   *
   * [Beginner Tutorial](soroswap-api/beginner-guide.md)
   * [Gasless Trustline](soroswap-api/gasless-trustline.md)
+  * [Fees and revenue share](soroswap-api/fees.md)
   * [Registration](soroswap-api/README.md#registration-required)
   * [Optimal Route](soroswap-api/07-optimal-route/README.md)
     * [Technical Documentation](https://soroswap-api.soroswap.finance/)
