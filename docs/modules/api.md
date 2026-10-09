@@ -2,8 +2,8 @@
 
 > **Living document.** Read this before editing `api/`. Update it in the same change.
 
-**Source:** `api/` (5 MDX pages plus `api/beginner-example.html`) ·
-**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-09-06
+**Source:** `api/` (6 MDX pages plus `api/beginner-example.html`) ·
+**Nav tab:** API (`docs.json:127`), group `docs.json:130` · **Last verified:** 2026-10-09
 
 ## Purpose
 
@@ -35,10 +35,17 @@ the live OpenAPI page at `https://api.soroswap.finance/docs`, linked from
 | `quickstart.mdx` | Five-minute path for experienced developers. |
 | `beginner-guide.mdx` | Long-form Freighter plus API tutorial with full code. |
 | `gasless-trustline.mdx` | Sponsored trustline creation bundled into one SDEX swap. |
+| `fees.mdx` | The aggregator fee (protocol fee without a partner, partner fee with one), how to pass a partner through `/quote` or the aggregator contract, exact-out sizing, monthly settlement, API plans. |
 | `optimal-route.mdx` | Routing architecture, with Uniswap, PancakeSwap and 1inch background. |
 | `beginner-example.html` | Runnable single-file demo, served as a static asset. |
 
 ## Gotchas and invariants
+
+- `api/fees.mdx` quotes the live dials of the aggregator v3 contract (`protocol_bps` 10,
+  `min_partner_bps` 25, read from `config()` on mainnet on 2026-10-09) and the API plan prices
+  from the commercial annexes. Both can change by an admin call or a pricing decision; re-check
+  them before editing the page. The contract source is `soroswap/aggregator-v3`
+  (`contracts/aggregator/src/fee.rs`); the API side is `feeBps` and `referralId` on `/quote`.
 
 - Never document individual endpoints exhaustively here. That reference is generated from
   the live service. These pages exist to teach the flow, not to mirror the schema.
