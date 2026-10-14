@@ -1,14 +1,26 @@
 ---
 title: "Smart Contracts"
-description: "The two contracts behind the aggregator: the aggregator itself and the adapter each supported protocol is reached through."
+description: "The aggregator contracts: Aggregator v3, which the API uses today, and the deprecated adapter-based aggregator."
 ---
 
-The aggregator is two kinds of contract. One aggregator holds the adapter registry and
-splits a trade; one adapter per protocol knows how to actually talk to that protocol.
+[Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) is the contract the Soroswap API settles every Soroban swap through on mainnet. It runs typed routes hop by hop across Soroswap, Aquarius, SushiSwap V3, Comet and Phoenix. There is no adapter registry: each venue is compiled into the contract, and callers name the pools in each hop.
+
+<Columns cols={2}>
+  <Card title="Aggregator v3" icon="layer-group" href="/aggregator/technical-reference/contracts/aggregator-v3">
+    Entrypoints, route and hop types, fees, errors and events.
+  </Card>
+  <Card title="Cross-Contract Integration" icon="code" href="/aggregator/technical-reference/cross-contract-integration">
+    Calling v3 from your own contract, with a mainnet example.
+  </Card>
+</Columns>
+
+## Deprecated: the adapter-based aggregator
+
+The original aggregator, `CAYP3UWLJM7ZPTUKL6R6BFGTRWLZ46LRKOXTERI2K6BIJAWGYY62TXTO`, reached each protocol through an adapter contract (Soroswap, Phoenix, Aqua and Comet). The API stopped using it on 2026-09-24. These pages are kept for reference:
 
 <Columns cols={3}>
-  <Card title="SoroswapAggregator" icon="layer-group" href="/aggregator/technical-reference/contracts/soroswap-aggregator">
-    The entry point: registry, distribution, and the two swap functions.
+  <Card title="SoroswapAggregator" icon="box-archive" href="/aggregator/technical-reference/contracts/soroswap-aggregator">
+    Registry, distribution, and the two swap functions.
   </Card>
   <Card title="Adapter Trait" icon="plug" href="/aggregator/technical-reference/contracts/adapter-trait">
     The interface every adapter implements.
@@ -18,7 +30,4 @@ splits a trade; one adapter per protocol knows how to actually talk to that prot
   </Card>
 </Columns>
 
-Adapters ship for Soroswap, Phoenix, Aqua and Comet. Adding a protocol means writing an
-adapter and registering it, not changing the aggregator.
-
-Source: [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).
+Source of the deprecated contracts: [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).

@@ -1,13 +1,25 @@
 ---
 title: "Supported AMMs"
-description: "Stellar AMMs covered by Soroswap: Soroswap AMM, Phoenix AMM, and Aquarius, which is coming soon."
+description: "The Stellar venues Soroswap Aggregator v3 routes through: Soroswap, Aquarius, SushiSwap V3, Comet and Phoenix, plus SDEX through the API."
 ---
 
-Automated Market Makers (AMMs) are essential to decentralized finance (DeFi), enabling the efficient exchange of assets without centralized intermediaries or traditional order books. The Stellar network supports several AMMs that each offer unique features to improve liquidity and decentralized trading. Below is an overview of key AMMs supported by Soroswap Finance:
+[Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) runs one trade across several Soroban venues, hop by hop, in a single atomic transaction. The [Soroswap API](/api) picks the routes, and SDEX is quoted alongside as a separate classic path.
 
-* [**Soroswap AMM**](https://soroswap.finance)\
-  Soroswap.Finance is a decentralized AMM on Stellar, providing users with seamless asset swaps through liquidity pools. The platform employs algorithms that automatically adjust asset prices based on the pool's asset ratios, ensuring liquidity and price stability. Soroswap is tailored to the Stellar ecosystem and focuses on user-friendly, efficient swaps, making it a preferred choice for decentralized trading.
-* [**Phoenix AMM**](https://github.com/Phoenix-Protocol-Group/docs/blob/main/Initial%20Phoenix%20Whitepaper.pdf)\
-  The Phoenix AMM is part of the Phoenix Protocol ecosystem, a suite of decentralized applications on Stellar. It integrates with the Phoenix DEX and other DeFi services, ensuring that liquidity is provided autonomously through smart contracts. Phoenix AMM's primary goal is to enhance the Stellar ecosystem by offering decentralized, efficient trading across its applications.
-* [**Aquarius AMM**](https://aqua.network) **(Coming Soon)**\
-  Aquarius incentivizes liquidity provision and market-making on the Stellar network. The AQUA token community votes to determine which markets receive liquidity incentives, and top-voted markets reward Stellar DEX market makers and AMM liquidity providers. As Aquarius AMMs evolve, rewards will gradually shift from Stellar AMMs to Aquarius-specific AMMs, bringing more control and governance into the hands of the community.
+| Venue | Pool type | Aggregator v3 contract | Routed by the API |
+|---|---|---|---|
+| [Soroswap AMM](https://soroswap.finance) | Constant product | Yes (`Hop::Soroswap`) | Yes |
+| [Aquarius](https://aqua.network) | Constant product, stable, concentrated | Yes (`Hop::Aqua`) | Yes |
+| [SushiSwap V3](https://www.sushi.com) | Concentrated liquidity (Uniswap V3 style) | Yes (`Hop::Sushi`) | Yes |
+| Comet | Weighted pools (Balancer style) | Yes (`Hop::Comet`) | Yes |
+| [Phoenix](https://www.phoenix-hub.io) | Constant product, stable | Yes (`Hop::Phoenix`) | Not today |
+| SDEX (Stellar classic order book) | Order book and classic liquidity pools | No | Yes, as a separate path payment |
+
+**What each column means:**
+
+- **Aggregator v3 contract:** the contract can execute a hop on that venue, so you can name such pools in your own routes.
+- **Routed by the API:** `/quote` currently considers that venue. Phoenix is held back while its quoted prices do not hold at execution.
+- **SDEX:** a quote with `"platform": "sdex"` is built as a classic path payment, not an aggregator call.
+
+`GET /protocols?network=mainnet` returns the venue list the API accepts in `protocols`.
+
+Some assets only trade on one venue. deJTRSY, for example, has its liquidity in SushiSwap V3 pools. When you need such a pair, add that venue to `protocols`.

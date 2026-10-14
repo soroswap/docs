@@ -3,14 +3,17 @@ title: "Soroswap Aggregator"
 description: "The Soroswap Aggregator splits a single trade across several Soroban AMMs to get the best execution."
 ---
 
-An aggregator routes one trade across several Soroban-based AMMs, splitting it so the user gets a better price than any single protocol would give. Soroswap's aggregator talks to each supported AMM through an adapter contract, so adding a protocol means writing an adapter rather than changing the aggregator.
+An aggregator routes one trade across several Soroban-based AMMs, splitting it so the user gets a better price than any single protocol would give. Soroswap's [Aggregator v3](/aggregator/technical-reference/contracts/aggregator-v3) runs typed routes across Soroswap, Aquarius, SushiSwap V3, Comet and Phoenix in one atomic transaction. The [Soroswap API](/api) picks the routes, and the contract executes them.
 
 <Columns cols={2}>
   <Card title="Supported AMMs" icon="list" href="/aggregator/supported-amms">
     Which protocols the aggregator currently routes through.
   </Card>
-  <Card title="Technical Reference" icon="code" href="/aggregator/technical-reference">
-    How the aggregator works, its design, and the adapter model.
+  <Card title="Aggregator v3" icon="code" href="/aggregator/technical-reference/contracts/aggregator-v3">
+    The contract reference: entrypoints, routes, fees and errors.
+  </Card>
+  <Card title="Cross-Contract Integration" icon="plug" href="/aggregator/technical-reference/cross-contract-integration">
+    Call the aggregator from your own Soroban contract.
   </Card>
   <Card title="Audits" icon="shield-check" href="/aggregator/audits">
     The Runtime Verification audit of the aggregator contracts.
@@ -20,4 +23,4 @@ An aggregator routes one trade across several Soroban-based AMMs, splitting it s
   </Card>
 </Columns>
 
-The full source lives at [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).
+The source of the deprecated adapter-based aggregator is at [github.com/soroswap/aggregator](https://github.com/soroswap/aggregator).
