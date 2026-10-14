@@ -133,6 +133,7 @@
               "api/quickstart",
               "api/beginner-guide",
               "api/gasless-trustline",
+              "api/fees",
               "api/optimal-route"
             ]
           }
