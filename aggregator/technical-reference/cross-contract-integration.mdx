@@ -158,4 +158,4 @@ The same swap from an account, with the user signing (no `authorize_as_current_c
 - Set `zero_for_one = (token_in == pool.token0())` on every Sushi hop.
 - Sort each Aquarius step's token set by `Address` order, not string order.
 - When `user` is a contract, authorize `token_in.transfer(user, aggregator, amount_in)`.
-- Set `min_out` from your own slippage tolerance. It is the only price guarantee: the aggregator calls each venue with a token minimum (0 or 1) and checks the total at the end.
+- Set `min_out` from your own slippage tolerance. It is the only price guarantee: the aggregator calls each venue with no real per-hop minimum (0 or 1, or none for SushiSwap and Phoenix) and checks only the total at the end.
